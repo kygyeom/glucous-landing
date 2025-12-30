@@ -1,48 +1,3 @@
-요청하신 **GlucoUS 랜딩 페이지 프로젝트**의 모든 내용을 정리했습니다.
-
-이 내용은 **[1. 기획/컨셉 정의서]**와 **[2. 최종 배포용 소스 코드(index.html)]**로 구성되어 있습니다. 이 내용을 복사해서 팀원들과 공유하거나 개발에 바로 사용하시면 됩니다.
-
----
-
-## 📂 파일 1: 기획 및 디자인 컨셉 정의서 (Concept Definition)
-
-**프로젝트명:** GlucoUS 랜딩 페이지 리뉴얼
-**목표:** 초기 트래픽 확보 및 시장성(PMF) 검증을 위한 고효율 랜딩 페이지 구축
-**기술 스택:** HTML5, Tailwind CSS (No-Code 툴 사용 X, 비용 0원 전략)
-
-### 1. 핵심 가치 (Value Proposition)
-
-* **Problem:** 기존 당뇨 관리의 불편함 (부정확한 눈대중, 번거로운 기록, 예측 불가능한 혈당)
-* **Solution:** 온디바이스 AI 기반 식사량 자동 측정(밀도 추정) & 혈당 예측 시뮬레이션
-* **Key Message:** "사진 한 장으로 끝나는 혈당 관리. 막연한 불안함을 데이터 기반의 확신으로."
-
-### 2. 디자인 테마 (Look & Feel)
-
-* **레퍼런스:** **NOOM** (심리적 안정을 주는 깔끔함) + **Veri/Levels** (데이터의 전문성)
-* **컬러 팔레트:**
-* Primary: `Topaz #18D9C2` (혁신, 치유, 선명함)
-* Secondary: `Dark Gray #1F2937` (가독성 높은 본문)
-* Background: `Clean White #FFFFFF` & `Soft Gray #F9FAFB`
-
-
-* **폰트:** **Pretendard** (가독성과 심미성이 뛰어난 현대적 고딕)
-
-### 3. 섹션 구성 (Structure)
-
-1. **Hero:** 압도적 첫인상 (앱 실제 구동 화면 + 강렬한 카피)
-2. **Pain Point:** 공감대 형성 (눈대중, 귀차니즘, 불안감)
-3. **Features:** 기술적 우위 증명 (손바닥 측정, 온디바이스 AI, 혈당 예측)
-4. **Social Proof:** 신뢰도 강화 (아이센스/아산병원 파트너십, 베타 유저 후기)
-5. **Pricing:** 구매 전환 유도 (월 4,900원 얼리버드 특가 + 30일 무료)
-
----
-
-## 📂 파일 2: 최종 소스 코드 (index.html)
-
-아래 코드는 **Tailwind CSS 설정, 폰트, 반응형 레이아웃, 임시 이미지**가 모두 포함된 **완전한 파일**입니다.
-VS Code에서 `index.html` 파일을 만들고 아래 내용을 **전체 복사/붙여넣기** 하세요.
-
-```html
 <!DOCTYPE html>
 <html lang="ko" class="scroll-smooth">
 <head>
@@ -173,7 +128,7 @@ VS Code에서 `index.html` 파일을 만들고 아래 내용을 **전체 복사/
                     <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">손바닥 위의 초정밀 측정<br><span class="text-gray-400">내 손이 기준이 됩니다</span></h2>
                     <p class="text-lg text-gray-600">특허받은 밀도 기반 측정 기술로 실제 섭취량을 그램(g) 단위까지 정확하게 파악합니다.</p>
                 </div>
-                <div class="flex-1 w-full"><img src="https://placehold.co/600x400/18D9C2/FFFFFF?text=Hand+Scaling+UI" class="rounded-3xl shadow-2xl w-full"></div>
+                <div class="flex-1 w-full"><img src="https://placehold.co/600x400/18D9C2/FFFFFF?text=Hand+Scaling+UI" class="rounded-3xl shadow-2xl w-full" alt="손바닥 스케일링 UI 예시"></div>
             </div>
 
             <div class="flex flex-col lg:flex-row-reverse items-center gap-12 lg:gap-20">
@@ -182,7 +137,7 @@ VS Code에서 `index.html` 파일을 만들고 아래 내용을 **전체 복사/
                     <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">기다림 없는<br>온디바이스 AI</h2>
                     <p class="text-lg text-gray-600">서버 전송 없이, 내 폰에서 즉시 분석합니다. 0.1초의 망설임도 없이 식사를 시작하세요.</p>
                 </div>
-                <div class="flex-1 w-full"><img src="https://placehold.co/600x400/1F2937/FFFFFF?text=AI+Analysis+UI" class="rounded-3xl shadow-2xl w-full"></div>
+                <div class="flex-1 w-full"><img src="https://placehold.co/600x400/1F2937/FFFFFF?text=AI+Analysis+UI" class="rounded-3xl shadow-2xl w-full" alt="AI 분석 UI 예시"></div>
             </div>
 
             <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -191,7 +146,7 @@ VS Code에서 `index.html` 파일을 만들고 아래 내용을 **전체 복사/
                     <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">식후 혈당,<br>미리 보고 드세요</h2>
                     <p class="text-lg text-gray-600">"이거 다 먹으면 얼마나 오를까?" AI가 식후 혈당 변화를 시뮬레이션해 드립니다.</p>
                 </div>
-                <div class="flex-1 w-full"><img src="https://placehold.co/600x400/18D9C2/FFFFFF?text=Glucose+Graph" class="rounded-3xl shadow-2xl w-full"></div>
+                <div class="flex-1 w-full"><img src="https://placehold.co/600x400/18D9C2/FFFFFF?text=Glucose+Graph" class="rounded-3xl shadow-2xl w-full" alt="혈당 그래프 예시"></div>
             </div>
         </div>
     </section>
@@ -286,14 +241,4 @@ VS Code에서 `index.html` 파일을 만들고 아래 내용을 **전체 복사/
 </body>
 </html>
 
-```
 
----
-
-### ✅ 마무리 체크리스트 (배포 전 확인)
-
-1. **이미지 교체:** 코드 중간에 `<img src="https://placehold.co/...">` 라고 된 부분들을 실제 준비하신 이미지 경로(예: `./images/screen-d.png`)로 바꿔주세요.
-2. **배포:**
-* VS Code에서 소스 제어(Source Control) 탭 클릭 → `Commit` & `Publish to GitHub`.
-* Vercel 접속 → `Add New Project` → `Import`.
-* Domain 설정: `glucous.kr` 입력 후 DNS 설정 (A Record: `76.76.21.21`).
