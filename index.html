@@ -49,35 +49,27 @@
                 
                 <div class="text-center lg:text-left z-10">
                     <div class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primaryDark text-sm font-semibold mb-6 border border-primary/20">
-                        <span class="mr-2">✨</span> New Feature: 온디바이스 AI 분석
+                        <span class="mr-2">✨</span> AI 기반 혈당 관리 솔루션
                     </div>
                     
-                    <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tight text-gray-900 leading-[1.2] mb-6">
-                        아직도 식사 전,<br>
-                        <span class="text-primary relative inline-block">
-                            탄수화물 계산기
-                            <svg class="absolute w-full h-3 -bottom-1 left-0 text-primary/30 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
-                                <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="8" fill="none" />
-                            </svg>
-                        </span>와<br>
-                        씨름하시나요?
+                    <h1 class="text-4xl lg:text-6xl font-extrabold tracking-wide text-gray-900 leading-[1.2] mb-6" style="letter-spacing: 0.05em;">
+                        지금 먹은 한 접시,<br>
+                        <span class="text-primary">몇 그램인지 아시나요?</span>
                     </h1>
-                    
-                    <p class="text-lg text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                        사진 한 장이면 충분합니다. 온디바이스 AI가 당신의 손과 그릇을 인식해, 
-                        <strong class="text-gray-900">정확한 식사량</strong>과 
-                        <strong class="text-gray-900">예상 혈당</strong>을 1초 만에 보여드립니다.
+                    <p class="text-lg text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0 whitespace-pre-line">
+                        탄수화물 계산 더 이상 감으로 기록하지 마세요. 사진 한 장이면 충분합니다.
+                        <strong class="text-gray-900">정확한 식사량 기록</strong>과 <strong class="text-gray-900">혈당 예측</strong>기능을 확인해보세요.
                     </p>
 
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                         <a href="#pricing" class="px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primaryDark transition-all shadow-lg hover:shadow-primary/30 transform hover:-translate-y-1 text-center">
-                            30일 무료 체험 시작하기
+                            선착순 30명 베타 테스터 신청하기
                         </a>
-                        <button class="px-8 py-4 bg-white text-gray-700 border border-gray-200 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all flex items-center justify-center gap-2 group">
-                            작동 원리 보기 <span class="group-hover:translate-x-1 transition-transform">→</span>
-                        </button>
+                        <a href="#features" class="px-8 py-4 bg-white text-gray-700 border border-gray-200 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all flex items-center justify-center gap-2 group">
+                            더 자세히 알아보기 <span class="group-hover:translate-x-1 transition-transform">→</span>
+                        </a>
                     </div>
-                    <p class="mt-6 text-sm text-gray-500">💳 카드 등록 없이 바로 시작하세요.</p>
+                    <p class="mt-6 text-sm text-gray-500">💳 앱 출시 후 100% 환불 보장.</p>
                 </div>
 
                 <div class="relative lg:h-[600px] flex justify-center items-center">
@@ -91,6 +83,7 @@
                                 <iframe id="screen-iframe-2" src="screen/ScreenC.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12;"></iframe>
                                 <iframe id="screen-iframe-3" src="screen/ScreenD.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12;"></iframe>
                                 <iframe id="screen-iframe-4" src="screen/ScreenE.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12;"></iframe>
+                                <iframe id="screen-iframe-5" src="screen/ScreenF.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12;"></iframe>
                             </div>
                         </div>
                         <!-- 인디케이터 -->
@@ -100,6 +93,7 @@
                             <div class="indicator w-2 h-2 rounded-full bg-white/40 transition-all duration-300" data-index="2"></div>
                             <div class="indicator w-2 h-2 rounded-full bg-white/40 transition-all duration-300" data-index="3"></div>
                             <div class="indicator w-2 h-2 rounded-full bg-white/40 transition-all duration-300" data-index="4"></div>
+                            <div class="indicator w-2 h-2 rounded-full bg-white/40 transition-all duration-300" data-index="5"></div>
                         </div>
                     </div>
                 </div>
@@ -136,65 +130,221 @@
         </div>
     </section>
 
-    <section class="py-20 bg-softGray overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+    <section id="features" class="py-20 bg-softGray overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+                <!-- 이미지 섹션 -->
+                <div class="w-full relative">
+                    <img id="feature-image" src="image/camera_app.jpeg" class="rounded-3xl shadow-2xl w-full aspect-square object-cover transition-opacity duration-500" alt="Features 이미지">
+                </div>
+
+                <!-- 토글 리스트 섹션 -->
+                <div class="w-full">
+                    <p class="text-sm text-gray-500 mb-4">GlucoUS 솔루션 알아보기</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-8">나만을 위한 혈당관리 도우미</h2>
+                    
+                    <div class="space-y-0 border-t border-gray-200">
+                        <!-- 토글 항목 1 -->
+                        <div class="feature-toggle-item border-b border-gray-200">
+                            <button class="w-full py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors group" onclick="toggleFeature(0)">
+                                <span class="text-lg font-semibold text-gray-900">간편한 식사 정보 검색</span>
+                                <svg class="w-5 h-5 text-gray-400 chevron-icon group-hover:text-gray-600" id="chevron-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="feature-content hidden overflow-hidden" id="content-0">
+                                <div class="pb-5 pt-0">
+                                    <p class="text-gray-600 leading-relaxed">복잡한 영양 성분표를 분석할 필요가 없습니다. 사진, 음성, 텍스트까지 당신이 원하는 방법으로 자유롭게 AI 기반 음식 검색을 통해, 검색 한 번으로 탄수화물 함량과 주요 영양 정보를 즉시 확인하세요."</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 토글 항목 2 -->
+                        <div class="feature-toggle-item border-b border-gray-200">
+                            <button class="w-full py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors group" onclick="toggleFeature(1)">
+                                <span class="text-lg font-semibold text-gray-900">과학적인 탄수화물 계산 방법</span>
+                                <svg class="w-5 h-5 text-gray-400 chevron-icon group-hover:text-gray-600" id="chevron-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="feature-content hidden overflow-hidden" id="content-1">
+                                <div class="pb-5 pt-0">
+                                    <p class="text-gray-600 leading-relaxed">GlucoUS 만의 식사량 보정 기술이 적용되었습니다. 내 손을 기준으로 음식의 부피와 밀도를 분석해, 저울 없이도 어떤 상황에서도  정확한 탄수화물 양 계산을 도와드립니다. 더 이상 감에 의존하지 마세요.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 토글 항목 3 -->
+                        <div class="feature-toggle-item border-b border-gray-200">
+                            <button class="w-full py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors group" onclick="toggleFeature(2)">
+                                <span class="text-lg font-semibold text-gray-900">상황에 따른 혈당 예측</span>
+                                <svg class="w-5 h-5 text-gray-400 chevron-icon group-hover:text-gray-600" id="chevron-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="feature-content hidden overflow-hidden" id="content-2">
+                                <div class="pb-5 pt-0">
+                                    <p class="text-gray-600 leading-relaxed">먹기 전, 미리 결과를 확인하세요. 사용자의 개인화된 건강 데이터를 기반으로, 식사량에 따른 혈당 변화를 AI가 예측해 보여줍니다.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 토글 항목 4 -->
+                        <div class="feature-toggle-item border-b border-gray-200">
+                            <button class="w-full py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors group" onclick="toggleFeature(3)">
+                                <span class="text-lg font-semibold text-gray-900">나를 위한 추천 식단</span>
+                                <svg class="w-5 h-5 text-gray-400 chevron-icon group-hover:text-gray-600" id="chevron-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="feature-content hidden overflow-hidden" id="content-3">
+                                <div class="pb-5 pt-0">
+                                    <p class="text-gray-600 leading-relaxed">혈당 스파이크 걱정 없는 맛있는 식사를 제안합니다. 나의 식습관과 혈당 반응 데이터를 학습한 AI가, 입맛과 건강을 모두 만족시키는 최적의 식단을 추천합니다.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 토글 항목 5 -->
+                        <div class="feature-toggle-item border-b border-gray-200">
+                            <button class="w-full py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors group" onclick="toggleFeature(4)">
+                                <span class="text-lg font-semibold text-gray-900">우리의 목표</span>
+                                <svg class="w-5 h-5 text-gray-400 chevron-icon group-hover:text-gray-600" id="chevron-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="feature-content hidden overflow-hidden" id="content-4">
+                                <div class="pb-5 pt-0">
+                                    <p class="text-gray-600 leading-relaxed">우리의 소명은 단순한 기록 앱을 넘어, 당신의 자유로운 식사 파트너가 되는 것입니다. 막연한 추측과 불안 대신, 데이터가 주는 확신으로 당뇨 관리의 새로운 기준을 만듭니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .feature-content {
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .feature-content.open {
+            max-height: 500px;
+            opacity: 1;
+            transition: max-height 0.3s ease-in, opacity 0.3s ease-in;
+        }
+        .feature-content.hidden {
+            display: none;
+        }
+        .chevron-icon {
+            transition: transform 0.3s ease;
+        }
+        .chevron-icon.rotated {
+            transform: rotate(180deg);
+        }
+    </style>
+
+    <script>
+        // 각 토글에 해당하는 이미지 매핑
+        const featureImages = [
+            'image/camera_app.jpeg',           // 0: 식사 정보 검색
+            'image/hand_app.jpeg',             // 1: 밀도 기반 탄수화물량 추정
+            'image/aipred_app.jpeg',        // 2: 개인 맞춤 혈당 예측
+            'image/foodad_app.jpeg',             // 3: 나를 위한 추천 식단
+            'image/ourgoal_app.jpeg'              // 4: 우리의 목표
+        ];
+
+        let currentImageIndex = 0;
+        let imageRotationInterval = null;
+        let isManualToggle = false; // 수동 토글이 열려있는지 여부
+
+        const featureImage = document.getElementById('feature-image');
+
+        // 이미지 자동 순환 함수
+        function startImageRotation() {
+            if (imageRotationInterval) {
+                clearInterval(imageRotationInterval);
+            }
             
-            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-                <div class="flex-1 space-y-6">
-                    <div class="inline-block px-4 py-1 rounded-full bg-white border border-gray-200 text-primary font-bold text-sm shadow-sm">POINT 01. Real-World Scaling</div>
-                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">손바닥 위의 초정밀 측정<br><span class="text-gray-400">내 손이 기준이 됩니다</span></h2>
-                    <p class="text-lg text-gray-600">특허받은 밀도 기반 측정 기술로 실제 섭취량을 그램(g) 단위까지 정확하게 파악합니다.</p>
-                </div>
-                <div class="flex-1 w-full"><img src="https://placehold.co/600x400/18D9C2/FFFFFF?text=Hand+Scaling+UI" class="rounded-3xl shadow-2xl w-full" alt="손바닥 스케일링 UI 예시"></div>
-            </div>
+            imageRotationInterval = setInterval(() => {
+                if (!isManualToggle) {
+                    currentImageIndex = (currentImageIndex + 1) % featureImages.length;
+                    changeImage(featureImages[currentImageIndex]);
+                }
+            }, 3000); // 3초마다 변경
+        }
 
-            <div class="flex flex-col lg:flex-row-reverse items-center gap-12 lg:gap-20">
-                <div class="flex-1 space-y-6">
-                    <div class="inline-block px-4 py-1 rounded-full bg-white border border-gray-200 text-primary font-bold text-sm shadow-sm">POINT 02. Instant Analysis</div>
-                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">기다림 없는<br>온디바이스 AI</h2>
-                    <p class="text-lg text-gray-600">서버 전송 없이, 내 폰에서 즉시 분석합니다. 0.1초의 망설임도 없이 식사를 시작하세요.</p>
-                </div>
-                <div class="flex-1 w-full"><img src="https://placehold.co/600x400/1F2937/FFFFFF?text=AI+Analysis+UI" class="rounded-3xl shadow-2xl w-full" alt="AI 분석 UI 예시"></div>
-            </div>
+        // 이미지 변경 함수 (페이드 효과)
+        function changeImage(src) {
+            if (featureImage) {
+                featureImage.style.opacity = '0';
+                setTimeout(() => {
+                    featureImage.src = src;
+                    featureImage.style.opacity = '1';
+                }, 250);
+            }
+        }
 
-            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-                <div class="flex-1 space-y-6">
-                    <div class="inline-block px-4 py-1 rounded-full bg-white border border-gray-200 text-primary font-bold text-sm shadow-sm">POINT 03. Predictive Insight</div>
-                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">식후 혈당,<br>미리 보고 드세요</h2>
-                    <p class="text-lg text-gray-600">"이거 다 먹으면 얼마나 오를까?" AI가 식후 혈당 변화를 시뮬레이션해 드립니다.</p>
-                </div>
-                <div class="flex-1 w-full"><img src="https://placehold.co/600x400/18D9C2/FFFFFF?text=Glucose+Graph" class="rounded-3xl shadow-2xl w-full" alt="혈당 그래프 예시"></div>
-            </div>
-        </div>
-    </section>
+        // 토글 함수 수정
+        function toggleFeature(index) {
+            const content = document.getElementById(`content-${index}`);
+            const chevron = document.getElementById(`chevron-${index}`);
+            
+            if (content.classList.contains('hidden')) {
+                // 열기
+                isManualToggle = true;
+                
+                // 다른 토글들 닫기
+                for (let i = 0; i < 5; i++) {
+                    if (i !== index) {
+                        const otherContent = document.getElementById(`content-${i}`);
+                        const otherChevron = document.getElementById(`chevron-${i}`);
+                        if (otherContent && !otherContent.classList.contains('hidden')) {
+                            otherContent.classList.remove('open');
+                            otherChevron.classList.remove('rotated');
+                            setTimeout(() => {
+                                otherContent.classList.add('hidden');
+                            }, 300);
+                        }
+                    }
+                }
+                
+                content.classList.remove('hidden');
+                setTimeout(() => {
+                    content.classList.add('open');
+                }, 10);
+                chevron.classList.add('rotated');
+                
+                // 해당 토글의 이미지로 변경
+                currentImageIndex = index;
+                changeImage(featureImages[index]);
+            } else {
+                // 닫기
+                content.classList.remove('open');
+                chevron.classList.remove('rotated');
+                setTimeout(() => {
+                    content.classList.add('hidden');
+                }, 300);
+                
+                // 자동 순환 재시작
+                isManualToggle = false;
+                currentImageIndex = index; // 현재 인덱스부터 다시 시작
+                startImageRotation();
+            }
+        }
 
-    <section class="py-16 bg-white border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p class="text-sm font-semibold text-gray-500 tracking-wider uppercase mb-8">Verified by Experts</p>
-            <div class="flex flex-wrap justify-center items-center gap-8 lg:gap-16 opacity-60 grayscale mb-16">
-                <span class="text-2xl font-bold text-gray-800">i-SENS</span>
-                <span class="text-xl font-bold text-gray-800">서울아산병원</span>
-                <span class="text-2xl font-bold text-gray-800">KAKAO Healthcare</span>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6 text-left">
-                <div class="bg-softGray p-6 rounded-2xl">
-                    <div class="text-yellow-400 mb-2">★★★★★</div>
-                    <p class="text-gray-700 font-medium text-sm">"1형 당뇨 10년 차, 탄수 계산 해방감이 엄청납니다."</p>
-                    <p class="text-xs text-gray-500 mt-2">- 김OO님</p>
-                </div>
-                <div class="bg-softGray p-6 rounded-2xl">
-                    <div class="text-yellow-400 mb-2">★★★★★</div>
-                    <p class="text-gray-700 font-medium text-sm">"인슐린 용량 결정에 확신이 생겼어요."</p>
-                    <p class="text-xs text-gray-500 mt-2">- 이OO님</p>
-                </div>
-                <div class="bg-softGray p-6 rounded-2xl">
-                    <div class="text-yellow-400 mb-2">★★★★★</div>
-                    <p class="text-gray-700 font-medium text-sm">"그래프 예측 기능은 소름 돋게 정확합니다."</p>
-                    <p class="text-xs text-gray-500 mt-2">- 박OO님</p>
-                </div>
-            </div>
-        </div>
-    </section>
+        // 페이지 로드 시 자동 순환 시작
+        window.addEventListener('DOMContentLoaded', function() {
+            // 첫 이미지 설정
+            if (featureImage) {
+                featureImage.src = featureImages[0];
+            }
+            startImageRotation();
+        });
+    </script>
 
     <section id="pricing" class="py-24 bg-gray-900 text-white relative overflow-hidden">
         <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
@@ -204,24 +354,25 @@
                     <h2 class="text-3xl lg:text-4xl font-bold mb-6 leading-tight">당신의 자유로운 식사를 위한<br><span class="text-primary">가장 확실한 투자</span></h2>
                     <p class="text-gray-400 text-lg mb-8">커피 한 잔 값으로 평생의 건강 습관을 만듭니다.</p>
                     <ul class="space-y-4 text-gray-300">
-                        <li class="flex items-center gap-3"><span class="text-primary">✓</span> AI 식사량 측정 무제한</li>
-                        <li class="flex items-center gap-3"><span class="text-primary">✓</span> 식후 혈당 예측 시뮬레이션</li>
-                        <li class="flex items-center gap-3"><span class="text-primary">✓</span> 주간 정밀 분석 리포트</li>
+                        <li class="flex items-center gap-3"><span class="text-primary">✓</span> 자유로운 AI 기반 영양소 정보 검색</li>
+                        <li class="flex items-center gap-3"><span class="text-primary">✓</span> 과학적인 식사량 추정 기술</li>
+                        <li class="flex items-center gap-3"><span class="text-primary">✓</span> 무제한 식후 혈당 예측</li>
+                        <li class="flex items-center gap-3"><span class="text-primary">✓</span> 나를 위한 추천 식단 제공</li>
                     </ul>
                 </div>
                 <div class="bg-white text-gray-900 rounded-3xl p-8 lg:p-10 shadow-2xl relative">
                     <div class="absolute -top-4 right-8 bg-black text-white px-4 py-1 rounded-full text-sm font-bold">Early Bird Offer</div>
                     <h3 class="text-xl font-bold text-gray-500 mb-2">GlucoUS Pro Plan</h3>
                     <div class="flex items-baseline gap-2 mb-6">
-                        <span class="text-4xl lg:text-5xl font-extrabold tracking-tight">4,900원</span>
+                        <span class="text-4xl lg:text-5xl font-extrabold tracking-tight">5,000원</span>
                         <span class="text-gray-400 text-lg line-through">9,900원</span>
                         <span class="text-sm text-gray-500">/월</span>
                     </div>
-                    <p class="text-sm text-gray-600 mb-8 bg-gray-100 p-4 rounded-xl">🔥 <strong>론칭 기념 평생 할인가</strong>입니다.</p>
+                    <p class="text-sm text-gray-600 mb-8 bg-gray-100 p-4 rounded-xl">🔥 <strong>베타 테스터 모집 중</strong>입니다. 선정되신 베타 테스터 30인에게는 2만원 상당의 혈당 관리 키트와 Pro 플랜 90일 이용권을 제공해 드립니다. 많은 관심 부탁드립니다.</p>
                     <button class="w-full py-4 bg-primary text-white rounded-xl font-bold text-xl hover:bg-primaryDark transition-all shadow-lg hover:shadow-primary/30 mb-4">
                         30일 무료 체험 시작하기
                     </button>
-                    <p class="text-center text-xs text-gray-400">첫 30일은 0원입니다. 체험 기간 종료 전 알림을 드려요.</p>
+                    <p class="text-center text-xs text-gray-400">출시 전 앱의 테스트와 수요 조사를 위해 예약금 5000원을 받고 있습니다. 3월 이후 계좌 이체를 통해 현금으로 100% 환불해드립니다.</p>
                 </div>
             </div>
         </div>
@@ -259,7 +410,7 @@
     <script>
         // Screen 슬라이드 자동 전환 (Promise 기반 시퀀스)
         (function() {
-            const screens = ['ScreenA', 'ScreenB', 'ScreenC', 'SCreenD', 'ScreenE'];
+            const screens = ['ScreenA', 'ScreenB', 'ScreenC', 'SCreenD', 'ScreenE', 'ScreenF'];
             const totalScreens = screens.length;
             const pendingPromises = {}; // 각 스크린의 Promise 저장
             
@@ -330,5 +481,6 @@
     </script>
 </body>
 </html>
+
 
 
