@@ -171,14 +171,11 @@
     </div>
 
     <script>
-        // 자동 플래시 효과 (슬라이드 시작 후 0.5초 후 0.3초 동안)
+        // 자동 플래시 효과 (화면이 보일 때 0.5초 후 0.3초 동안)
         const flashOverlay = document.getElementById('flash-overlay');
-        let slideStartTime = Date.now();
         
         function startFlashAnimation() {
-            const elapsed = Date.now() - slideStartTime;
-            const delay = Math.max(0, 500 - elapsed); // 0.5초 후 실행
-            
+            // 0.5초 후 플래시 효과
             setTimeout(() => {
                 flashOverlay.classList.add('auto-flash');
                 
@@ -186,18 +183,17 @@
                 setTimeout(() => {
                     flashOverlay.classList.remove('auto-flash');
                 }, 300);
-            }, delay);
+            }, 500);
         }
         
-        // postMessage 리스너
+        // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
         window.addEventListener('message', function(event) {
-            if (event.data && event.data.type === 'slide-start-time') {
-                slideStartTime = event.data.startTime;
+            if (event.data && event.data.type === 'screen-visible' && event.data.screenIndex === 0) {
                 startFlashAnimation();
             }
         });
         
-        // 초기 실행 (슬라이드 시작 시간이 없을 경우)
+        // 초기 실행
         startFlashAnimation();
 
         // 셔터 버튼 클릭 이벤트 (수동 촬영용)

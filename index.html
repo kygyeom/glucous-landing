@@ -263,9 +263,6 @@
             let currentIndex = 0;
             const totalScreens = screens.length;
             
-            // 슬라이드 시작 시간 저장
-            window.slideStartTime = Date.now();
-            
             function showScreen(index) {
                 // 모든 iframe 숨기기
                 for (let i = 0; i < totalScreens; i++) {
@@ -275,12 +272,12 @@
                     if (iframe) {
                         iframe.style.opacity = i === index ? '1' : '0';
                         
-                        // 슬라이드 시작 시간 전달
+                        // 화면이 보일 때 애니메이션 시작 메시지 전송 (시간 0으로 초기화)
                         if (i === index) {
                             setTimeout(() => {
                                 iframe.contentWindow.postMessage({
-                                    type: 'slide-start-time',
-                                    startTime: window.slideStartTime
+                                    type: 'screen-visible',
+                                    screenIndex: i
                                 }, '*');
                             }, 100);
                         }

@@ -235,68 +235,62 @@
     </div>
 
     <script>
-        // 애니메이션 시작 함수
-        // ScreenA(0.8초) + ScreenB(0.5초) + ScreenC(5.5초) = 6.8초 후 시작
-        let slideStartTime = Date.now();
+        // 애니메이션 시작 함수 (화면이 보일 때부터 시작)
         const glassPanel = document.getElementById('glass-panel');
         const sliderContainer = document.getElementById('slider-container');
         const buttonContainer = document.getElementById('button-container');
         const bottomSheet = document.querySelector('.bottom-sheet');
 
         function startAnimations() {
-            const elapsed = Date.now() - slideStartTime;
-            
-            // 하단 시트 슬라이드 업: 6.8초 후
-            const bottomSheetDelay = Math.max(0, 6800 - elapsed);
-            
-            // Glass Panel 페이드 인: 7.0초 후 (하단 시트 시작 후 0.2초)
-            const glassPanelDelay = Math.max(0, 7000 - elapsed);
-            
-            // 슬라이더 나타남: 7.3초 후
-            const sliderDelay = Math.max(0, 7300 - elapsed);
-            
-            // 버튼들 나타남: 7.6초 후
-            const buttonDelay = Math.max(0, 7600 - elapsed);
-
-            // 하단 시트 애니메이션
+            // 하단 시트 슬라이드 업 (0.5초 후)
             setTimeout(() => {
                 if (bottomSheet) {
                     bottomSheet.style.animation = 'none';
                     void bottomSheet.offsetWidth;
                     bottomSheet.style.animation = 'slideUp 0.5s ease-out';
                 }
-            }, bottomSheetDelay);
+            }, 500);
 
-            // Glass Panel 애니메이션
+            // Glass Panel 페이드 인 (0.7초 후)
             setTimeout(() => {
                 if (glassPanel) {
                     glassPanel.classList.add('visible');
                 }
-            }, glassPanelDelay);
+            }, 700);
 
-            // 슬라이더 애니메이션
+            // 슬라이더 나타남 (1.0초 후)
             setTimeout(() => {
                 if (sliderContainer) {
                     sliderContainer.style.animation = 'none';
                     void sliderContainer.offsetWidth;
                     sliderContainer.style.animation = 'fadeInUp 0.3s ease-out forwards';
                 }
-            }, sliderDelay);
+            }, 1000);
 
-            // 버튼들 애니메이션
+            // 버튼들 나타남 (1.3초 후)
             setTimeout(() => {
                 if (buttonContainer) {
                     buttonContainer.style.animation = 'none';
                     void buttonContainer.offsetWidth;
                     buttonContainer.style.animation = 'fadeInUp 0.3s ease-out forwards';
                 }
-            }, buttonDelay);
+            }, 1300);
         }
 
-        // postMessage 리스너
+        // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
         window.addEventListener('message', function(event) {
-            if (event.data && event.data.type === 'slide-start-time') {
-                slideStartTime = event.data.startTime;
+            if (event.data && event.data.type === 'screen-visible' && event.data.screenIndex === 3) {
+                // Glass Panel 초기화
+                if (glassPanel) {
+                    glassPanel.classList.remove('visible');
+                }
+                // 슬라이더와 버튼 초기화
+                if (sliderContainer) {
+                    sliderContainer.style.opacity = '0';
+                }
+                if (buttonContainer) {
+                    buttonContainer.style.opacity = '0';
+                }
                 startAnimations();
             }
         });

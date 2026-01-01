@@ -153,28 +153,23 @@
     </div>
 
     <script>
-        // 하단 시트 애니메이션 시작 함수
-        // ScreenA의 플래시(0.5초 + 0.3초 = 0.8초) 이후 실행
+        // 하단 시트 애니메이션 시작 함수 (화면이 보일 때 0.5초 후)
         const bottomSheet = document.querySelector('.bottom-sheet');
-        let slideStartTime = Date.now();
         
         function startBottomSheetAnimation() {
-            const elapsed = Date.now() - slideStartTime;
-            const delay = Math.max(0, 800 - elapsed); // ScreenA 완료 후 실행 (0.8초)
-            
+            // 0.5초 후 하단 시트 슬라이드 업
             setTimeout(() => {
                 if (bottomSheet) {
                     bottomSheet.style.animation = 'none';
                     void bottomSheet.offsetWidth; // 리플로우 강제
                     bottomSheet.style.animation = 'slideUp 0.5s ease-out';
                 }
-            }, delay);
+            }, 500);
         }
         
-        // postMessage 리스너
+        // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
         window.addEventListener('message', function(event) {
-            if (event.data && event.data.type === 'slide-start-time') {
-                slideStartTime = event.data.startTime;
+            if (event.data && event.data.type === 'screen-visible' && event.data.screenIndex === 1) {
                 startBottomSheetAnimation();
             }
         });

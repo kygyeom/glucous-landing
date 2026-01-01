@@ -311,28 +311,20 @@
         sortRecentBtn.addEventListener('click', switchToRecent);
         sortPreferenceBtn.addEventListener('click', switchToPreference);
 
-        // 선호도순 전환 애니메이션 시작 함수
-        // ScreenA(0.8초) + ScreenB(0.5초) + ScreenC(5.5초) + ScreenD(0.8초) = 7.6초 후 실행
-        let slideStartTime = Date.now();
-
+        // 선호도순 전환 애니메이션 시작 함수 (화면이 보일 때 1초 후)
         function startPreferenceAnimation() {
-            const elapsed = Date.now() - slideStartTime;
-            // ScreenA~D까지의 누적 시간(7.6초) + 1초 = 8.6초 후 선호도순 전환
-            const delay = Math.max(0, 8600 - elapsed);
-
             // 최신순으로 먼저 리셋
             switchToRecent();
             
-            // 선호도순으로 전환
+            // 1초 후 선호도순으로 전환
             setTimeout(() => {
                 switchToPreference();
-            }, delay);
+            }, 1000);
         }
 
-        // postMessage 리스너
+        // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
         window.addEventListener('message', function(event) {
-            if (event.data && event.data.type === 'slide-start-time') {
-                slideStartTime = event.data.startTime;
+            if (event.data && event.data.type === 'screen-visible' && event.data.screenIndex === 4) {
                 startPreferenceAnimation();
             }
         });
