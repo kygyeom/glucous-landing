@@ -243,40 +243,56 @@
                 }
             }
 
-            let screenStartTime = Date.now();
+            let bottomSheetTimer = null;
+            let countdownStartTimer = null;
 
-            function startAnimations(startTime) {
-                const baseTime = startTime || screenStartTime;
-                
-                // 스크린 전환 시점 기준으로 경과 시간 계산
-                const elapsed = Date.now() - baseTime;
-                const bottomSheetDelay = Math.max(0, 500 - elapsed); // 0.5초 후
-                const countdownDelay = Math.max(0, 1000 - elapsed); // 1초 후
+            function startAnimations() {
+                // 기존 타이머들 클리어
+                if (bottomSheetTimer) {
+                    clearTimeout(bottomSheetTimer);
+                }
+                if (countdownStartTimer) {
+                    clearTimeout(countdownStartTimer);
+                }
+                if (countdownTimer) {
+                    clearTimeout(countdownTimer);
+                }
 
-                // 하단 시트 애니메이션
-                setTimeout(() => {
+                // 애니메이션 초기화
+                if (bottomSheet) {
+                    bottomSheet.style.animation = 'none';
+                    void bottomSheet.offsetWidth;
+                }
+                resetCountdown();
+
+                // 하단 시트 애니메이션 (0.5초 후)
+                bottomSheetTimer = setTimeout(() => {
                     if (bottomSheet) {
-                        bottomSheet.style.animation = 'none';
-                        void bottomSheet.offsetWidth;
                         bottomSheet.style.animation = 'slideUp 0.5s ease-out';
                     }
-                }, bottomSheetDelay);
+                }, 500);
 
-                // 카운트다운 시작
-                setTimeout(() => {
-                    if (countdownTimer) {
-                        clearTimeout(countdownTimer);
-                    }
+                // 카운트다운 시작 (1초 후, 5~1까지 5초)
+                countdownStartTimer = setTimeout(() => {
                     resetCountdown();
                     showCountdown();
-                }, countdownDelay);
+                    
+                    // 카운트다운 완료 후 parent에 완료 메시지 전송 (5초 후)
+                    setTimeout(() => {
+                        if (window.parent) {
+                            window.parent.postMessage({
+                                type: 'animation-complete',
+                                screenIndex: 2
+                            }, '*');
+                        }
+                    }, 5000);
+                }, 1000);
             }
 
-            // postMessage 리스너 - 스크린 전환 시점 기준으로 애니메이션 시작
+            // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
             window.addEventListener('message', function(event) {
-                if (event.data && event.data.type === 'screen-visible' && event.data.screenIndex === 2) {
-                    screenStartTime = event.data.startTime || Date.now();
-                    startAnimations(screenStartTime);
+                if (event.data && event.data.type === 'start-animation' && event.data.screenIndex === 2) {
+                    startAnimations();
                 }
             });
 

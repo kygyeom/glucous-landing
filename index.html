@@ -257,60 +257,75 @@
     </footer>
 
     <script>
-        // Screen 슬라이드 자동 전환
+        // Screen 슬라이드 자동 전환 (Promise 기반 시퀀스)
         (function() {
             const screens = ['ScreenA', 'ScreenB', 'ScreenC', 'SCreenD', 'ScreenE'];
-            let currentIndex = 0;
             const totalScreens = screens.length;
+            const pendingPromises = {}; // 각 스크린의 Promise 저장
             
-            function showScreen(index, transitionTime) {
-                // 스크린 전환 시점의 시간 기록
-                const screenStartTime = transitionTime || Date.now();
-                
-                // 모든 iframe 숨기기
-                for (let i = 0; i < totalScreens; i++) {
-                    const iframe = document.getElementById(`screen-iframe-${i}`);
-                    const indicator = document.querySelector(`.indicator[data-index="${i}"]`);
-                    
-                    if (iframe) {
-                        iframe.style.opacity = i === index ? '1' : '0';
+            // 스크린 표시 및 애니메이션 시작 (Promise 반환)
+            function showScreen(index) {
+                return new Promise((resolve) => {
+                    // 모든 iframe 숨기기
+                    for (let i = 0; i < totalScreens; i++) {
+                        const iframe = document.getElementById(`screen-iframe-${i}`);
+                        const indicator = document.querySelector(`.indicator[data-index="${i}"]`);
                         
-                        // 스크린 전환 시점을 기준으로 애니메이션 시작 메시지 전송
-                        if (i === index) {
-                            setTimeout(() => {
-                                iframe.contentWindow.postMessage({
-                                    type: 'screen-visible',
-                                    screenIndex: i,
-                                    startTime: screenStartTime
-                                }, '*');
-                            }, 100);
+                        if (iframe) {
+                            iframe.style.opacity = i === index ? '1' : '0';
+                            
+                            // 스크린이 보일 때 애니메이션 시작 메시지 전송
+                            if (i === index) {
+                                // 약간의 지연을 두어 iframe이 완전히 보인 후 애니메이션 시작
+                                setTimeout(() => {
+                                    iframe.contentWindow.postMessage({
+                                        type: 'start-animation',
+                                        screenIndex: i
+                                    }, '*');
+                                }, 50);
+                                
+                                // 이 스크린의 완료 Promise 저장
+                                pendingPromises[index] = resolve;
+                            }
+                        }
+                        
+                        if (indicator) {
+                            if (i === index) {
+                                indicator.classList.remove('bg-white/40');
+                                indicator.classList.add('bg-white');
+                            } else {
+                                indicator.classList.remove('bg-white');
+                                indicator.classList.add('bg-white/40');
+                            }
                         }
                     }
-                    if (indicator) {
-                        if (i === index) {
-                            indicator.classList.remove('bg-white/40');
-                            indicator.classList.add('bg-white');
-                        } else {
-                            indicator.classList.remove('bg-white');
-                            indicator.classList.add('bg-white/40');
-                        }
+                });
+            }
+            
+            // 애니메이션 완료 메시지 리스너
+            window.addEventListener('message', function(event) {
+                if (event.data && event.data.type === 'animation-complete') {
+                    const screenIndex = event.data.screenIndex;
+                    const resolve = pendingPromises[screenIndex];
+                    
+                    if (resolve) {
+                        resolve();
+                        delete pendingPromises[screenIndex];
+                    }
+                }
+            });
+            
+            // 스크린 시퀀스 실행 (무한 반복)
+            async function runScreenSequence() {
+                while (true) {
+                    for (let i = 0; i < totalScreens; i++) {
+                        await showScreen(i);
                     }
                 }
             }
             
-            function nextScreen() {
-                // 스크린 전환 시점 기록
-                const transitionTime = Date.now();
-                currentIndex = (currentIndex + 1) % totalScreens;
-                showScreen(currentIndex, transitionTime);
-            }
-            
-            // 초기화 (첫 화면도 전환 시점 기록)
-            const initialTime = Date.now();
-            showScreen(0, initialTime);
-            
-            // 3초마다 자동 전환
-            setInterval(nextScreen, 3000);
+            // 초기화 및 시퀀스 시작
+            runScreenSequence();
         })();
     </script>
 </body>
