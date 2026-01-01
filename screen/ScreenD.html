@@ -32,7 +32,7 @@
         .photo-bg {
             position: absolute;
             inset: 0;
-            background: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1000&auto=format&fit=crop');
+            /* background: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1000&auto=format&fit=crop'); */
             background-size: cover;
             background-position: center;
         }
@@ -71,6 +71,17 @@
             backdrop-filter: blur(4px);
         }
 
+        /* 카메라 뷰파인더 스타일 배경 */
+        .camera-frame-bg {
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         /* Slider Styles */
         .slider-track { background-color: rgba(255, 255, 255, 0.12); }
         .slider-fill { background-color: #18D9C2; }
@@ -95,7 +106,7 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EAF2F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
             
-            <span class="text-[16px] text-white/90 font-medium drop-shadow-md">현미밥</span>
+            <span class="text-[16px] text-white/90 font-medium drop-shadow-md">치킨 샐러드</span>
 
             <button class="w-10 h-10 rounded-full bg-black/20 backdrop-blur-md flex items-center justify-center border border-white/10">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EAF2F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
@@ -137,37 +148,29 @@
         </div>
 
         <div class="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-            
-            <div class="overlay-bowl w-[220px] h-[220px] rounded-full absolute translate-y-[60px] z-10">
-                <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10px] text-[#18D9C2] opacity-80 text-center">
-                    Bowl Overlay<br>(Resizable)
-                </span>
+            <div class="camera-frame-bg">
+                <img src="../image/hand_food.png" alt="Hand holding food" class="max-w-[320px] max-h-[500px] w-auto h-auto object-contain" style="image-rendering: auto; -webkit-backface-visibility: hidden; backface-visibility: hidden; display: block;" />
             </div>
-
-            <div class="overlay-hand-mockup w-[280px] h-[360px] rounded-[60px] absolute bottom-[-80px] left-[-20px] -rotate-12 z-20 flex items-center justify-center">
-                <span class="text-white/50 text-sm font-medium transform rotate-12">[Hand Overlay Layer]</span>
-            </div>
-
         </div>
 
 
-        <div class="bottom-sheet absolute bottom-0 w-full h-[360px] z-40 p-6 flex flex-col justify-between">
+        <div class="bottom-sheet absolute bottom-0 w-full h-[280px] z-40 p-6 flex flex-col justify-between">
             
             <div class="w-[36px] h-[4px] bg-white/10 rounded-full mx-auto shrink-0"></div>
 
             <div class="flex flex-col gap-6 mt-4">
                 
                 <div class="flex justify-between items-end px-1">
-                    <span class="text-[15px] text-[#EAF2F6]">현재 <span class="text-[#18D9C2] font-bold text-[18px]">0.75</span> 그릇</span>
+                    <span class="text-[15px] text-[#EAF2F6]">추천 식사량 <span class="text-[#18D9C2] font-bold text-[18px]">1</span> 그릇</span>
                     <span class="text-[12px] text-[rgba(234,242,246,0.5)]">약 150g</span>
                 </div>
 
                 <div class="h-[32px] relative flex items-center select-none cursor-pointer">
                     <div class="slider-track w-full h-[6px] rounded-full absolute"></div>
                     
-                    <div class="slider-fill w-[75%] h-[6px] rounded-full absolute left-0"></div>
+                    <div class="slider-fill w-[50%] h-[6px] rounded-full absolute left-0"></div>
                     
-                    <div class="slider-thumb rounded-full absolute left-[75%] -ml-[12px] z-10 flex items-center justify-center">
+                    <div class="slider-thumb rounded-full absolute left-[50%] -ml-[12px] z-10 flex items-center justify-center">
                         <div class="w-1.5 h-1.5 bg-[#18D9C2] rounded-full"></div>
                     </div>
 
@@ -177,7 +180,7 @@
 
                 <div class="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
                     <button class="h-[38px] px-5 rounded-full bg-[rgba(24,217,194,0.1)] border border-[#18D9C2] flex items-center whitespace-nowrap">
-                        <span class="text-[13px] text-white font-medium">공기밥 (기본)</span>
+                        <span class="text-[13px] text-white font-medium">넓은 접시</span>
                     </button>
                     <button class="h-[38px] px-5 rounded-full bg-transparent border border-white/10 flex items-center whitespace-nowrap">
                         <span class="text-[13px] text-[rgba(234,242,246,0.7)]">국그릇</span>

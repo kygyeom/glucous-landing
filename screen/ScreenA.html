@@ -29,11 +29,11 @@
             box-shadow: 0 0 0 10px #1a1a1a;
         }
 
-        /* 카메라 뷰파인더 배경 (어두운 음식 사진 예시) */
+        /* 카메라 뷰파인더 배경 (mainfood_9_19.jpeg 이미지 적용) */
         .camera-view {
             position: absolute;
             inset: 0;
-            background: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1000&auto=format&fit=crop');
+            background: url('../image/mainfood_9_19.jpeg');
             background-size: cover;
             background-position: center;
             z-index: 0;
@@ -63,12 +63,64 @@
         .shutter-btn:active .shutter-inner {
             transform: scale(0.9);
         }
+
+        /* 플래시 효과 */
+        .flash-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0);
+            pointer-events: none;
+            z-index: 50;
+            transition: background-color 0.1s ease-out;
+        }
+
+        .flash-overlay.active {
+            background-color: rgba(255, 255, 255, 0.9);
+            animation: flash 0.15s ease-out;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: rgba(255, 255, 255, 0);
+            }
+            50% {
+                background-color: rgba(255, 255, 255, 0.95);
+            }
+            100% {
+                background-color: rgba(255, 255, 255, 0);
+            }
+        }
+
+        @keyframes autoFlash {
+            0% {
+                background-color: rgba(255, 255, 255, 0);
+            }
+            50% {
+                background-color: rgba(255, 255, 255, 0.95);
+            }
+            100% {
+                background-color: rgba(255, 255, 255, 0);
+            }
+        }
+
+        .flash-overlay.auto-flash {
+            animation: autoFlash 0.3s ease-out;
+        }
+
+        /* 셔터 버튼 클릭 효과 */
+        .shutter-btn.clicked .shutter-inner {
+            transform: scale(0.85);
+            background-color: rgba(24, 217, 194, 0.3);
+        }
     </style>
 </head>
 <body>
 
     <div class="device-frame">
         <div class="camera-view"></div>
+        
+        <!-- 플래시 효과 오버레이 -->
+        <div id="flash-overlay" class="flash-overlay"></div>
         
         <div class="absolute top-0 w-full h-[120px] overlay-gradient-top pointer-events-none z-0"></div>
 
@@ -101,7 +153,7 @@
                     <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=100&auto=format&fit=crop" class="w-full h-full object-cover opacity-80" alt="Gallery">
                 </button>
 
-                <button class="shutter-btn w-[72px] h-[72px] rounded-full border-[2px] border-[#18D9C2] flex items-center justify-center p-1 cursor-pointer">
+                <button id="shutter-btn" class="shutter-btn w-[72px] h-[72px] rounded-full border-[2px] border-[#18D9C2] flex items-center justify-center p-1 cursor-pointer">
                     <div class="shutter-inner w-full h-full rounded-full bg-[rgba(11,15,18,0.65)]"></div>
                 </button>
 
@@ -117,6 +169,37 @@
         <div class="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-white rounded-full opacity-40 z-50"></div>
         
     </div>
+
+    <script>
+        // 자동 플래시 효과 (화면 시작 후 0.5초 후 0.3초 동안)
+        const flashOverlay = document.getElementById('flash-overlay');
+        
+        setTimeout(() => {
+            flashOverlay.classList.add('auto-flash');
+            
+            // 0.3초 후 클래스 제거
+            setTimeout(() => {
+                flashOverlay.classList.remove('auto-flash');
+            }, 300);
+        }, 500);
+
+        // 셔터 버튼 클릭 이벤트 (수동 촬영용)
+        const shutterBtn = document.getElementById('shutter-btn');
+
+        shutterBtn.addEventListener('click', function() {
+            // 셔터 버튼 클릭 효과
+            this.classList.add('clicked');
+            
+            // 플래시 효과
+            flashOverlay.classList.add('active');
+            
+            // 애니메이션 제거 및 초기화
+            setTimeout(() => {
+                this.classList.remove('clicked');
+                flashOverlay.classList.remove('active');
+            }, 150);
+        });
+    </script>
 
 </body>
 </html>

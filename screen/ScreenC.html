@@ -32,7 +32,7 @@
         .photo-bg {
             position: absolute;
             inset: 0;
-            background: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1000&auto=format&fit=crop');
+            background: url('../image/mainfood_9_19.jpeg');
             background-size: cover;
             background-position: center;
             filter: brightness(0.6); 
@@ -59,11 +59,22 @@
             border-radius: 0 4px 4px 0;
         }
 
+        /* 하단 시트 슬라이드 업 애니메이션 */
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
         /* Bottom Sheet */
         .bottom-sheet {
             background-color: #182127; /* SurfaceElevated */
             border-radius: 24px 24px 0 0;
             box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+            animation: slideUp 0.5s ease-out;
         }
 
         /* 1순위 카드 강조 스타일 */
@@ -84,6 +95,34 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
+
+        /* 카운트다운 숫자 애니메이션 */
+        @keyframes countdownFade {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+        }
+
+        .countdown-number {
+            font-size: 120px;
+            font-weight: 700;
+            color: #18D9C2;
+            text-shadow: 0 0 30px rgba(24, 217, 194, 0.5);
+            animation: countdownFade 1s ease-in-out;
+        }
     </style>
 </head>
 <body>
@@ -103,6 +142,11 @@
                 <div class="progress-bar"></div> </div>
         </div>
 
+        <!-- 카운트다운 숫자 -->
+        <div id="countdown-container" class="absolute bottom-[40%] left-1/2 -translate-x-1/2 z-40 pointer-events-none">
+            <div id="countdown-number" class="countdown-number"></div>
+        </div>
+
         <div class="bottom-sheet absolute bottom-0 w-full h-[60%] z-30 flex flex-col p-4 pb-8">
             
             <div class="w-[36px] h-[4px] bg-white/10 rounded-full mx-auto mb-4 shrink-0"></div>
@@ -116,11 +160,11 @@
                 
                 <div class="card-primary w-full h-[64px] rounded-[20px] flex items-center px-4 justify-between relative shrink-0">
                     <div class="flex flex-col">
-                        <span class="text-[16px] text-[#EAF2F6] font-medium">현미밥</span>
+                        <span class="text-[16px] text-[#EAF2F6] font-medium">치킨 샐러드</span>
                         <div class="flex items-center gap-1.5 mt-0.5">
                             <span class="text-[12px] text-[#18D9C2] font-medium">매우 유사</span>
                             <span class="w-0.5 h-0.5 bg-white/30 rounded-full"></span>
-                            <span class="text-[12px] text-[rgba(234,242,246,0.5)]">곡류</span>
+                            <span class="text-[12px] text-[rgba(234,242,246,0.5)]">채소류</span>
                         </div>
                     </div>
                     <div class="w-6 h-6 rounded-full bg-[#18D9C2] flex items-center justify-center">
@@ -130,26 +174,26 @@
 
                 <div class="card-secondary w-full h-[64px] rounded-[20px] flex items-center px-4 justify-between shrink-0 hover:bg-white/5 transition-colors">
                     <div class="flex flex-col">
-                        <span class="text-[16px] text-[rgba(234,242,246,0.72)]">쌀밥 (흰밥)</span>
+                        <span class="text-[16px] text-[rgba(234,242,246,0.72)]">스테이크 샐러드</span>
                         <div class="flex items-center gap-1.5 mt-0.5">
                             <span class="text-[12px] text-[rgba(234,242,246,0.5)]">유사</span>
                             <span class="w-0.5 h-0.5 bg-white/30 rounded-full"></span>
-                            <span class="text-[12px] text-[rgba(234,242,246,0.5)]">곡류</span>
+                            <span class="text-[12px] text-[rgba(234,242,246,0.5)]">채소류</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="card-secondary w-full h-[64px] rounded-[20px] flex items-center px-4 justify-between shrink-0 hover:bg-white/5 transition-colors">
                     <div class="flex flex-col">
-                        <span class="text-[16px] text-[rgba(234,242,246,0.72)]">보리밥</span>
-                        <span class="text-[12px] text-[rgba(234,242,246,0.5)] mt-0.5">곡류</span>
+                        <span class="text-[16px] text-[rgba(234,242,246,0.72)]">서브웨이 샐러드</span>
+                        <span class="text-[12px] text-[rgba(234,242,246,0.5)] mt-0.5">채소류</span>
                     </div>
                 </div>
 
                  <div class="card-secondary w-full h-[64px] rounded-[20px] flex items-center px-4 justify-between shrink-0 hover:bg-white/5 transition-colors">
                     <div class="flex flex-col">
-                        <span class="text-[16px] text-[rgba(234,242,246,0.72)]">잡곡밥</span>
-                        <span class="text-[12px] text-[rgba(234,242,246,0.5)] mt-0.5">곡류</span>
+                        <span class="text-[16px] text-[rgba(234,242,246,0.72)]">시금치</span>
+                        <span class="text-[12px] text-[rgba(234,242,246,0.5)] mt-0.5">채소류</span>
                     </div>
                 </div>
             </div>
@@ -163,6 +207,34 @@
 
         </div>
     </div>
+
+    <script>
+        // 카운트다운 5에서 1까지
+        (function() {
+            const countdownElement = document.getElementById('countdown-number');
+            const container = document.getElementById('countdown-container');
+            let count = 3;
+
+            function showCountdown() {
+                if (count > 0) {
+                    countdownElement.textContent = count;
+                    countdownElement.style.animation = 'none';
+                    // 리플로우 강제
+                    void countdownElement.offsetWidth;
+                    countdownElement.style.animation = 'countdownFade 1s ease-in-out';
+                    count--;
+                    setTimeout(showCountdown, 1000);
+                } else {
+                    // 카운트다운 완료 후 숨기기
+                    container.style.opacity = '0';
+                    container.style.transition = 'opacity 0.3s';
+                }
+            }
+
+            // 하단 시트 애니메이션 후 카운트다운 시작 (0.5초 후)
+            setTimeout(showCountdown, 500);
+        })();
+    </script>
 
 </body>
 </html>

@@ -62,6 +62,32 @@
 
         /* Scrollbar Hide */
         .no-scrollbar::-webkit-scrollbar { display: none; }
+
+        /* 정렬 버튼 스타일 */
+        .sort-button {
+            transition: all 0.3s ease;
+        }
+        .sort-button.active {
+            background-color: rgba(24, 217, 194, 0.1);
+            border: 1px solid #18D9C2;
+            color: #18D9C2;
+        }
+
+        /* 리스트 아이템 페이드 애니메이션 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .food-item {
+            animation: fadeIn 0.4s ease-out;
+        }
     </style>
 </head>
 <body>
@@ -69,18 +95,28 @@
     <div class="device-frame">
         
         <div class="pt-[50px] px-4 pb-4 bg-[#0B0F12] z-20 shrink-0">
-            <div class="flex justify-between items-center mb-6">
+            <div class="flex justify-between items-center mb-4">
                 <span class="text-[22px] font-bold text-[#EAF2F6]">식사 기록</span>
                 <button class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EAF2F6" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                 </button>
             </div>
 
-            <div class="w-full h-[44px] segment-track p-1 flex relative">
+            <div class="w-full h-[44px] segment-track p-1 flex relative mb-4">
                 <div class="w-1/2 h-full segment-active absolute left-1 top-1 z-0"></div>
                 
                 <button class="w-1/2 h-full relative z-10 flex items-center justify-center text-[14px] font-medium text-[#EAF2F6]">오늘</button>
                 <button class="w-1/2 h-full relative z-10 flex items-center justify-center text-[14px] text-tertiary">이번 주</button>
+            </div>
+
+            <!-- 정렬 버튼 -->
+            <div class="flex gap-2 mb-4">
+                <button id="sort-recent" class="sort-button active flex-1 h-[36px] rounded-[10px] bg-transparent border border-white/10 text-[13px] font-medium text-[#EAF2F6] flex items-center justify-center">
+                    최신순
+                </button>
+                <button id="sort-preference" class="sort-button flex-1 h-[36px] rounded-[10px] bg-transparent border border-white/10 text-[13px] font-medium text-tertiary flex items-center justify-center">
+                    선호도순
+                </button>
             </div>
         </div>
 
@@ -109,71 +145,177 @@
 
         <div class="flex-1 overflow-y-auto px-4 pb-[100px] no-scrollbar flex flex-col gap-3">
             
-            <span class="text-[14px] text-secondary font-medium mt-2 mb-1">최근 기록</span>
+            <!-- 최신순 리스트 -->
+            <div id="recent-list" class="flex flex-col gap-3">
+                <span class="text-[14px] text-secondary font-medium mt-2 mb-1">최근 기록</span>
 
-            <div class="w-full h-[88px] bg-surface-elevated rounded-[20px] p-4 flex items-center gap-4 border border-white/5 cursor-pointer active:scale-[0.98] transition-transform">
-                <div class="w-[56px] h-[56px] rounded-[16px] bg-gray-700 overflow-hidden shrink-0 relative">
-                     <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80" alt="Thumb">
+                <div class="food-item w-full h-[88px] bg-surface-elevated rounded-[20px] p-4 flex items-center gap-4 border border-white/5 cursor-pointer active:scale-[0.98] transition-transform">
+                    <div class="w-[56px] h-[56px] rounded-[16px] bg-gray-700 overflow-hidden shrink-0 relative">
+                         <img src="../image/mainfood_9_19.jpeg" class="w-full h-full object-cover opacity-80" alt="현미밥 정식">
+                    </div>
+                    <div class="flex-1 flex flex-col justify-center">
+                        <span class="text-[16px] text-[#EAF2F6] font-medium leading-tight">현미밥 정식</span>
+                        <span class="text-[13px] text-tertiary mt-1">오후 12:30 • 0.8 그릇</span>
+                    </div>
+                    <div class="flex flex-col items-end justify-center w-[80px]">
+                        <span class="text-[16px] font-bold text-[#EAF2F6]">58g</span>
+                        <svg width="60" height="24" viewBox="0 0 60 24" class="mt-1">
+                            <path class="sparkline" d="M0 20 C 10 20, 20 5, 30 5 C 40 5, 50 15, 60 15" />
+                        </svg>
+                    </div>
                 </div>
-                <div class="flex-1 flex flex-col justify-center">
-                    <span class="text-[16px] text-[#EAF2F6] font-medium leading-tight">현미밥 정식</span>
-                    <span class="text-[13px] text-tertiary mt-1">오후 12:30 • 0.8 그릇</span>
+
+                <div class="food-item w-full h-[88px] bg-surface-elevated rounded-[20px] p-4 flex items-center gap-4 border border-white/5">
+                    <div class="w-[56px] h-[56px] rounded-[16px] bg-gray-700 overflow-hidden shrink-0 relative">
+                         <img src="../image/mainfood_9_19.jpeg" class="w-full h-full object-cover opacity-80" alt="닭가슴살 샐러드">
+                    </div>
+                    <div class="flex-1 flex flex-col justify-center">
+                        <span class="text-[16px] text-[#EAF2F6] font-medium leading-tight">닭가슴살 샐러드</span>
+                        <span class="text-[13px] text-tertiary mt-1">오전 08:15 • 1.0 그릇</span>
+                    </div>
+                    <div class="flex flex-col items-end justify-center w-[80px]">
+                        <span class="text-[16px] font-bold text-[#EAF2F6]">12g</span>
+                        <svg width="60" height="24" viewBox="0 0 60 24" class="mt-1">
+                             <path class="sparkline" stroke="rgba(234,242,246,0.5)" d="M0 20 C 10 20, 20 18, 30 18 C 40 18, 50 19, 60 19" />
+                        </svg>
+                    </div>
                 </div>
-                <div class="flex flex-col items-end justify-center w-[80px]">
-                    <span class="text-[16px] font-bold text-[#EAF2F6]">58g</span>
-                    <svg width="60" height="24" viewBox="0 0 60 24" class="mt-1">
-                        <path class="sparkline" d="M0 20 C 10 20, 20 5, 30 5 C 40 5, 50 15, 60 15" />
-                    </svg>
+
+                <div class="food-item w-full h-[88px] bg-surface-elevated rounded-[20px] p-4 flex items-center gap-4 border border-white/5">
+                    <div class="w-[56px] h-[56px] rounded-[16px] bg-gray-700 overflow-hidden shrink-0">
+                         <img src="../image/mainfood.jpeg" class="w-full h-full object-cover opacity-80" alt="계란 토스트" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23333%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23fff%22 font-family=%22sans-serif%22 font-size=%2214%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E계란 토스트%3C/text%3E%3C/svg%3E';">
+                    </div>
+                    <div class="flex-1 flex flex-col justify-center">
+                        <span class="text-[16px] text-[#EAF2F6] font-medium leading-tight">계란 토스트</span>
+                        <span class="text-[13px] text-tertiary mt-1">어제 • 1.0 그릇</span>
+                    </div>
+                    <div class="flex flex-col items-end justify-center w-[80px]">
+                        <span class="text-[16px] font-bold text-[#EAF2F6]">34g</span>
+                        <svg width="60" height="24" viewBox="0 0 60 24" class="mt-1">
+                             <path class="sparkline" d="M0 20 C 10 20, 20 10, 30 8 C 40 6, 50 12, 60 12" />
+                        </svg>
+                    </div>
                 </div>
             </div>
 
-            <div class="w-full h-[88px] bg-surface-elevated rounded-[20px] p-4 flex items-center gap-4 border border-white/5">
-                <div class="w-[56px] h-[56px] rounded-[16px] bg-gray-700 overflow-hidden shrink-0 relative">
-                     <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80" alt="Thumb">
-                </div>
-                <div class="flex-1 flex flex-col justify-center">
-                    <span class="text-[16px] text-[#EAF2F6] font-medium leading-tight">닭가슴살 샐러드</span>
-                    <span class="text-[13px] text-tertiary mt-1">오전 08:15 • 1.0 그릇</span>
-                </div>
-                <div class="flex flex-col items-end justify-center w-[80px]">
-                    <span class="text-[16px] font-bold text-[#EAF2F6]">12g</span>
-                    <svg width="60" height="24" viewBox="0 0 60 24" class="mt-1">
-                         <path class="sparkline" stroke="rgba(234,242,246,0.5)" d="M0 20 C 10 20, 20 18, 30 18 C 40 18, 50 19, 60 19" />
-                    </svg>
-                </div>
-            </div>
+            <!-- 선호도순 리스트 -->
+            <div id="preference-list" class="flex flex-col gap-3 hidden">
+                <span class="text-[14px] text-secondary font-medium mt-2 mb-1">추천 음식</span>
 
-            <div class="w-full h-[88px] bg-surface-elevated rounded-[20px] p-4 flex items-center gap-4 border border-white/5">
-                <div class="w-[56px] h-[56px] rounded-[16px] bg-gray-700 overflow-hidden shrink-0">
-                     <img src="https://images.unsplash.com/photo-1626082927389-d52d838a6051?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80" alt="Thumb">
+                <div class="food-item w-full h-[88px] bg-surface-elevated rounded-[20px] p-4 flex items-center gap-4 border border-white/5 cursor-pointer active:scale-[0.98] transition-transform">
+                    <div class="w-[56px] h-[56px] rounded-[16px] bg-gray-700 overflow-hidden shrink-0 relative">
+                         <img src="../image/mainfood_9_19.jpeg" class="w-full h-full object-cover opacity-80" alt="닭가슴살 샐러드">
+                    </div>
+                    <div class="flex-1 flex flex-col justify-center min-w-0">
+                        <div class="flex items-center gap-2 flex-nowrap">
+                            <span class="text-[15px] text-[#EAF2F6] font-medium leading-tight truncate">닭가슴살 샐러드</span>
+                            <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-primary/20 text-primary whitespace-nowrap shrink-0">혈당 안정</span>
+                        </div>
+                        <span class="text-[13px] text-tertiary mt-1">평균 상승 +8mg/dL • 자주 드신 음식</span>
+                    </div>
+                    <div class="flex flex-col items-end justify-center w-[80px]">
+                        <span class="text-[16px] font-bold text-[#EAF2F6]">12g</span>
+                        <svg width="60" height="24" viewBox="0 0 60 24" class="mt-1">
+                             <path class="sparkline" stroke="rgba(234,242,246,0.5)" d="M0 20 C 10 20, 20 18, 30 18 C 40 18, 50 19, 60 19" />
+                        </svg>
+                    </div>
                 </div>
-                <div class="flex-1 flex flex-col justify-center">
-                    <span class="text-[16px] text-[#EAF2F6] font-medium leading-tight">계란 토스트</span>
-                    <span class="text-[13px] text-tertiary mt-1">어제 • 1.0 그릇</span>
+
+                <div class="food-item w-full h-[88px] bg-surface-elevated rounded-[20px] p-4 flex items-center gap-4 border border-white/5">
+                    <div class="w-[56px] h-[56px] rounded-[16px] bg-gray-700 overflow-hidden shrink-0 relative">
+                         <img src="../image/mainfood_9_19.jpeg" class="w-full h-full object-cover opacity-80" alt="현미밥 정식">
+                    </div>
+                    <div class="flex-1 flex flex-col justify-center min-w-0">
+                        <div class="flex items-center gap-2 flex-nowrap">
+                            <span class="text-[15px] text-[#EAF2F6] font-medium leading-tight truncate">현미밥 정식</span>
+                            <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-primary/20 text-primary whitespace-nowrap shrink-0">선호</span>
+                        </div>
+                        <span class="text-[13px] text-tertiary mt-1">평균 상승 +28mg/dL • 이번 주 3회</span>
+                    </div>
+                    <div class="flex flex-col items-end justify-center w-[80px]">
+                        <span class="text-[16px] font-bold text-[#EAF2F6]">58g</span>
+                        <svg width="60" height="24" viewBox="0 0 60 24" class="mt-1">
+                            <path class="sparkline" d="M0 20 C 10 20, 20 5, 30 5 C 40 5, 50 15, 60 15" />
+                        </svg>
+                    </div>
                 </div>
-                <div class="flex flex-col items-end justify-center w-[80px]">
-                    <span class="text-[16px] font-bold text-[#EAF2F6]">34g</span>
-                    <svg width="60" height="24" viewBox="0 0 60 24" class="mt-1">
-                         <path class="sparkline" d="M0 20 C 10 20, 20 10, 30 8 C 40 6, 50 12, 60 12" />
-                    </svg>
+
+                <div class="food-item w-full h-[88px] bg-surface-elevated rounded-[20px] p-4 flex items-center gap-4 border border-white/5">
+                    <div class="w-[56px] h-[56px] rounded-[16px] bg-gray-700 overflow-hidden shrink-0">
+                         <img src="../image/mainfood.jpeg" class="w-full h-full object-cover opacity-80" alt="연어 샐러드" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23333%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23fff%22 font-family=%22sans-serif%22 font-size=%2214%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E연어 샐러드%3C/text%3E%3C/svg%3E';">
+                    </div>
+                    <div class="flex-1 flex flex-col justify-center min-w-0">
+                        <div class="flex items-center gap-2 flex-nowrap">
+                            <span class="text-[15px] text-[#EAF2F6] font-medium leading-tight truncate">연어 샐러드</span>
+                            <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-primary/20 text-primary whitespace-nowrap shrink-0">추천</span>
+                        </div>
+                        <span class="text-[13px] text-tertiary mt-1">평균 상승 +12mg/dL • 혈당 반응 우수</span>
+                    </div>
+                    <div class="flex flex-col items-end justify-center w-[80px]">
+                        <span class="text-[16px] font-bold text-[#EAF2F6]">15g</span>
+                        <svg width="60" height="24" viewBox="0 0 60 24" class="mt-1">
+                             <path class="sparkline" stroke="rgba(234,242,246,0.5)" d="M0 20 C 10 20, 20 16, 30 16 C 40 16, 50 17, 60 17" />
+                        </svg>
+                    </div>
                 </div>
             </div>
 
         </div>
 
-        <div class="absolute bottom-0 w-full z-30">
+        <div class="absolute bottom-0 w-full z-[100]">
             <div class="h-[40px] w-full bg-gradient-to-t from-[#0B0F12] to-transparent pointer-events-none"></div>
-            <div class="bg-[#0B0F12] px-4 pb-[34px] pt-2">
-                <button class="w-full h-[56px] bg-primary rounded-[16px] flex items-center justify-center text-[#0B0F12] font-semibold text-[16px] shadow-[0_4px_16px_rgba(24,217,194,0.25)] active:scale-[0.99] transition-transform">
-                    <div class="flex items-center gap-2">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0B0F12" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-                        다음 식사 촬영
+            <div class="bg-[#0B0F12] px-4 pb-[34px] pt-2 relative z-[100]">
+                <button class="w-full h-[56px] bg-[#18D9C2] rounded-[16px] flex items-center justify-center shadow-[0_4px_16px_rgba(24,217,194,0.25)] active:scale-[0.99] transition-transform relative z-[100] hover:bg-[#12b09d]">
+                    <div class="flex items-center gap-2 relative z-[100]">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                        <span class="text-white font-semibold text-[16px] relative z-[100]" style="color: #FFFFFF !important; font-weight: 600;">다음 식사 촬영</span>
                     </div>
                 </button>
             </div>
         </div>
 
     </div>
+
+    <script>
+        // 정렬 버튼 및 리스트 전환
+        const sortRecentBtn = document.getElementById('sort-recent');
+        const sortPreferenceBtn = document.getElementById('sort-preference');
+        const recentList = document.getElementById('recent-list');
+        const preferenceList = document.getElementById('preference-list');
+
+        function switchToPreference() {
+            sortRecentBtn.classList.remove('active');
+            sortPreferenceBtn.classList.add('active');
+            sortRecentBtn.classList.remove('text-[#EAF2F6]');
+            sortRecentBtn.classList.add('text-tertiary');
+            sortPreferenceBtn.classList.remove('text-tertiary');
+            sortPreferenceBtn.classList.add('text-[#EAF2F6]');
+            
+            recentList.classList.add('hidden');
+            preferenceList.classList.remove('hidden');
+        }
+
+        function switchToRecent() {
+            sortPreferenceBtn.classList.remove('active');
+            sortRecentBtn.classList.add('active');
+            sortPreferenceBtn.classList.remove('text-[#EAF2F6]');
+            sortPreferenceBtn.classList.add('text-tertiary');
+            sortRecentBtn.classList.remove('text-tertiary');
+            sortRecentBtn.classList.add('text-[#EAF2F6]');
+            
+            preferenceList.classList.add('hidden');
+            recentList.classList.remove('hidden');
+        }
+
+        // 버튼 클릭 이벤트
+        sortRecentBtn.addEventListener('click', switchToRecent);
+        sortPreferenceBtn.addEventListener('click', switchToPreference);
+
+        // 초반 1초 후 자동으로 선호도순으로 전환
+        setTimeout(() => {
+            switchToPreference();
+        }, 1000);
+    </script>
 
 </body>
 </html>

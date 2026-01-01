@@ -32,7 +32,7 @@
         .photo-bg {
             position: absolute;
             inset: 0;
-            background: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1000&auto=format&fit=crop');
+            background: url('../image/mainfood_9_19.jpeg');
             background-size: cover;
             background-position: center;
             /* 흐림 효과 살짝 주어 분석 중임 강조 (옵션) */
@@ -58,11 +58,22 @@
             z-index: 10;
         }
 
+        /* 하단 시트 슬라이드 업 애니메이션 */
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
         /* 하단 시트 배경 */
         .bottom-sheet {
             background-color: #182127; /* SurfaceElevated */
             border-radius: 24px 24px 0 0;
             box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+            animation: slideUp 0.5s ease-out;
         }
 
         /* 커스텀 텍스트 컬러 */
