@@ -44,6 +44,24 @@
             -webkit-backdrop-filter: blur(24px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+
+        .glass-panel.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 하단 시트 슬라이드 업 애니메이션 */
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
         }
 
         /* Bottom Sheet */
@@ -51,6 +69,24 @@
             background-color: #182127; /* SurfaceElevated */
             border-radius: 24px 24px 0 0;
             box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        /* 슬라이더 및 버튼 페이드 인 애니메이션 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 0.3s ease-out forwards;
         }
 
         /* Graph Colors */
@@ -113,7 +149,7 @@
             </button>
         </div>
 
-        <div class="glass-panel absolute top-[110px] left-4 right-4 h-[160px] rounded-[20px] z-30 p-5 flex flex-col justify-between">
+        <div id="glass-panel" class="glass-panel absolute top-[110px] left-4 right-4 h-[160px] rounded-[20px] z-30 p-5 flex flex-col justify-between">
             <div class="flex justify-between items-start">
                 <div>
                     <div class="text-[13px] text-[rgba(234,242,246,0.7)] mb-1 font-medium">탄수화물</div>
@@ -165,7 +201,7 @@
                     <span class="text-[12px] text-[rgba(234,242,246,0.5)]">약 150g</span>
                 </div>
 
-                <div class="h-[32px] relative flex items-center select-none cursor-pointer">
+                <div id="slider-container" class="h-[32px] relative flex items-center select-none cursor-pointer animate-fade-in-up">
                     <div class="slider-track w-full h-[6px] rounded-full absolute"></div>
                     
                     <div class="slider-fill w-[50%] h-[6px] rounded-full absolute left-0"></div>
@@ -178,7 +214,7 @@
                         <div class="slider-dot"></div> <div class="slider-dot"></div> <div class="slider-dot"></div> <div class="slider-dot opacity-0"></div> <div class="slider-dot"></div> </div>
                 </div>
 
-                <div class="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+                <div id="button-container" class="flex gap-3 overflow-x-auto pb-2 no-scrollbar animate-fade-in-up">
                     <button class="h-[38px] px-5 rounded-full bg-[rgba(24,217,194,0.1)] border border-[#18D9C2] flex items-center whitespace-nowrap">
                         <span class="text-[13px] text-white font-medium">넓은 접시</span>
                     </button>
@@ -197,6 +233,77 @@
 
         </div>
     </div>
+
+    <script>
+        // 애니메이션 시작 함수
+        // ScreenA(0.8초) + ScreenB(0.5초) + ScreenC(5.5초) = 6.8초 후 시작
+        let slideStartTime = Date.now();
+        const glassPanel = document.getElementById('glass-panel');
+        const sliderContainer = document.getElementById('slider-container');
+        const buttonContainer = document.getElementById('button-container');
+        const bottomSheet = document.querySelector('.bottom-sheet');
+
+        function startAnimations() {
+            const elapsed = Date.now() - slideStartTime;
+            
+            // 하단 시트 슬라이드 업: 6.8초 후
+            const bottomSheetDelay = Math.max(0, 6800 - elapsed);
+            
+            // Glass Panel 페이드 인: 7.0초 후 (하단 시트 시작 후 0.2초)
+            const glassPanelDelay = Math.max(0, 7000 - elapsed);
+            
+            // 슬라이더 나타남: 7.3초 후
+            const sliderDelay = Math.max(0, 7300 - elapsed);
+            
+            // 버튼들 나타남: 7.6초 후
+            const buttonDelay = Math.max(0, 7600 - elapsed);
+
+            // 하단 시트 애니메이션
+            setTimeout(() => {
+                if (bottomSheet) {
+                    bottomSheet.style.animation = 'none';
+                    void bottomSheet.offsetWidth;
+                    bottomSheet.style.animation = 'slideUp 0.5s ease-out';
+                }
+            }, bottomSheetDelay);
+
+            // Glass Panel 애니메이션
+            setTimeout(() => {
+                if (glassPanel) {
+                    glassPanel.classList.add('visible');
+                }
+            }, glassPanelDelay);
+
+            // 슬라이더 애니메이션
+            setTimeout(() => {
+                if (sliderContainer) {
+                    sliderContainer.style.animation = 'none';
+                    void sliderContainer.offsetWidth;
+                    sliderContainer.style.animation = 'fadeInUp 0.3s ease-out forwards';
+                }
+            }, sliderDelay);
+
+            // 버튼들 애니메이션
+            setTimeout(() => {
+                if (buttonContainer) {
+                    buttonContainer.style.animation = 'none';
+                    void buttonContainer.offsetWidth;
+                    buttonContainer.style.animation = 'fadeInUp 0.3s ease-out forwards';
+                }
+            }, buttonDelay);
+        }
+
+        // postMessage 리스너
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'slide-start-time') {
+                slideStartTime = event.data.startTime;
+                startAnimations();
+            }
+        });
+
+        // 초기 실행
+        startAnimations();
+    </script>
 
 </body>
 </html>

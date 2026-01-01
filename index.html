@@ -263,6 +263,9 @@
             let currentIndex = 0;
             const totalScreens = screens.length;
             
+            // 슬라이드 시작 시간 저장
+            window.slideStartTime = Date.now();
+            
             function showScreen(index) {
                 // 모든 iframe 숨기기
                 for (let i = 0; i < totalScreens; i++) {
@@ -271,6 +274,16 @@
                     
                     if (iframe) {
                         iframe.style.opacity = i === index ? '1' : '0';
+                        
+                        // 슬라이드 시작 시간 전달
+                        if (i === index) {
+                            setTimeout(() => {
+                                iframe.contentWindow.postMessage({
+                                    type: 'slide-start-time',
+                                    startTime: window.slideStartTime
+                                }, '*');
+                            }, 100);
+                        }
                     }
                     if (indicator) {
                         if (i === index) {

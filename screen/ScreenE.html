@@ -311,10 +311,34 @@
         sortRecentBtn.addEventListener('click', switchToRecent);
         sortPreferenceBtn.addEventListener('click', switchToPreference);
 
-        // 초반 1초 후 자동으로 선호도순으로 전환
-        setTimeout(() => {
-            switchToPreference();
-        }, 1000);
+        // 선호도순 전환 애니메이션 시작 함수
+        // ScreenA(0.8초) + ScreenB(0.5초) + ScreenC(5.5초) + ScreenD(0.8초) = 7.6초 후 실행
+        let slideStartTime = Date.now();
+
+        function startPreferenceAnimation() {
+            const elapsed = Date.now() - slideStartTime;
+            // ScreenA~D까지의 누적 시간(7.6초) + 1초 = 8.6초 후 선호도순 전환
+            const delay = Math.max(0, 8600 - elapsed);
+
+            // 최신순으로 먼저 리셋
+            switchToRecent();
+            
+            // 선호도순으로 전환
+            setTimeout(() => {
+                switchToPreference();
+            }, delay);
+        }
+
+        // postMessage 리스너
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'slide-start-time') {
+                slideStartTime = event.data.startTime;
+                startPreferenceAnimation();
+            }
+        });
+
+        // 초기 실행
+        startPreferenceAnimation();
     </script>
 
 </body>

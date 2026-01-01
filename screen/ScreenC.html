@@ -213,26 +213,72 @@
         (function() {
             const countdownElement = document.getElementById('countdown-number');
             const container = document.getElementById('countdown-container');
-            let count = 3;
+            const bottomSheet = document.querySelector('.bottom-sheet');
+            let countdownTimer = null;
+            let count = 5;
+            let slideStartTime = Date.now();
 
-            function showCountdown() {
-                if (count > 0) {
-                    countdownElement.textContent = count;
-                    countdownElement.style.animation = 'none';
-                    // 리플로우 강제
-                    void countdownElement.offsetWidth;
-                    countdownElement.style.animation = 'countdownFade 1s ease-in-out';
-                    count--;
-                    setTimeout(showCountdown, 1000);
-                } else {
-                    // 카운트다운 완료 후 숨기기
-                    container.style.opacity = '0';
-                    container.style.transition = 'opacity 0.3s';
+            function resetCountdown() {
+                count = 5;
+                if (container) {
+                    container.style.opacity = '1';
                 }
             }
 
-            // 하단 시트 애니메이션 후 카운트다운 시작 (0.5초 후)
-            setTimeout(showCountdown, 500);
+            function showCountdown() {
+                if (count > 0) {
+                    if (countdownElement) {
+                        countdownElement.textContent = count;
+                        countdownElement.style.animation = 'none';
+                        void countdownElement.offsetWidth;
+                        countdownElement.style.animation = 'countdownFade 1s ease-in-out';
+                    }
+                    count--;
+                    countdownTimer = setTimeout(showCountdown, 1000);
+                } else {
+                    if (container) {
+                        container.style.opacity = '0';
+                        container.style.transition = 'opacity 0.3s';
+                    }
+                }
+            }
+
+            function startAnimations() {
+                const elapsed = Date.now() - slideStartTime;
+                // ScreenA(0.8초) + ScreenB(0.5초) = 1.3초 후 하단 시트 시작
+                const bottomSheetDelay = Math.max(0, 1300 - elapsed);
+                // 하단 시트 후 0.5초 뒤 카운트다운 시작 = 1.8초 후
+                const countdownDelay = Math.max(0, 1800 - elapsed);
+
+                // 하단 시트 애니메이션
+                setTimeout(() => {
+                    if (bottomSheet) {
+                        bottomSheet.style.animation = 'none';
+                        void bottomSheet.offsetWidth;
+                        bottomSheet.style.animation = 'slideUp 0.5s ease-out';
+                    }
+                }, bottomSheetDelay);
+
+                // 카운트다운 시작
+                setTimeout(() => {
+                    if (countdownTimer) {
+                        clearTimeout(countdownTimer);
+                    }
+                    resetCountdown();
+                    showCountdown();
+                }, countdownDelay);
+            }
+
+            // postMessage 리스너
+            window.addEventListener('message', function(event) {
+                if (event.data && event.data.type === 'slide-start-time') {
+                    slideStartTime = event.data.startTime;
+                    startAnimations();
+                }
+            });
+
+            // 초기 실행
+            startAnimations();
         })();
     </script>
 

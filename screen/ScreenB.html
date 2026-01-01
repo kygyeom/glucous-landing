@@ -152,5 +152,36 @@
         </div>
     </div>
 
+    <script>
+        // 하단 시트 애니메이션 시작 함수
+        // ScreenA의 플래시(0.5초 + 0.3초 = 0.8초) 이후 실행
+        const bottomSheet = document.querySelector('.bottom-sheet');
+        let slideStartTime = Date.now();
+        
+        function startBottomSheetAnimation() {
+            const elapsed = Date.now() - slideStartTime;
+            const delay = Math.max(0, 800 - elapsed); // ScreenA 완료 후 실행 (0.8초)
+            
+            setTimeout(() => {
+                if (bottomSheet) {
+                    bottomSheet.style.animation = 'none';
+                    void bottomSheet.offsetWidth; // 리플로우 강제
+                    bottomSheet.style.animation = 'slideUp 0.5s ease-out';
+                }
+            }, delay);
+        }
+        
+        // postMessage 리스너
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'slide-start-time') {
+                slideStartTime = event.data.startTime;
+                startBottomSheetAnimation();
+            }
+        });
+        
+        // 초기 실행
+        startBottomSheetAnimation();
+    </script>
+
 </body>
 </html>
