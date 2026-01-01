@@ -153,14 +153,18 @@
     </div>
 
     <script>
-        // 하단 시트 애니메이션 시작 함수 (화면이 보일 때 즉시 시작)
+        // 하단 시트 애니메이션 시작 함수 (화면이 보일 때 즉시 시작, 3초 후 완료)
         const bottomSheet = document.querySelector('.bottom-sheet');
         let animationTimer = null;
+        let completeTimer = null;
         
         function startBottomSheetAnimation() {
             // 기존 타이머 클리어
             if (animationTimer) {
                 clearTimeout(animationTimer);
+            }
+            if (completeTimer) {
+                clearTimeout(completeTimer);
             }
             
             // 애니메이션 초기화
@@ -173,18 +177,18 @@
             requestAnimationFrame(() => {
                 if (bottomSheet) {
                     bottomSheet.style.animation = 'slideUp 0.5s ease-out';
-                    
-                    // 슬라이드 완료 후 parent에 완료 메시지 전송
-                    setTimeout(() => {
-                        if (window.parent) {
-                            window.parent.postMessage({
-                                type: 'animation-complete',
-                                screenIndex: 1
-                            }, '*');
-                        }
-                    }, 500);
                 }
             });
+            
+            // 3초 후 완료 메시지 전송
+            completeTimer = setTimeout(() => {
+                if (window.parent) {
+                    window.parent.postMessage({
+                        type: 'animation-complete',
+                        screenIndex: 1
+                    }, '*');
+                }
+            }, 3000);
         }
         
         // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작

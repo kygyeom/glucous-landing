@@ -245,6 +245,7 @@
 
             let bottomSheetTimer = null;
             let countdownStartTimer = null;
+            let completeTimer = null;
 
             function startAnimations() {
                 // 기존 타이머들 클리어
@@ -256,6 +257,9 @@
                 }
                 if (countdownTimer) {
                     clearTimeout(countdownTimer);
+                }
+                if (completeTimer) {
+                    clearTimeout(completeTimer);
                 }
 
                 // 애니메이션 초기화
@@ -272,21 +276,21 @@
                     }
                 });
 
-                // 카운트다운 시작 (하단 시트 완료 후 0.5초, 5~1까지 5초)
+                // 카운트다운 시작 (하단 시트 완료 후 0.5초)
                 countdownStartTimer = setTimeout(() => {
                     resetCountdown();
                     showCountdown();
-                    
-                    // 카운트다운 완료 후 parent에 완료 메시지 전송 (5초 후)
-                    setTimeout(() => {
-                        if (window.parent) {
-                            window.parent.postMessage({
-                                type: 'animation-complete',
-                                screenIndex: 2
-                            }, '*');
-                        }
-                    }, 5000);
                 }, 500);
+                
+                // 3초 후 완료 메시지 전송
+                completeTimer = setTimeout(() => {
+                    if (window.parent) {
+                        window.parent.postMessage({
+                            type: 'animation-complete',
+                            screenIndex: 2
+                        }, '*');
+                    }
+                }, 3000);
             }
 
             // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작

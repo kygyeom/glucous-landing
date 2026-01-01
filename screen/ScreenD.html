@@ -293,22 +293,22 @@
                 }
             }, 500));
 
-            // 버튼들 나타남 및 완료 메시지 전송 (0.8초 후)
+            // 버튼들 나타남 (0.8초 후)
             animationTimers.push(setTimeout(() => {
                 if (buttonContainer) {
                     buttonContainer.style.animation = 'fadeInUp 0.3s ease-out forwards';
-                    
-                    // 애니메이션 완료 후 parent에 완료 메시지 전송
-                    setTimeout(() => {
-                        if (window.parent) {
-                            window.parent.postMessage({
-                                type: 'animation-complete',
-                                screenIndex: 3
-                            }, '*');
-                        }
-                    }, 300);
                 }
             }, 800));
+            
+            // 3초 후 완료 메시지 전송
+            animationTimers.push(setTimeout(() => {
+                if (window.parent) {
+                    window.parent.postMessage({
+                        type: 'animation-complete',
+                        screenIndex: 3
+                    }, '*');
+                }
+            }, 3000));
         }
 
         // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
