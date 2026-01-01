@@ -311,7 +311,7 @@
         sortRecentBtn.addEventListener('click', switchToRecent);
         sortPreferenceBtn.addEventListener('click', switchToPreference);
 
-        // 선호도순 전환 애니메이션 시작 함수 (화면이 보일 때 1초 후)
+        // 선호도순 전환 애니메이션 시작 함수 (화면이 보일 때 즉시 시작)
         let preferenceTimer = null;
 
         function startPreferenceAnimation() {
@@ -323,8 +323,8 @@
             // 최신순으로 먼저 리셋
             switchToRecent();
             
-            // 1초 후 선호도순으로 전환 및 완료 메시지 전송
-            preferenceTimer = setTimeout(() => {
+            // 즉시 선호도순으로 전환 및 완료 메시지 전송 (requestAnimationFrame으로 다음 프레임에 실행)
+            requestAnimationFrame(() => {
                 switchToPreference();
                 
                 // 애니메이션 완료 후 parent에 완료 메시지 전송
@@ -336,7 +336,7 @@
                         }, '*');
                     }
                 }, 100);
-            }, 1000);
+            });
         }
 
         // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작

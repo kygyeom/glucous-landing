@@ -272,28 +272,28 @@
                 void buttonContainer.offsetWidth;
             }
 
-            // 하단 시트 슬라이드 업 (0.5초 후)
-            animationTimers.push(setTimeout(() => {
+            // 즉시 하단 시트 슬라이드 업
+            requestAnimationFrame(() => {
                 if (bottomSheet) {
                     bottomSheet.style.animation = 'slideUp 0.5s ease-out';
                 }
-            }, 500));
+            });
 
-            // Glass Panel 페이드 인 (0.7초 후)
+            // Glass Panel 페이드 인 (0.2초 후)
             animationTimers.push(setTimeout(() => {
                 if (glassPanel) {
                     glassPanel.classList.add('visible');
                 }
-            }, 700));
+            }, 200));
 
-            // 슬라이더 나타남 (1.0초 후)
+            // 슬라이더 나타남 (0.5초 후)
             animationTimers.push(setTimeout(() => {
                 if (sliderContainer) {
                     sliderContainer.style.animation = 'fadeInUp 0.3s ease-out forwards';
                 }
-            }, 1000));
+            }, 500));
 
-            // 버튼들 나타남 및 완료 메시지 전송 (1.3초 후)
+            // 버튼들 나타남 및 완료 메시지 전송 (0.8초 후)
             animationTimers.push(setTimeout(() => {
                 if (buttonContainer) {
                     buttonContainer.style.animation = 'fadeInUp 0.3s ease-out forwards';
@@ -308,7 +308,7 @@
                         }
                     }, 300);
                 }
-            }, 1300));
+            }, 800));
         }
 
         // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작

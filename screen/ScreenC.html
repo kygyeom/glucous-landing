@@ -265,14 +265,14 @@
                 }
                 resetCountdown();
 
-                // 하단 시트 애니메이션 (0.5초 후)
-                bottomSheetTimer = setTimeout(() => {
+                // 즉시 하단 시트 애니메이션 시작
+                requestAnimationFrame(() => {
                     if (bottomSheet) {
                         bottomSheet.style.animation = 'slideUp 0.5s ease-out';
                     }
-                }, 500);
+                });
 
-                // 카운트다운 시작 (1초 후, 5~1까지 5초)
+                // 카운트다운 시작 (하단 시트 완료 후 0.5초, 5~1까지 5초)
                 countdownStartTimer = setTimeout(() => {
                     resetCountdown();
                     showCountdown();
@@ -286,7 +286,7 @@
                             }, '*');
                         }
                     }, 5000);
-                }, 1000);
+                }, 500);
             }
 
             // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작

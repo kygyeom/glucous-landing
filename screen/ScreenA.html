@@ -171,7 +171,7 @@
     </div>
 
     <script>
-        // 자동 플래시 효과 (화면이 보일 때 0.5초 후 0.3초 동안)
+        // 자동 플래시 효과 (화면이 보일 때 즉시 시작)
         const flashOverlay = document.getElementById('flash-overlay');
         let flashTimer = null;
         
@@ -184,8 +184,8 @@
             // 플래시 오버레이 초기화
             flashOverlay.classList.remove('auto-flash');
             
-            // 0.5초 후 플래시 효과 시작
-            flashTimer = setTimeout(() => {
+            // 즉시 플래시 효과 시작 (requestAnimationFrame으로 다음 프레임에 실행)
+            requestAnimationFrame(() => {
                 flashOverlay.classList.add('auto-flash');
                 
                 // 0.3초 후 플래시 종료 및 완료 메시지 전송
@@ -200,7 +200,7 @@
                         }, '*');
                     }
                 }, 300);
-            }, 500);
+            });
         }
         
         // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
