@@ -263,7 +263,10 @@
             let currentIndex = 0;
             const totalScreens = screens.length;
             
-            function showScreen(index) {
+            function showScreen(index, transitionTime) {
+                // 스크린 전환 시점의 시간 기록
+                const screenStartTime = transitionTime || Date.now();
+                
                 // 모든 iframe 숨기기
                 for (let i = 0; i < totalScreens; i++) {
                     const iframe = document.getElementById(`screen-iframe-${i}`);
@@ -272,12 +275,13 @@
                     if (iframe) {
                         iframe.style.opacity = i === index ? '1' : '0';
                         
-                        // 화면이 보일 때 애니메이션 시작 메시지 전송 (시간 0으로 초기화)
+                        // 스크린 전환 시점을 기준으로 애니메이션 시작 메시지 전송
                         if (i === index) {
                             setTimeout(() => {
                                 iframe.contentWindow.postMessage({
                                     type: 'screen-visible',
-                                    screenIndex: i
+                                    screenIndex: i,
+                                    startTime: screenStartTime
                                 }, '*');
                             }, 100);
                         }
@@ -295,12 +299,15 @@
             }
             
             function nextScreen() {
+                // 스크린 전환 시점 기록
+                const transitionTime = Date.now();
                 currentIndex = (currentIndex + 1) % totalScreens;
-                showScreen(currentIndex);
+                showScreen(currentIndex, transitionTime);
             }
             
-            // 초기화
-            showScreen(0);
+            // 초기화 (첫 화면도 전환 시점 기록)
+            const initialTime = Date.now();
+            showScreen(0, initialTime);
             
             // 3초마다 자동 전환
             setInterval(nextScreen, 3000);

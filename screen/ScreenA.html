@@ -171,11 +171,17 @@
     </div>
 
     <script>
-        // 자동 플래시 효과 (화면이 보일 때 0.5초 후 0.3초 동안)
+        // 자동 플래시 효과 (스크린 전환 시점 기준 0.5초 후 0.3초 동안)
         const flashOverlay = document.getElementById('flash-overlay');
+        let screenStartTime = Date.now();
         
-        function startFlashAnimation() {
-            // 0.5초 후 플래시 효과
+        function startFlashAnimation(startTime) {
+            const baseTime = startTime || screenStartTime;
+            
+            // 스크린 전환 시점 기준으로 경과 시간 계산
+            const elapsed = Date.now() - baseTime;
+            const delay = Math.max(0, 500 - elapsed); // 0.5초 후 실행
+            
             setTimeout(() => {
                 flashOverlay.classList.add('auto-flash');
                 
@@ -183,13 +189,14 @@
                 setTimeout(() => {
                     flashOverlay.classList.remove('auto-flash');
                 }, 300);
-            }, 500);
+            }, delay);
         }
         
-        // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
+        // postMessage 리스너 - 스크린 전환 시점 기준으로 애니메이션 시작
         window.addEventListener('message', function(event) {
             if (event.data && event.data.type === 'screen-visible' && event.data.screenIndex === 0) {
-                startFlashAnimation();
+                screenStartTime = event.data.startTime || Date.now();
+                startFlashAnimation(screenStartTime);
             }
         });
         

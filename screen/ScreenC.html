@@ -243,30 +243,40 @@
                 }
             }
 
-            function startAnimations() {
-                // 하단 시트 애니메이션 (0.5초 후)
+            let screenStartTime = Date.now();
+
+            function startAnimations(startTime) {
+                const baseTime = startTime || screenStartTime;
+                
+                // 스크린 전환 시점 기준으로 경과 시간 계산
+                const elapsed = Date.now() - baseTime;
+                const bottomSheetDelay = Math.max(0, 500 - elapsed); // 0.5초 후
+                const countdownDelay = Math.max(0, 1000 - elapsed); // 1초 후
+
+                // 하단 시트 애니메이션
                 setTimeout(() => {
                     if (bottomSheet) {
                         bottomSheet.style.animation = 'none';
                         void bottomSheet.offsetWidth;
                         bottomSheet.style.animation = 'slideUp 0.5s ease-out';
                     }
-                }, 500);
+                }, bottomSheetDelay);
 
-                // 카운트다운 시작 (하단 시트 완료 후 0.5초 = 1초 후)
+                // 카운트다운 시작
                 setTimeout(() => {
                     if (countdownTimer) {
                         clearTimeout(countdownTimer);
                     }
                     resetCountdown();
                     showCountdown();
-                }, 1000);
+                }, countdownDelay);
             }
 
-            // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
+            // postMessage 리스너 - 스크린 전환 시점 기준으로 애니메이션 시작
             window.addEventListener('message', function(event) {
                 if (event.data && event.data.type === 'screen-visible' && event.data.screenIndex === 2) {
-                    startAnimations();
+                    screenStartTime = event.data.startTime || Date.now();
+                    startAnimations(screenStartTime);
                 }
             });
 
