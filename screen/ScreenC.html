@@ -121,7 +121,6 @@
             font-weight: 700;
             color: #18D9C2;
             text-shadow: 0 0 30px rgba(24, 217, 194, 0.5);
-            animation: countdownFade 1s ease-in-out;
         }
     </style>
 </head>
@@ -209,91 +208,73 @@
     </div>
 
     <script>
-        // 카운트다운 5에서 1까지
+        // 카운트다운 3에서 1까지 (4초 동안 실행)
         (function() {
             const countdownElement = document.getElementById('countdown-number');
             const container = document.getElementById('countdown-container');
             const bottomSheet = document.querySelector('.bottom-sheet');
-            let countdownTimer = null;
-            let count = 5;
-            let slideStartTime = Date.now();
+            let timers = [];
 
-            function resetCountdown() {
-                count = 5;
-                if (container) {
-                    container.style.opacity = '1';
-                }
+            function clearTimers() {
+                timers.forEach(timer => clearTimeout(timer));
+                timers = [];
             }
 
-            function showCountdown() {
-                if (count > 0) {
-                    if (countdownElement) {
-                        countdownElement.textContent = count;
-                        countdownElement.style.animation = 'none';
-                        void countdownElement.offsetWidth;
-                        countdownElement.style.animation = 'countdownFade 1s ease-in-out';
-                    }
-                    count--;
-                    countdownTimer = setTimeout(showCountdown, 1000);
-                } else {
-                    if (container) {
-                        container.style.opacity = '0';
-                        container.style.transition = 'opacity 0.3s';
-                    }
+            function showCountdown(num) {
+                if (countdownElement) {
+                    countdownElement.textContent = num;
+                    countdownElement.style.animation = 'none';
+                    void countdownElement.offsetWidth;
+                    countdownElement.style.animation = 'countdownFade 1s ease-in-out';
                 }
             }
-
-            let bottomSheetTimer = null;
-            let countdownStartTimer = null;
-            let completeTimer = null;
 
             function startAnimations() {
-                // 기존 타이머들 클리어
-                if (bottomSheetTimer) {
-                    clearTimeout(bottomSheetTimer);
-                }
-                if (countdownStartTimer) {
-                    clearTimeout(countdownStartTimer);
-                }
-                if (countdownTimer) {
-                    clearTimeout(countdownTimer);
-                }
-                if (completeTimer) {
-                    clearTimeout(completeTimer);
-                }
+                clearTimers();
 
-                // 애니메이션 초기화
+                // 초기화
                 if (bottomSheet) {
                     bottomSheet.style.animation = 'none';
                     void bottomSheet.offsetWidth;
                 }
-                resetCountdown();
+                if (container) {
+                    container.style.opacity = '1';
+                }
+                if (countdownElement) {
+                    countdownElement.textContent = '';
+                }
 
-                // 즉시 하단 시트 애니메이션 시작
+                // 하단 시트 슬라이드 업
                 requestAnimationFrame(() => {
                     if (bottomSheet) {
                         bottomSheet.style.animation = 'slideUp 0.5s ease-out';
                     }
                 });
 
-                // 카운트다운 시작 (하단 시트 완료 후 0.5초)
-                countdownStartTimer = setTimeout(() => {
-                    resetCountdown();
-                    showCountdown();
-                }, 500);
+                // 카운트다운: 3 → 2 → 1 (각 1초씩)
+                timers.push(setTimeout(() => showCountdown(3), 500));
+                timers.push(setTimeout(() => showCountdown(2), 1500));
+                timers.push(setTimeout(() => showCountdown(1), 2500));
                 
-                // 3초 후 완료 메시지 전송
-                completeTimer = setTimeout(() => {
+                // 카운트다운 숨기기
+                timers.push(setTimeout(() => {
+                    if (container) {
+                        container.style.opacity = '0';
+                    }
+                }, 3500));
+
+                // 4초 후 완료 메시지 전송
+                timers.push(setTimeout(() => {
                     if (window.parent) {
                         window.parent.postMessage({
                             type: 'animation-complete',
                             screenIndex: 2
                         }, '*');
                     }
-                }, 3000);
+                }, 4000));
             }
 
-            // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
+            // postMessage 리스너
             window.addEventListener('message', function(event) {
                 if (event.data && event.data.type === 'start-animation' && event.data.screenIndex === 2) {
                     startAnimations();
