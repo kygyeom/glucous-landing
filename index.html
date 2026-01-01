@@ -82,9 +82,25 @@
 
                 <div class="relative lg:h-[600px] flex justify-center items-center">
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/5 rounded-full blur-3xl -z-10 animate-pulse"></div>
-                    <!-- 핸드폰 프레임 대신 새로 생성한 이미지를 아래에 정상적으로 교체했습니다. -->
-                    <div class="relative w-[360px] h-[540px] flex items-center justify-center">
-                        <img src="image/Main image.png" alt="새로 생성한 GlucoUS 소개 이미지" class="w-full h-full object-contain rounded-3xl shadow-2xl border border-gray-200 bg-white" />
+                    <div class="relative w-[300px] h-[600px] bg-gray-900 rounded-[3rem] border-[8px] border-gray-900 shadow-2xl overflow-hidden ring-1 ring-gray-900/5" id="phone-frame">
+                        <div class="relative w-full h-full overflow-hidden">
+                            <!-- Screen 슬라이드 컨테이너 -->
+                            <div class="relative w-full h-full">
+                                <iframe id="screen-iframe-0" src="screen/ScreenA.html" class="screen-iframe absolute border-0 bg-gray-900 opacity-100 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0;"></iframe>
+                                <iframe id="screen-iframe-1" src="screen/ScreenB.html" class="screen-iframe absolute border-0 bg-gray-900 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0;"></iframe>
+                                <iframe id="screen-iframe-2" src="screen/ScreenC.html" class="screen-iframe absolute border-0 bg-gray-900 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0;"></iframe>
+                                <iframe id="screen-iframe-3" src="screen/SCreenD.html" class="screen-iframe absolute border-0 bg-gray-900 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0;"></iframe>
+                                <iframe id="screen-iframe-4" src="screen/ScreenE.html" class="screen-iframe absolute border-0 bg-gray-900 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0;"></iframe>
+                            </div>
+                        </div>
+                        <!-- 인디케이터 -->
+                        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                            <div class="indicator w-2 h-2 rounded-full bg-white transition-all duration-300" data-index="0"></div>
+                            <div class="indicator w-2 h-2 rounded-full bg-white/40 transition-all duration-300" data-index="1"></div>
+                            <div class="indicator w-2 h-2 rounded-full bg-white/40 transition-all duration-300" data-index="2"></div>
+                            <div class="indicator w-2 h-2 rounded-full bg-white/40 transition-all duration-300" data-index="3"></div>
+                            <div class="indicator w-2 h-2 rounded-full bg-white/40 transition-all duration-300" data-index="4"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -239,6 +255,47 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Screen 슬라이드 자동 전환
+        (function() {
+            const screens = ['ScreenA', 'ScreenB', 'ScreenC', 'SCreenD', 'ScreenE'];
+            let currentIndex = 0;
+            const totalScreens = screens.length;
+            
+            function showScreen(index) {
+                // 모든 iframe 숨기기
+                for (let i = 0; i < totalScreens; i++) {
+                    const iframe = document.getElementById(`screen-iframe-${i}`);
+                    const indicator = document.querySelector(`.indicator[data-index="${i}"]`);
+                    
+                    if (iframe) {
+                        iframe.style.opacity = i === index ? '1' : '0';
+                    }
+                    if (indicator) {
+                        if (i === index) {
+                            indicator.classList.remove('bg-white/40');
+                            indicator.classList.add('bg-white');
+                        } else {
+                            indicator.classList.remove('bg-white');
+                            indicator.classList.add('bg-white/40');
+                        }
+                    }
+                }
+            }
+            
+            function nextScreen() {
+                currentIndex = (currentIndex + 1) % totalScreens;
+                showScreen(currentIndex);
+            }
+            
+            // 초기화
+            showScreen(0);
+            
+            // 3초마다 자동 전환
+            setInterval(nextScreen, 3000);
+        })();
+    </script>
 </body>
 </html>
 

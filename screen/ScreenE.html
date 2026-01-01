@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlucoUS Screen E - History & Insights</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .device-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #0B0F12; /* Color/Background */
+            position: relative;
+            overflow: hidden;
+            border-radius: 40px;
+            box-shadow: 0 0 0 10px #1a1a1a;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Surface Colors */
+        .bg-surface { background-color: #12181D; }
+        .bg-surface-elevated { background-color: #182127; }
+
+        /* Text Colors */
+        .text-primary { color: #18D9C2; }
+        .text-secondary { color: rgba(234, 242, 246, 0.72); }
+        .text-tertiary { color: rgba(234, 242, 246, 0.50); }
+
+        /* Segment Control */
+        .segment-track {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+        .segment-active {
+            background-color: #182127;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+        }
+
+        /* Graph Sparkline */
+        .sparkline {
+            fill: none;
+            stroke: #18D9C2;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Scrollbar Hide */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="device-frame">
+        
+        <div class="pt-[50px] px-4 pb-4 bg-[#0B0F12] z-20 shrink-0">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-[22px] font-bold text-[#EAF2F6]">식사 기록</span>
+                <button class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EAF2F6" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </button>
+            </div>
+
+            <div class="w-full h-[44px] segment-track p-1 flex relative">
+                <div class="w-1/2 h-full segment-active absolute left-1 top-1 z-0"></div>
+                
+                <button class="w-1/2 h-full relative z-10 flex items-center justify-center text-[14px] font-medium text-[#EAF2F6]">오늘</button>
+                <button class="w-1/2 h-full relative z-10 flex items-center justify-center text-[14px] text-tertiary">이번 주</button>
+            </div>
+        </div>
+
+        <div class="px-4 mb-6 grid grid-cols-3 gap-3 shrink-0">
+            <div class="h-[88px] bg-surface-elevated rounded-[16px] p-3 flex flex-col justify-between border border-white/5">
+                <span class="text-[12px] text-tertiary">평균 탄수</span>
+                <div class="flex items-end gap-1">
+                    <span class="text-[24px] font-bold text-[#EAF2F6]">42</span>
+                    <span class="text-[12px] text-secondary mb-1">g</span>
+                </div>
+            </div>
+            <div class="h-[88px] bg-surface-elevated rounded-[16px] p-3 flex flex-col justify-between border border-white/5">
+                <span class="text-[12px] text-tertiary">평균 피크</span>
+                <div class="flex items-end gap-1">
+                    <span class="text-[24px] font-bold text-primary">+28</span>
+                </div>
+            </div>
+            <div class="h-[88px] bg-surface-elevated rounded-[16px] p-3 flex flex-col justify-between border border-white/5">
+                <span class="text-[12px] text-tertiary">예측 정확도</span>
+                <div class="flex items-end gap-1">
+                    <span class="text-[24px] font-bold text-[#EAF2F6]">94</span>
+                    <span class="text-[12px] text-secondary mb-1">%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-4 pb-[100px] no-scrollbar flex flex-col gap-3">
+            
+            <span class="text-[14px] text-secondary font-medium mt-2 mb-1">최근 기록</span>
+
+            <div class="w-full h-[88px] bg-surface-elevated rounded-[20px] p-4 flex items-center gap-4 border border-white/5 cursor-pointer active:scale-[0.98] transition-transform">
+                <div class="w-[56px] h-[56px] rounded-[16px] bg-gray-700 overflow-hidden shrink-0 relative">
+                     <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80" alt="Thumb">
+                </div>
+                <div class="flex-1 flex flex-col justify-center">
+                    <span class="text-[16px] text-[#EAF2F6] font-medium leading-tight">현미밥 정식</span>
+                    <span class="text-[13px] text-tertiary mt-1">오후 12:30 • 0.8 그릇</span>
+                </div>
+                <div class="flex flex-col items-end justify-center w-[80px]">
+                    <span class="text-[16px] font-bold text-[#EAF2F6]">58g</span>
+                    <svg width="60" height="24" viewBox="0 0 60 24" class="mt-1">
+                        <path class="sparkline" d="M0 20 C 10 20, 20 5, 30 5 C 40 5, 50 15, 60 15" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="w-full h-[88px] bg-surface-elevated rounded-[20px] p-4 flex items-center gap-4 border border-white/5">
+                <div class="w-[56px] h-[56px] rounded-[16px] bg-gray-700 overflow-hidden shrink-0 relative">
+                     <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80" alt="Thumb">
+                </div>
+                <div class="flex-1 flex flex-col justify-center">
+                    <span class="text-[16px] text-[#EAF2F6] font-medium leading-tight">닭가슴살 샐러드</span>
+                    <span class="text-[13px] text-tertiary mt-1">오전 08:15 • 1.0 그릇</span>
+                </div>
+                <div class="flex flex-col items-end justify-center w-[80px]">
+                    <span class="text-[16px] font-bold text-[#EAF2F6]">12g</span>
+                    <svg width="60" height="24" viewBox="0 0 60 24" class="mt-1">
+                         <path class="sparkline" stroke="rgba(234,242,246,0.5)" d="M0 20 C 10 20, 20 18, 30 18 C 40 18, 50 19, 60 19" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="w-full h-[88px] bg-surface-elevated rounded-[20px] p-4 flex items-center gap-4 border border-white/5">
+                <div class="w-[56px] h-[56px] rounded-[16px] bg-gray-700 overflow-hidden shrink-0">
+                     <img src="https://images.unsplash.com/photo-1626082927389-d52d838a6051?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover opacity-80" alt="Thumb">
+                </div>
+                <div class="flex-1 flex flex-col justify-center">
+                    <span class="text-[16px] text-[#EAF2F6] font-medium leading-tight">계란 토스트</span>
+                    <span class="text-[13px] text-tertiary mt-1">어제 • 1.0 그릇</span>
+                </div>
+                <div class="flex flex-col items-end justify-center w-[80px]">
+                    <span class="text-[16px] font-bold text-[#EAF2F6]">34g</span>
+                    <svg width="60" height="24" viewBox="0 0 60 24" class="mt-1">
+                         <path class="sparkline" d="M0 20 C 10 20, 20 10, 30 8 C 40 6, 50 12, 60 12" />
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="absolute bottom-0 w-full z-30">
+            <div class="h-[40px] w-full bg-gradient-to-t from-[#0B0F12] to-transparent pointer-events-none"></div>
+            <div class="bg-[#0B0F12] px-4 pb-[34px] pt-2">
+                <button class="w-full h-[56px] bg-primary rounded-[16px] flex items-center justify-center text-[#0B0F12] font-semibold text-[16px] shadow-[0_4px_16px_rgba(24,217,194,0.25)] active:scale-[0.99] transition-transform">
+                    <div class="flex items-center gap-2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0B0F12" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                        다음 식사 촬영
+                    </div>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

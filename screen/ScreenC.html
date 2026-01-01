@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlucoUS Screen C - Candidate Selection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .device-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #0B0F12;
+            position: relative;
+            overflow: hidden;
+            border-radius: 40px;
+            box-shadow: 0 0 0 10px #1a1a1a;
+        }
+
+        /* 배경: 이전에 찍은 사진 (Screen B보다 약간 더 어둡게 처리하여 리스트 집중) */
+        .photo-bg {
+            position: absolute;
+            inset: 0;
+            background: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.6); 
+        }
+
+        /* Glass App Bar */
+        .glass-bar {
+            background-color: rgba(18, 24, 29, 0.55);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            /* 하단 보더는 카운트다운 바 때문에 제거하거나 투명하게 처리 */
+        }
+
+        /* Countdown Bar Animation */
+        @keyframes countdown {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+        
+        .progress-bar {
+            width: 60%; /* 스냅샷용 고정값 (애니메이션 느낌) */
+            height: 100%;
+            background-color: #18D9C2;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Bottom Sheet */
+        .bottom-sheet {
+            background-color: #182127; /* SurfaceElevated */
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+        }
+
+        /* 1순위 카드 강조 스타일 */
+        .card-primary {
+            background-color: rgba(24, 217, 194, 0.05);
+            border: 1.5px solid #18D9C2;
+        }
+
+        /* 일반 카드 스타일 */
+        .card-secondary {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Toast Message */
+        .toast {
+            background-color: #182127;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="device-frame">
+        <div class="photo-bg"></div>
+
+        <div class="absolute top-0 w-full mt-[44px] z-20">
+            <div class="h-[52px] glass-bar px-4 flex items-center gap-3">
+                <button class="w-10 h-10 -ml-2 rounded-full flex items-center justify-center hover:bg-white/10">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(234,242,246,0.72)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <span class="text-[16px] text-[#EAF2F6] font-medium">가장 비슷한 음식</span>
+            </div>
+            
+            <div class="w-full h-[4px] bg-white/10">
+                <div class="progress-bar"></div> </div>
+        </div>
+
+        <div class="bottom-sheet absolute bottom-0 w-full h-[60%] z-30 flex flex-col p-4 pb-8">
+            
+            <div class="w-[36px] h-[4px] bg-white/10 rounded-full mx-auto mb-4 shrink-0"></div>
+
+            <div class="w-full h-[48px] bg-white/5 rounded-[12px] flex items-center px-4 mb-4 border border-white/5 shrink-0">
+                <svg class="mr-3 opacity-50" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EAF2F6" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <span class="text-[14px] text-[rgba(234,242,246,0.5)]">다른 이름으로 검색</span>
+            </div>
+
+            <div class="flex flex-col gap-3 overflow-y-auto pb-20 no-scrollbar">
+                
+                <div class="card-primary w-full h-[64px] rounded-[20px] flex items-center px-4 justify-between relative shrink-0">
+                    <div class="flex flex-col">
+                        <span class="text-[16px] text-[#EAF2F6] font-medium">현미밥</span>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                            <span class="text-[12px] text-[#18D9C2] font-medium">매우 유사</span>
+                            <span class="w-0.5 h-0.5 bg-white/30 rounded-full"></span>
+                            <span class="text-[12px] text-[rgba(234,242,246,0.5)]">곡류</span>
+                        </div>
+                    </div>
+                    <div class="w-6 h-6 rounded-full bg-[#18D9C2] flex items-center justify-center">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B0F12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                </div>
+
+                <div class="card-secondary w-full h-[64px] rounded-[20px] flex items-center px-4 justify-between shrink-0 hover:bg-white/5 transition-colors">
+                    <div class="flex flex-col">
+                        <span class="text-[16px] text-[rgba(234,242,246,0.72)]">쌀밥 (흰밥)</span>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                            <span class="text-[12px] text-[rgba(234,242,246,0.5)]">유사</span>
+                            <span class="w-0.5 h-0.5 bg-white/30 rounded-full"></span>
+                            <span class="text-[12px] text-[rgba(234,242,246,0.5)]">곡류</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-secondary w-full h-[64px] rounded-[20px] flex items-center px-4 justify-between shrink-0 hover:bg-white/5 transition-colors">
+                    <div class="flex flex-col">
+                        <span class="text-[16px] text-[rgba(234,242,246,0.72)]">보리밥</span>
+                        <span class="text-[12px] text-[rgba(234,242,246,0.5)] mt-0.5">곡류</span>
+                    </div>
+                </div>
+
+                 <div class="card-secondary w-full h-[64px] rounded-[20px] flex items-center px-4 justify-between shrink-0 hover:bg-white/5 transition-colors">
+                    <div class="flex flex-col">
+                        <span class="text-[16px] text-[rgba(234,242,246,0.72)]">잡곡밥</span>
+                        <span class="text-[12px] text-[rgba(234,242,246,0.5)] mt-0.5">곡류</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-[40px] left-1/2 -translate-x-1/2 w-max max-w-[90%]">
+                <div class="toast px-4 py-2.5 rounded-full flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F6C343" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span class="text-[13px] text-[#EAF2F6]">터치하면 자동 선택이 멈춰요</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
