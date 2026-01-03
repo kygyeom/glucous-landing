@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://glucous.kr/sitemap.xml
+
+# 크롤링 제외할 디렉토리 (필요시)
+# Disallow: /admin/
+# Disallow: /private/
+
