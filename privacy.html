@@ -57,9 +57,26 @@
                     <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-lg">G</div>
                     <span class="font-bold text-xl tracking-tight text-gray-900">GlucoUS</span>
                 </a>
-                <a href="index.html#pricing" class="bg-gray-900 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-800 transition-colors shadow-lg">
-                    사전 예약하기
-                </a>
+                <div class="relative group">
+                    <button class="text-gray-400 hover:text-gray-600 transition-colors p-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
+                        <div class="py-2">
+                            <a href="index.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                                메인 페이지
+                            </a>
+                            <a href="sense.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                                Sense app
+                            </a>
+                            <a href="about.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                                About
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
