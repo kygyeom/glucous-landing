@@ -2,6 +2,21 @@
 <html lang="ko" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) - GA4 기본 추적 코드 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPY8289L0Y"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      // 기본 설정 (페이지 조회, 스크롤, 체류시간 자동 수집)
+      gtag('config', 'G-RPY8289L0Y', {
+          'send_page_view': true,
+          'cookie_domain': 'auto',
+          'anonymize_ip': true  // 개인정보 보호
+      });
+    </script>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GlucoUS - AI 기반 혈당 관리 솔루션 | 당뇨인을 위한 식사량 측정 앱</title>
     <meta name="description" content="GlucoUS는 AI 기반 혈당 관리 솔루션입니다. 정확한 식사량 기록, 혈당 예측, 추천 식단까지 하나의 앱에서 제공합니다. 당뇨인의 삶에서 막연한 불안함을 걷어내고, 확신과 자유를 선물합니다.">
@@ -139,7 +154,7 @@
                     <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-lg">G</div>
                     <span class="font-bold text-xl tracking-tight text-gray-900">GlucoUS</span>
                 </div>
-                <a href="#pricing" class="bg-gray-900 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-800 transition-colors shadow-lg">
+                <a href="#pricing" onclick="gtag('event', 'click_nav_reserve', {'event_category': 'navigation', 'event_label': 'top_bar'});" class="bg-gray-900 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-800 transition-colors shadow-lg">
                     사전 예약하기
                 </a>
             </div>
@@ -172,7 +187,7 @@
                         <strong class="text-gray-900">정확한 기록</strong>, <strong class="text-gray-900">혈당 예측</strong>, 그리고 <strong class="text-gray-900">추천 식단</strong>까지<br class="sm:hidden"> <span class="whitespace-nowrap">하나의 앱에서</span>
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="apply.html" class="px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primaryDark transition-all shadow-lg hover:shadow-primary/30 transform hover:-translate-y-1 text-center">
+                        <a href="apply.html" onclick="gtag('event', 'click_hero_apply', {'event_category': 'conversion', 'event_label': 'hero_section'});" class="px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primaryDark transition-all shadow-lg hover:shadow-primary/30 transform hover:-translate-y-1 text-center">
                             지금 바로 신청하기
                         </a>
                     </div>
@@ -582,9 +597,10 @@
                             </div>
                             
                             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-                                <div class="bg-black/80 backdrop-blur-sm px-6 py-4 rounded-2xl border border-primary/30 shadow-2xl">
-                                    <p class="text-white text-xl md:text-2xl font-bold mb-1">2월 30일 신청 마감</p>
-                                </div>
+                                <span class="relative inline-block">
+                                    <span class="absolute inset-0 bg-black/60 blur-[6px] rounded-lg"></span>
+                                    <span class="relative z-10 text-white font-extrabold text-3xl md:text-4xl tracking-wide">GlucoUS Kit</span>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -619,7 +635,7 @@
             <div class="relative inline-block group w-full sm:w-auto">
                 <div class="absolute -inset-1 bg-gradient-to-r from-primary via-teal-400 to-blue-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500 group-hover:duration-200"></div>
                 
-                <a href="apply.html" class="relative flex items-center justify-center w-full sm:w-auto px-12 py-6 bg-gray-900 text-white text-xl font-bold rounded-xl leading-none transition-transform transform group-hover:-translate-y-1 shadow-2xl">
+                <a href="apply.html" onclick="gtag('event', 'click_bottom_apply', {'event_category': 'conversion', 'event_label': 'bottom_cta'});" class="relative flex items-center justify-center w-full sm:w-auto px-12 py-6 bg-gray-900 text-white text-xl font-bold rounded-xl leading-none transition-transform transform group-hover:-translate-y-1 shadow-2xl">
                     <span>베타 테스터 신청하기</span>
                     <svg class="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
                 </a>
@@ -661,7 +677,7 @@
                         </span>
                     </summary>
                     <div class="text-gray-600 px-6 pb-6 leading-relaxed animate-fade-in-down">
-                        예약금은 실제 서비스 이용 의사가 있는 분들을 파악하기 위한 <strong>'수요조사 증거 자료'</strong>로 활용됩니다.<br><br>
+                        예약금은 실제 서비스 이용 의사가 있는 분들을 파악하기 위한 <strong>'수요조사 증거 자료'</strong>로 활용됩니다.
                         서비스 출시 및 테스트 일정에 맞춰, 참여 여부와 관계없이 <strong>100% 현금으로 전액 환불</strong>해 드리니 부담 없이 신청해 주세요.
                     </div>
                 </details>
@@ -674,14 +690,13 @@
                         </span>
                     </summary>
                     <div class="text-gray-600 px-6 pb-6 leading-relaxed">
-                        키트 제작 및 물류 일정에 따라 배송 시기가 확정되는 대로, 신청하신 연락처로 <strong>문자를 통해 상세 일정을 개별 공지</strong>해 드릴 예정입니다.<br>
-                        조금만 기다려 주시면 꼼꼼하게 준비해서 보내드리겠습니다.
+                        키트 제작 및 물류 일정에 따라 배송 시기가 확정되는 대로, 신청하신 연락처로 <strong>문자를 통해 상세 일정을 개별 공지</strong>해 드릴 예정입니다. 조금만 기다려 주시면 꼼꼼하게 준비해서 보내드리겠습니다.
                     </div>
                 </details>
     
                 <details class="group bg-softGray rounded-2xl overflow-hidden transition-all duration-300 open:bg-white open:shadow-lg border border-transparent open:border-gray-100">
                     <summary class="flex justify-between items-center cursor-pointer p-6 list-none text-lg font-bold text-gray-900">
-                        <span>Q. 아이폰도 사용 가능한가요?</span>
+                        <span>Q. 갤럭시와 아이폰에서 모두 사용 가능한가요?</span>
                         <span class="transition-transform group-open:rotate-180">
                             <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                         </span>

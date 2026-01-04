@@ -44,6 +44,14 @@
         <priority>0.3</priority>
     </url>
     
+    <!-- 피드백 남기기 -->
+    <url>
+        <loc>https://glucous.kr/feedback.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
 </urlset>
 
 
