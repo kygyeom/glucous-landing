@@ -249,6 +249,9 @@
     </footer>
 
     <script>
+        // 구글 앱스 스크립트 Web App URL
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6XYUB37x_caa60vA065WzEBxiRBNseN-LLsXPLNulIjkPFW-6F7NeKU5qSmPY-SnQaw/exec";
+
         document.getElementById('feedbackForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -256,20 +259,70 @@
             const message = formData.get('message');
             
             // 최소 글자 수 확인
-            if (message.length < 10) {
+            if (!message || message.length < 10) {
                 alert('내용은 최소 10자 이상 입력해주세요.');
                 return;
             }
             
-            // 실제로는 여기서 서버로 데이터를 전송합니다
-            // 예시: fetch('/api/feedback', { method: 'POST', body: formData })
+            // 폼 데이터를 객체로 변환
+            const data = {
+                timestamp: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+                name: formData.get('name'),
+                email: formData.get('email'),
+                category: formData.get('category'),
+                subject: formData.get('subject'),
+                message: formData.get('message')
+            };
             
-            // 성공 메시지 표시
-            this.style.display = 'none';
-            document.getElementById('successMessage').classList.remove('hidden');
+            // 로딩 표시 (선택사항)
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = '전송 중...';
             
-            // 폼 초기화 (선택사항)
-            this.reset();
+            // 구글 시트로 데이터 보내기 (URLSearchParams 방식 - Google Apps Script와 호환성 좋음)
+            const params = new URLSearchParams();
+            Object.keys(data).forEach(key => {
+                params.append(key, data[key]);
+            });
+            
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: params
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(result => {
+                try {
+                    const jsonResult = JSON.parse(result);
+                    if (jsonResult.status === 'success') {
+                        // 성공 시 UI 반영
+                        this.style.display = 'none';
+                        document.getElementById('successMessage').classList.remove('hidden');
+                        this.reset();
+                    } else {
+                        throw new Error(jsonResult.message || '서버 오류가 발생했습니다.');
+                    }
+                } catch (parseError) {
+                    // JSON 파싱 실패 시에도 성공으로 처리 (Google Apps Script가 텍스트만 반환할 수 있음)
+                    this.style.display = 'none';
+                    document.getElementById('successMessage').classList.remove('hidden');
+                    this.reset();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('피드백 전송에 실패했습니다. 다시 시도해주세요.');
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
+            });
         });
     </script>
 </body>
