@@ -20,23 +20,16 @@ function doPost(e) {
     // 현재 스프레드시트 사용 (스크립트가 연결된 시트)
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     
-    // 데이터 파싱 (JSON 또는 파라미터)
-    let data;
-    if (e.postData && e.postData.contents) {
-      // JSON 형식
-      data = JSON.parse(e.postData.contents);
-    } else {
-      // 파라미터 형식
-      data = e.parameter;
-    }
+    // URLSearchParams로 전송된 데이터는 e.parameter로 받아짐
+    const data = e.parameter || {};
     
     // 타임스탬프 생성 (한국 시간)
     const timestamp = new Date();
     const koreaTime = Utilities.formatDate(timestamp, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
     
-    // 시트에 데이터 추가
+    // 시트에 데이터 추가 (e.parameter에서 직접 가져옴)
     sheet.appendRow([
-      data.timestamp || koreaTime,
+      koreaTime,
       data.name || '',
       data.email || '',
       data.category || '',
@@ -44,7 +37,7 @@ function doPost(e) {
       data.message || ''
     ]);
     
-    // 성공 응답 (CORS 헤더 추가)
+    // 성공 응답
     return ContentService
       .createTextOutput(JSON.stringify({
         'status': 'success',
@@ -55,6 +48,7 @@ function doPost(e) {
   } catch (error) {
     // 에러 응답
     Logger.log('Error: ' + error.toString());
+    Logger.log('Parameters: ' + JSON.stringify(e.parameter));
     return ContentService
       .createTextOutput(JSON.stringify({
         'status': 'error',
