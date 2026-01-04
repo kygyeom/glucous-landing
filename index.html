@@ -348,6 +348,25 @@
         .chevron-icon.rotated {
             transform: rotate(180deg);
         }
+        .faq-content {
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .faq-content.open {
+            max-height: 500px;
+            opacity: 1;
+            transition: max-height 0.3s ease-in, opacity 0.3s ease-in;
+        }
+        .faq-content.hidden {
+            display: none;
+        }
+        .chevron-faq-icon {
+            transition: transform 0.3s ease;
+        }
+        .chevron-faq-icon.rotated {
+            transform: rotate(180deg);
+        }
     </style>
 
     <script>
@@ -447,6 +466,28 @@
             }
             startImageRotation();
         });
+
+        // FAQ 토글 함수
+        function toggleFAQ(index) {
+            const content = document.getElementById(`faq-content-${index}`);
+            const chevron = document.getElementById(`chevron-faq-${index}`);
+            
+            if (content.classList.contains('hidden')) {
+                // 열기
+                content.classList.remove('hidden');
+                setTimeout(() => {
+                    content.classList.add('open');
+                }, 10);
+                chevron.classList.add('rotated');
+            } else {
+                // 닫기
+                content.classList.remove('open');
+                chevron.classList.remove('rotated');
+                setTimeout(() => {
+                    content.classList.add('hidden');
+                }, 300);
+            }
+        }
     </script>
 
     <section id="pricing" class="py-24 bg-gray-900 text-white relative overflow-hidden">
@@ -529,9 +570,6 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="hidden lg:flex justify-end pr-12 text-primary/50 animate-bounce">
-                        <svg class="w-8 h-8 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-                    </div>
                 </div>
                 <div class="lg:col-span-7">
                     <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-[#0B0F12] border border-gray-800">
@@ -555,14 +593,133 @@
         </div>
     </section>
 
-    <section class="py-20 bg-gray-50">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">지금 무료로 체험해보세요</h2>
-            <p class="text-gray-600 mb-8 text-lg">베타 테스터로 선정되시면 특별한 혜택을 드립니다</p>
-            <a href="apply.html" class="inline-block px-12 py-5 bg-primary text-white rounded-xl font-bold text-xl hover:bg-primaryDark transition-all shadow-lg hover:shadow-primary/30 transform hover:-translate-y-1">
-                무료 체험 + 혈당 관리 키트 신청하기
-            </a>
-            <p class="mt-6 text-sm text-gray-500">예약금 5,000원은 3월 이후 100% 환불해드립니다</p>
+    <section class="relative py-24 overflow-hidden bg-white">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+            
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-50 text-red-600 text-xs font-bold tracking-wider mb-8 border border-red-100 animate-pulse">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                </span>
+                1차 모집 마감 임박
+            </div>
+
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-[1.2] tracking-tight">
+                지금 시작하지 않으면,<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-600">자유로운 식사</span>도 미뤄집니다.
+            </h2>
+
+            <p class="text-gray-500 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
+                이미 많은 당뇨인들이 사전 예약을 완료했습니다.<br>
+                고민하는 순간 배송은 늦어집니다. 지금 바로 혜택을 선점하세요.
+            </p>
+
+            <div class="relative inline-block group w-full sm:w-auto">
+                <div class="absolute -inset-1 bg-gradient-to-r from-primary via-teal-400 to-blue-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500 group-hover:duration-200"></div>
+                
+                <a href="apply.html" class="relative flex items-center justify-center w-full sm:w-auto px-12 py-6 bg-gray-900 text-white text-xl font-bold rounded-xl leading-none transition-transform transform group-hover:-translate-y-1 shadow-2xl">
+                    <span>베타 테스터 신청하기</span>
+                    <svg class="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                </a>
+            </div>
+
+            <div class="mt-10 pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-sm text-gray-500 font-medium">
+                <span class="flex items-center gap-1.5">
+                    <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    100% 환불 보장
+                </span>
+                <span class="hidden md:inline text-gray-300">|</span>
+                <span class="flex items-center gap-1.5">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    자동 결제 없음
+                </span>
+                <span class="hidden md:inline text-gray-300">|</span>
+                <span class="flex items-center gap-1.5">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                    2월 중순 순차 배송
+                </span>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="py-20 bg-white border-t border-gray-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">자주 묻는 질문</h2>
+                <p class="text-gray-500">궁금한 점을 확인해 보세요.</p>
+            </div>
+    
+            <div class="space-y-4">
+                <details class="group bg-softGray rounded-2xl overflow-hidden transition-all duration-300 open:bg-white open:shadow-lg border border-transparent open:border-gray-100">
+                    <summary class="flex justify-between items-center cursor-pointer p-6 list-none text-lg font-bold text-gray-900">
+                        <span>Q. 예약금 5,000원은 왜 받나요? 환불은 되나요?</span>
+                        <span class="transition-transform group-open:rotate-180">
+                            <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 px-6 pb-6 leading-relaxed animate-fade-in-down">
+                        예약금은 실제 서비스 이용 의사가 있는 분들을 파악하기 위한 <strong>'수요조사 증거 자료'</strong>로 활용됩니다.<br><br>
+                        서비스 출시 및 테스트 일정에 맞춰, 참여 여부와 관계없이 <strong>100% 현금으로 전액 환불</strong>해 드리니 부담 없이 신청해 주세요.
+                    </div>
+                </details>
+    
+                <details class="group bg-softGray rounded-2xl overflow-hidden transition-all duration-300 open:bg-white open:shadow-lg border border-transparent open:border-gray-100">
+                    <summary class="flex justify-between items-center cursor-pointer p-6 list-none text-lg font-bold text-gray-900">
+                        <span>Q. '혈당 관리 키트'는 언제 배송되나요?</span>
+                        <span class="transition-transform group-open:rotate-180">
+                            <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 px-6 pb-6 leading-relaxed">
+                        키트 제작 및 물류 일정에 따라 배송 시기가 확정되는 대로, 신청하신 연락처로 <strong>문자를 통해 상세 일정을 개별 공지</strong>해 드릴 예정입니다.<br>
+                        조금만 기다려 주시면 꼼꼼하게 준비해서 보내드리겠습니다.
+                    </div>
+                </details>
+    
+                <details class="group bg-softGray rounded-2xl overflow-hidden transition-all duration-300 open:bg-white open:shadow-lg border border-transparent open:border-gray-100">
+                    <summary class="flex justify-between items-center cursor-pointer p-6 list-none text-lg font-bold text-gray-900">
+                        <span>Q. 아이폰도 사용 가능한가요?</span>
+                        <span class="transition-transform group-open:rotate-180">
+                            <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 px-6 pb-6 leading-relaxed">
+                        현재는 <strong>안드로이드(갤럭시) 버전</strong>을 우선적으로 준비 중입니다.<br>
+                        <strong>아이폰(iOS) 버전</strong> 또한 곧 개발 예정에 있으며, 출시 준비가 완료되는 대로 문자를 통해 가장 먼저 알려드리겠습니다.
+                    </div>
+                </details>
+                <details class="group bg-softGray rounded-2xl overflow-hidden transition-all duration-300 open:bg-white open:shadow-lg border border-transparent open:border-gray-100">
+                    <summary class="flex justify-between items-center cursor-pointer p-6 list-none text-lg font-bold text-gray-900">
+                        <span>Q. AI 식사량 측정은 얼마나 정확한가요?</span>
+                        <span class="transition-transform group-open:rotate-180">
+                            <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 px-6 pb-6 leading-relaxed">
+                        GlucoUS는 영양학 분야 선행 연구들에서 검증된 <strong>'핸드 가이드(Hand Guide)' 측정법</strong>을 AI 기술로 구현했습니다.<br><br>
+                        
+                        단순 눈대중(Visual Estimation)은 평균 <strong>30~50%의 높은 오차율</strong>을 보이지만, 손을 기준점(Reference)으로 활용할 경우 오차를 획기적으로 줄일 수 있음이 여러 연구를 통해 입증되었습니다.<br><br>
+                
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                            <p class="text-xs text-gray-500 font-bold mb-2 tracking-wide text-primary">REFERENCES</p>
+                            <ul class="space-y-2">
+                                <li class="text-[11px] text-gray-400 leading-tight">
+                                    <span class="text-gray-500 font-semibold">[1]</span> Gibson AA et al. (2016). "Accuracy of hands v. household measures as portion size estimation aids". <em>Journal of Nutritional Science.</em>
+                                </li>
+                                <li class="text-[11px] text-gray-400 leading-tight">
+                                    <span class="text-gray-500 font-semibold">[2]</span> Faulkner GP et al. (2012). "An evaluation of the accuracy of the ‘hand jive’ for estimating portion sizes". <em>Journal of Human Nutrition and Dietetics.</em>
+                                </li>
+                                <li class="text-[11px] text-gray-400 leading-tight">
+                                    <span class="text-gray-500 font-semibold">[3]</span> Subar AF et al. (2003). "Assessment of the accuracy of portion size reports". <em>American Journal of Clinical Nutrition.</em>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </details>
+            </div>
         </div>
     </section>
 
