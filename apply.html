@@ -230,12 +230,26 @@
             submitButton.disabled = true;
             submitButton.innerText = "저장 중...";
 
-            // 1) 구글 시트로 데이터 전송
+            // FormData를 URLSearchParams로 변환 (Google Apps Script와 호환성)
+            const params = new URLSearchParams();
+            params.append('name', formData.get('name') || '');
+            params.append('phone', formData.get('phone') || '');
+            params.append('email', formData.get('email') || '');
+            params.append('payment', payment || '');
+
+            // 1) 구글 시트로 데이터 전송 (no-cors 모드 사용)
             fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
-                body: formData
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: params
             })
-            .then(response => {
+            .then(() => {
+                // no-cors 모드에서는 응답을 받을 수 없으므로 항상 성공으로 처리
+                // 실제 저장 여부는 Google Sheets에서 확인 필요
+                
                 // 2) GA4 이벤트 전송
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'submit_application', { 

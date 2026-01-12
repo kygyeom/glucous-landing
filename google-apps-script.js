@@ -69,5 +69,50 @@ function doGet(e) {
     }))
     .setMimeType(ContentService.MimeType.JSON);
 }
+
+/**
+ * apply.html용 doPost 함수 (베타 테스터 신청)
+ * 
+ * 사용 방법:
+ * 1. 별도의 Google Sheets를 만듭니다
+ * 2. 첫 번째 행에 헤더를 추가합니다: 타임스탬프, 이름, 연락처, 이메일, 결제방식
+ * 3. 아래 함수를 doPost로 교체하거나, 별도 함수로 추가합니다
+ * 4. 배포 후 웹 앱 URL을 apply.html의 GOOGLE_SCRIPT_URL에 붙여넣습니다
+ */
+function doPostApply(e) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const data = e.parameter || {};
+    
+    const timestamp = new Date();
+    const koreaTime = Utilities.formatDate(timestamp, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
+    
+    // apply.html에서 보내는 데이터 형식: name, phone, email, payment
+    sheet.appendRow([
+      koreaTime,
+      data.name || '',
+      data.phone || '',
+      data.email || '',
+      data.payment || ''
+    ]);
+    
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        'status': 'success',
+        'message': '신청 정보가 성공적으로 저장되었습니다.'
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+    
+  } catch (error) {
+    Logger.log('Error: ' + error.toString());
+    Logger.log('Parameters: ' + JSON.stringify(e.parameter));
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        'status': 'error',
+        'message': error.toString()
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
   
-  
+   
