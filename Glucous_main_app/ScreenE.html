@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>GlucoUS Screen E - History & Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .device-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #0B0F12;
+            position: relative;
+            overflow: hidden;
+            border-radius: 40px;
+            box-shadow: 0 0 0 10px #1a1a1a;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+
+        /* 3-Segment Control */
+        .segment-track {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            position: relative;
+            padding: 4px;
+        }
+        .segment-indicator {
+            position: absolute;
+            top: 4px; bottom: 4px;
+            width: calc(33.33% - 4px); /* 3등분 */
+            background-color: #182127;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        /* Tabs */
+        .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease; }
+        .tab-content.active { display: flex; opacity: 1; }
+
+        /* Gallery Grid */
+        .insta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+        .insta-item {
+            position: relative;
+            padding-bottom: 100%;
+            background-color: #1a1a1a;
+            overflow: hidden;
+            cursor: pointer;
+            transition: z-index 0s;
+        }
+        .insta-item img {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+        }
+        .mini-badge {
+            position: absolute; top: 6px; right: 6px;
+            padding: 2px 6px; border-radius: 6px;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(2px);
+            color: #EAF2F6; font-size: 10px; font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1); z-index: 10;
+        }
+        .text-good { color: #18D9C2; }
+        .text-bad { color: #FF5C5C; }
+
+        /* Highlight Animation */
+        @keyframes flashBorder {
+            0%, 100% { box-shadow: inset 0 0 0 0 transparent; }
+            50% { box-shadow: inset 0 0 0 4px #18D9C2; }
+        }
+        .insta-item.highlight {
+            animation: flashBorder 1.5s ease-in-out;
+            z-index: 20;
+        }
+
+        /* Calendar Modal */
+        .calendar-modal {
+            position: absolute; inset: 0; z-index: 200;
+            background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .calendar-modal.active { opacity: 1; pointer-events: auto; }
+        
+        .calendar-card {
+            width: 340px; background-color: #182127; border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1); padding: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .calendar-modal.active .calendar-card { transform: scale(1); }
+
+        .cal-day {
+            width: 40px; height: 40px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; border-radius: 10px;
+            font-size: 14px; color: #EAF2F6; position: relative;
+            cursor: pointer; transition: background-color 0.2s;
+        }
+        .cal-day:hover { background-color: rgba(255,255,255,0.05); }
+        .cal-day.today { background-color: rgba(255, 255, 255, 0.1); font-weight: bold; }
+        .cal-day.has-record:active { background-color: rgba(24, 217, 194, 0.2); transform: scale(0.95); }
+        
+        .cal-dot {
+            width: 5px; height: 5px; border-radius: 50%; margin-top: 4px;
+        }
+        .cal-dot.good { background-color: #18D9C2; box-shadow: 0 0 6px rgba(24, 217, 194, 0.6); }
+        .cal-dot.bad { background-color: #FF5C5C; box-shadow: 0 0 6px rgba(255, 92, 92, 0.6); }
+
+        /* Report Charts */
+        .chart-card {
+            background-color: #182127;
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .bar-bg {
+            height: 6px; width: 100%; background-color: rgba(255,255,255,0.05); border-radius: 99px; overflow: hidden;
+        }
+        .bar-fill { height: 100%; border-radius: 99px; }
+
+        /* SVG Line Chart */
+        .line-chart-path {
+            fill: none;
+            stroke: #18D9C2;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 4px 6px rgba(24, 217, 194, 0.2));
+        }
+        .chart-dot {
+            fill: #182127;
+            stroke: #18D9C2;
+            stroke-width: 2;
+            r: 4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="device-frame">
+        
+        <div class="pt-[50px] px-4 pb-2 bg-[#0B0F12] z-20 shrink-0">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-[22px] font-bold text-[#EAF2F6]">나의 기록</span>
+                <button onclick="goToUserScreen()" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                    <i class="fa-solid fa-user text-white/70"></i>
+                </button>
+            </div>
+
+            <div class="w-full h-[48px] segment-track flex relative mb-2">
+                <div id="segment-indicator" class="segment-indicator left-1"></div>
+                <button onclick="switchTab('today')" class="w-1/3 h-full relative z-10 flex items-center justify-center text-[13px] font-medium text-[#EAF2F6] transition-colors" id="btn-today">오늘</button>
+                <button onclick="switchTab('past')" class="w-1/3 h-full relative z-10 flex items-center justify-center text-[13px] font-medium text-white/40 transition-colors" id="btn-past">갤러리</button>
+                <button onclick="switchTab('report')" class="w-1/3 h-full relative z-10 flex items-center justify-center text-[13px] font-medium text-white/40 transition-colors" id="btn-report">리포트</button>
+            </div>
+        </div>
+
+        <div id="main-scroll-container" class="flex-1 overflow-y-auto pb-[100px] no-scrollbar scroll-smooth">
+            
+            <div id="view-today" class="tab-content active flex-col gap-4 pt-2 px-4">
+                <div class="w-full bg-[#182127] rounded-[20px] p-5 border border-white/5 mb-2">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-[14px] text-white/60">오늘 섭취한 탄수화물</span>
+                        <span class="text-[12px] text-[#18D9C2] bg-[#18D9C2]/10 px-2 py-0.5 rounded-md">목표 달성 중</span>
+                    </div>
+                    <div class="flex items-end gap-2">
+                        <span class="text-[32px] font-bold text-white leading-none">128</span>
+                        <span class="text-[14px] text-white/40 mb-1">/ 180g</span>
+                    </div>
+                    <div class="w-full h-2 bg-white/5 rounded-full mt-4 overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-[#18D9C2] to-[#2E9AFE] w-[70%]"></div>
+                    </div>
+                </div>
+
+                <span class="text-[14px] text-white/40 font-medium px-1">타임라인</span>
+                
+                <div onclick="goToScreenF('치킨 샐러드')" class="w-full h-[80px] flex items-center gap-4 cursor-pointer">
+                     <div class="w-[3px] h-full bg-white/10 relative ml-2">
+                        <div class="absolute top-1/2 -translate-y-1/2 -left-[5px] w-[13px] h-[13px] rounded-full bg-[#182127] border-[2px] border-[#18D9C2]"></div>
+                    </div>
+                    <div class="flex-1 bg-[#182127] rounded-[16px] p-3 border border-white/5 flex items-center gap-3 hover:bg-white/5 transition-colors">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=100" class="w-[50px] h-[50px] rounded-[10px] object-cover">
+                        <div class="flex flex-col">
+                            <span class="text-[15px] text-white font-medium">치킨 샐러드</span>
+                            <span class="text-[12px] text-white/40">오후 12:30 • 1.0인분</span>
+                        </div>
+                         <div class="ml-auto text-right">
+                            <span class="text-[14px] text-[#18D9C2] font-bold">+32</span>
+                            <span class="text-[10px] text-white/30 block">mg/dL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-past" class="tab-content pt-2 flex-col">
+                <div class="px-4 mb-4 flex justify-between items-center">
+                    <span class="text-[14px] text-white/60">2026년 1월</span>
+                    <button onclick="toggleCalendar(true)" class="text-[12px] text-[#18D9C2] flex items-center gap-1 hover:text-white transition-colors">
+                        <i class="fa-solid fa-calendar"></i> 달력 보기
+                    </button>
+                </div>
+
+                <div class="insta-grid w-full" id="gallery-grid">
+                    <div id="record-2026-01-03" class="insta-item" onclick="goToScreenF('치킨 샐러드')">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=400">
+                        <div class="mini-badge"><span>1/3</span></div>
+                    </div>
+                    <div id="record-2026-01-05" class="insta-item" onclick="goToScreenF('팬케이크')">
+                        <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=400">
+                        <div class="mini-badge"><span>1/5</span></div>
+                    </div>
+                    <div id="record-2026-01-07" class="insta-item" onclick="goToScreenF('야채 비빔밥')">
+                        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=400">
+                        <div class="mini-badge"><span>1/7</span></div>
+                    </div>
+                    <div id="record-2026-01-09" class="insta-item" onclick="goToScreenF('아보카도 샐러드')">
+                        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=400">
+                        <div class="mini-badge"><span>1/9</span></div>
+                    </div>
+                    <div id="record-2026-01-11" class="insta-item" onclick="goToScreenF('스테이크')">
+                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=400">
+                        <div class="mini-badge"><span>1/11</span></div>
+                    </div>
+                    <div id="record-2026-01-13" class="insta-item" onclick="goToScreenF('샐러드')">
+                        <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?q=80&w=400">
+                        <div class="mini-badge"><span>1/13</span></div>
+                    </div>
+                    <div id="record-2026-01-15" class="insta-item" onclick="goToScreenF('파스타')">
+                        <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=400">
+                        <div class="mini-badge"><span>1/15</span></div>
+                    </div>
+                    <div id="record-2026-01-17" class="insta-item" onclick="goToScreenF('도시락')">
+                        <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=400">
+                        <div class="mini-badge"><span>1/17</span></div>
+                    </div>
+                    <div id="record-2026-01-19" class="insta-item" onclick="goToScreenF('볶음밥')">
+                        <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=400">
+                        <div class="mini-badge"><span>1/19</span></div>
+                    </div>
+                    <div id="record-2026-01-21" class="insta-item" onclick="goToScreenF('비빔밥')">
+                        <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=400">
+                        <div class="mini-badge"><span>1/21</span></div>
+                    </div>
+                    <div id="record-2026-01-23" class="insta-item" onclick="goToScreenF('김밥')">
+                        <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=400">
+                        <div class="mini-badge"><span>1/23</span></div>
+                    </div>
+                    <div id="record-2026-01-25" class="insta-item" onclick="goToScreenF('된장찌개')">
+                        <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=400">
+                        <div class="mini-badge"><span>1/25</span></div>
+                    </div>
+                    <div id="record-2026-01-27" class="insta-item" onclick="goToScreenF('삼겹살')">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400">
+                        <div class="mini-badge"><span>1/27</span></div>
+                    </div>
+                    <div id="record-2026-01-29" class="insta-item" onclick="goToScreenF('초밥')">
+                        <img src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?q=80&w=400">
+                        <div class="mini-badge"><span>1/29</span></div>
+                    </div>
+                    <div id="record-2026-01-31" class="insta-item" onclick="goToScreenF('라면')">
+                        <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=400">
+                        <div class="mini-badge"><span>1/31</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-report" class="tab-content flex-col gap-4 pt-2 px-4">
+                
+                <div class="flex justify-between items-end mb-1">
+                    <div>
+                        <span class="text-[12px] text-white/40 block mb-1">1월 3주차</span>
+                        <h2 class="text-[20px] font-bold text-white">주간 분석 리포트</h2>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[24px] font-bold text-[#18D9C2]">85점</span>
+                        <span class="text-[12px] text-white/40 block">식단 점수</span>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="flex justify-between mb-6">
+                        <span class="text-[14px] text-white/80 font-medium">평균 혈당 변화</span>
+                        <span class="text-[12px] text-[#18D9C2] bg-[#18D9C2]/10 px-2 py-1 rounded">안정적</span>
+                    </div>
+                    
+                    <div class="relative h-[120px] w-full">
+                        <svg width="100%" height="100%" viewBox="0 0 300 100" preserveAspectRatio="none">
+                            <line x1="0" y1="20" x2="300" y2="20" stroke="white" stroke-opacity="0.05" stroke-dasharray="4"/>
+                            <line x1="0" y1="50" x2="300" y2="50" stroke="white" stroke-opacity="0.05" stroke-dasharray="4"/>
+                            <line x1="0" y1="80" x2="300" y2="80" stroke="white" stroke-opacity="0.05" stroke-dasharray="4"/>
+                            <path class="line-chart-path" d="M10 70 L 50 60 L 90 30 L 130 45 L 170 40 L 210 55 L 250 35 L 290 40" />
+                            <circle cx="10" cy="70" class="chart-dot" />
+                            <circle cx="50" cy="60" class="chart-dot" />
+                            <circle cx="90" cy="30" class="chart-dot" />
+                            <circle cx="130" cy="45" class="chart-dot" />
+                            <circle cx="170" cy="40" class="chart-dot" />
+                            <circle cx="210" cy="55" class="chart-dot" />
+                            <circle cx="250" cy="35" class="chart-dot" />
+                            <circle cx="290" cy="40" class="chart-dot" />
+                        </svg>
+                    </div>
+                    <div class="flex justify-between text-[10px] text-white/30 mt-2 px-1">
+                        <span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>일</span>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3 class="text-[14px] text-white/80 font-medium mb-4">평균 영양 섭취 비율</h3>
+                    <div class="flex flex-col gap-3">
+                        <div>
+                            <div class="flex justify-between text-[12px] mb-1">
+                                <span class="text-white/60">탄수화물</span>
+                                <span class="text-white">52%</span>
+                            </div>
+                            <div class="bar-bg"><div class="bar-fill bg-[#18D9C2]" style="width: 52%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[12px] mb-1">
+                                <span class="text-white/60">단백질</span>
+                                <span class="text-white">28%</span>
+                            </div>
+                            <div class="bar-bg"><div class="bar-fill bg-[#6C5CE7]" style="width: 28%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[12px] mb-1">
+                                <span class="text-white/60">지방</span>
+                                <span class="text-white">20%</span>
+                            </div>
+                            <div class="bar-bg"><div class="bar-fill bg-[#F6C343]" style="width: 20%"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-[#182127] rounded-[16px] p-4 border border-white/5">
+                        <span class="text-[12px] text-white/40 block mb-1">평균 혈당 스파이크</span>
+                        <span class="text-[20px] font-bold text-[#18D9C2]">+35 <span class="text-[12px] font-normal text-white/40">mg/dL</span></span>
+                    </div>
+                    <div class="bg-[#182127] rounded-[16px] p-4 border border-white/5">
+                        <span class="text-[12px] text-white/40 block mb-1">가장 위험했던 끼니</span>
+                        <span class="text-[14px] font-bold text-[#FF5C5C] block">수요일 점심</span>
+                        <span class="text-[11px] text-white/40">떡볶이 (+85)</span>
+                    </div>
+                </div>
+                <div class="h-[20px]"></div>
+            </div>
+
+        </div>
+
+        <div class="absolute bottom-0 w-full z-[100]">
+            <div class="h-[40px] w-full bg-gradient-to-t from-[#0B0F12] to-transparent pointer-events-none"></div>
+            <div class="bg-[#0B0F12] px-4 pb-[34px] pt-2 relative">
+                <button onclick="goToScreenA()" class="w-full h-[56px] bg-[#18D9C2] rounded-[16px] flex items-center justify-center shadow-[0_4px_16px_rgba(24,217,194,0.25)] active:scale-[0.99] transition-transform hover:bg-[#12b09d]">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-camera text-white"></i>
+                        <span class="text-[#0B0F12] font-bold text-[16px]">식사 기록하기</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <div id="calendar-modal" class="calendar-modal">
+            <div class="calendar-card" onclick="event.stopPropagation()">
+                <div class="flex justify-between items-center mb-6">
+                    <button onclick="changeMonth(-1)" class="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center text-white/70">
+                        <i class="fa-solid fa-chevron-left text-[14px]"></i>
+                    </button>
+                    <span id="cal-title" class="text-white font-bold text-[16px]">2026년 1월</span>
+                    <button onclick="changeMonth(1)" class="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center text-white/70">
+                        <i class="fa-solid fa-chevron-right text-[14px]"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-7 text-center mb-4">
+                    <span class="text-[12px] text-white/40">일</span>
+                    <span class="text-[12px] text-white/40">월</span>
+                    <span class="text-[12px] text-white/40">화</span>
+                    <span class="text-[12px] text-white/40">수</span>
+                    <span class="text-[12px] text-white/40">목</span>
+                    <span class="text-[12px] text-white/40">금</span>
+                    <span class="text-[12px] text-white/40">토</span>
+                </div>
+
+                <div id="cal-grid" class="grid grid-cols-7 gap-y-3 justify-items-center">
+                    </div>
+
+                <div class="mt-6 pt-4 border-t border-white/10 flex justify-center">
+                    <button onclick="toggleCalendar(false)" class="text-[14px] text-white/60 hover:text-white transition-colors px-4 py-2">
+                        닫기
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 탭 로직
+        const indicator = document.getElementById('segment-indicator');
+        const btnToday = document.getElementById('btn-today');
+        const btnPast = document.getElementById('btn-past');
+        const btnReport = document.getElementById('btn-report');
+        
+        const viewToday = document.getElementById('view-today');
+        const viewPast = document.getElementById('view-past');
+        const viewReport = document.getElementById('view-report');
+
+        function switchTab(tab) {
+            [btnToday, btnPast, btnReport].forEach(btn => {
+                btn.classList.remove('text-[#EAF2F6]');
+                btn.classList.add('text-white/40');
+            });
+            [viewToday, viewPast, viewReport].forEach(view => {
+                view.classList.remove('active');
+                view.style.display = 'none';
+            });
+
+            if (tab === 'today') {
+                indicator.style.left = '4px';
+                btnToday.classList.add('text-[#EAF2F6]');
+                btnToday.classList.remove('text-white/40');
+                viewToday.style.display = 'flex';
+                requestAnimationFrame(() => viewToday.classList.add('active'));
+            } else if (tab === 'past') {
+                indicator.style.left = 'calc(33.33% + 0px)';
+                btnPast.classList.add('text-[#EAF2F6]');
+                btnPast.classList.remove('text-white/40');
+                viewPast.style.display = 'flex';
+                requestAnimationFrame(() => viewPast.classList.add('active'));
+            } else if (tab === 'report') {
+                indicator.style.left = 'calc(66.66% - 4px)';
+                btnReport.classList.add('text-[#EAF2F6]');
+                btnReport.classList.remove('text-white/40');
+                viewReport.style.display = 'flex';
+                requestAnimationFrame(() => viewReport.classList.add('active'));
+            }
+        }
+
+        window.goToScreenA = function() { window.location.href = 'ScreenA.html'; };
+        window.goToScreenF = function(foodName) {
+            // 부모 창에 애니메이션 완료 메시지 전송
+            if (window.parent && window.parent !== window) {
+                try {
+                    window.parent.postMessage({
+                        type: 'animation-complete',
+                        screenIndex: 4
+                    }, '*');
+                } catch (e) {
+                    console.log('Failed to send animation-complete message');
+                }
+            }
+            // ScreenF로 이동 (iframe 내부 이동이므로 주석 처리)
+            // const url = foodName ? `ScreenF.html?food=${encodeURIComponent(foodName)}` : 'ScreenF.html';
+            // window.location.href = url;
+        };
+        window.goToUserScreen = function() { window.location.href = 'Screen_userpage.html'; };
+
+        // 플래시 효과 오버레이 추가
+        const flashOverlay = document.createElement('div');
+        flashOverlay.id = 'flash-overlay';
+        flashOverlay.style.cssText = 'position: absolute; inset: 0; background-color: rgba(255, 255, 255, 0); pointer-events: none; z-index: 50; transition: background-color 0.1s ease-out;';
+        document.querySelector('.device-frame').appendChild(flashOverlay);
+
+        // 플래시 애니메이션 스타일 추가
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes autoFlash {
+                0% { background-color: rgba(255, 255, 255, 0); }
+                50% { background-color: rgba(255, 255, 255, 0.95); }
+                100% { background-color: rgba(255, 255, 255, 0); }
+            }
+            .flash-overlay.auto-flash {
+                animation: autoFlash 0.3s ease-out;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 상단 옵션 순차 표시 애니메이션 시작 함수 (화면이 보일 때 즉시 시작, 3초 후 완료)
+        let flashTimer = null;
+        let tabAnimationTimers = [];
+        let completeTimer = null;
+
+        function startTabAnimation() {
+            // 기존 타이머 클리어
+            if (flashTimer) {
+                clearTimeout(flashTimer);
+            }
+            tabAnimationTimers.forEach(timer => {
+                if (timer) clearTimeout(timer);
+            });
+            tabAnimationTimers = [];
+            if (completeTimer) {
+                clearTimeout(completeTimer);
+            }
+            
+            // 플래시 효과 시작
+            flashOverlay.classList.remove('auto-flash');
+            requestAnimationFrame(() => {
+                flashOverlay.classList.add('auto-flash');
+                flashTimer = setTimeout(() => {
+                    flashOverlay.classList.remove('auto-flash');
+                }, 300);
+            });
+            
+            // 오늘 탭으로 먼저 리셋
+            switchTab('today');
+            
+            // 0.5초 후 갤러리 탭으로 전환
+            tabAnimationTimers.push(setTimeout(() => {
+                switchTab('past');
+            }, 500));
+            
+            // 1.5초 후 리포트 탭으로 전환
+            tabAnimationTimers.push(setTimeout(() => {
+                switchTab('report');
+            }, 1500));
+            
+            // 3초 후 완료 메시지 전송
+            completeTimer = setTimeout(() => {
+                if (window.parent && window.parent !== window) {
+                    try {
+                        window.parent.postMessage({
+                            type: 'animation-complete',
+                            screenIndex: 4
+                        }, '*');
+                    } catch (e) {
+                        console.log('Failed to send animation-complete message');
+                    }
+                }
+            }, 3000);
+        }
+
+        // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'start-animation' && event.data.screenIndex === 4) {
+                startTabAnimation();
+            }
+        });
+
+        // 초기 실행
+        startTabAnimation();
+
+        // 캘린더 로직
+        const calendarModal = document.getElementById('calendar-modal');
+        const calTitle = document.getElementById('cal-title');
+        const calGrid = document.getElementById('cal-grid');
+        
+        let currentDate = new Date(2026, 0, 1); // 2026년 1월
+
+        // 갤러리 데이터와 동기화된 기록 (YYYY-MM-DD 형식)
+        const mealRecords = {
+            '2026-01-03': 'good',
+            '2026-01-05': 'bad',
+            '2026-01-07': 'good',
+            '2026-01-09': 'good',
+            '2026-01-11': 'bad',
+            '2026-01-13': 'good',
+            '2026-01-15': 'good',
+            '2026-01-17': 'bad',
+            '2026-01-19': 'good',
+            '2026-01-21': 'good',
+            '2026-01-23': 'good',
+            '2026-01-25': 'good',
+            '2026-01-27': 'bad',
+            '2026-01-29': 'good',
+            '2026-01-31': 'bad'
+        };
+
+        function toggleCalendar(show) {
+            if(show) {
+                renderCalendar(currentDate);
+                calendarModal.classList.add('active');
+            } else {
+                calendarModal.classList.remove('active');
+            }
+        }
+
+        calendarModal.addEventListener('click', () => toggleCalendar(false));
+
+        function changeMonth(delta) {
+            currentDate.setMonth(currentDate.getMonth() + delta);
+            renderCalendar(currentDate);
+        }
+
+        // 스크롤 및 탭 이동 함수
+        window.scrollToDate = function(dateString) {
+            toggleCalendar(false);
+            
+            // 갤러리 탭으로 전환
+            switchTab('past');
+            
+            // 탭 전환 애니메이션 후 스크롤
+            setTimeout(() => {
+                const targetId = `record-${dateString}`;
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    targetElement.classList.add('highlight');
+                    setTimeout(() => targetElement.classList.remove('highlight'), 2000);
+                } else {
+                    console.log(`No record found for ${dateString}`);
+                }
+            }, 300);
+        };
+
+        function renderCalendar(date) {
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            
+            calTitle.textContent = `${year}년 ${month + 1}월`;
+            calGrid.innerHTML = '';
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const lastDate = new Date(year, month + 1, 0).getDate();
+            
+            for (let i = 0; i < firstDay; i++) {
+                calGrid.innerHTML += `<div></div>`;
+            }
+            
+            for (let d = 1; d <= lastDate; d++) {
+                const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                const status = mealRecords[dateString];
+                
+                const today = new Date();
+                const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === d;
+                const todayClass = isToday ? 'today' : '';
+                const hasRecordClass = status ? 'has-record' : '';
+                
+                let dotHtml = '';
+                if (status === 'good') dotHtml = '<div class="cal-dot good"></div>';
+                else if (status === 'bad') dotHtml = '<div class="cal-dot bad"></div>';
+
+                // 기록이 있는 경우에만 클릭 이벤트 추가
+                const clickEvent = status ? `onclick="scrollToDate('${dateString}')"` : '';
+
+                calGrid.innerHTML += `
+                    <div class="cal-day ${todayClass} ${hasRecordClass}" ${clickEvent}>
+                        <span>${d}</span>
+                        ${dotHtml}
+                    </div>
+                `;
+            }
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const showHistory = urlParams.get('showHistoryOption');
+        if (showHistory === '1') {
+            switchTab('past');
+        } else {
+            switchTab('today');
+        }
+    </script>
+</body>
+</html>

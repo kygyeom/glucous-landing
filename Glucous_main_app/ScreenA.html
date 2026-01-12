@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>GlucoUS Camera - Pro Mode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .device-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #000; /* 완전 검정 배경 (카메라 앱 특성) */
+            position: relative;
+            overflow: hidden;
+            border-radius: 40px;
+            box-shadow: 0 0 0 10px #1a1a1a;
+        }
+
+        /* 뷰파인더 (비율 조절 가능) */
+        .viewfinder-container {
+            width: 100%;
+            height: 520px; /* 기본 4:3 비율 근사치 */
+            position: relative;
+            overflow: hidden;
+            margin-top: 60px; /* 상단 바 공간 */
+            background-color: #222;
+            transition: height 0.3s ease;
+        }
+        
+        .camera-preview {
+            width: 100%;
+            height: 100%;
+            background: url('mainfood_9_19.jpeg');
+            background-size: cover;
+            background-position: center center;
+            transition: transform 0.2s ease-out; /* 줌 효과용 */
+        }
+        
+        /* 비율 변경 시 이미지 가운데 정렬 */
+        .viewfinder-container.ratio-1-1 .camera-preview,
+        .viewfinder-container.ratio-full .camera-preview {
+            background-size: cover;
+            background-position: center center;
+        }
+
+        /* 비율별 클래스 */
+        .ratio-1-1 { height: 390px; }
+        .ratio-full { height: 740px; margin-top: 0; border-radius: 30px; }
+
+        /* 그리드 라인 */
+        .grid-overlay {
+            position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.2s;
+        }
+        .grid-overlay.active { opacity: 0.6; }
+        .grid-h { position: absolute; left: 0; width: 100%; height: 33.33%; border-bottom: 1px solid rgba(255,255,255,0.4); }
+        .grid-h:nth-child(2) { top: 33.33%; }
+        .grid-v { position: absolute; top: 0; height: 100%; width: 33.33%; border-right: 1px solid rgba(255,255,255,0.4); }
+        .grid-v:nth-child(4) { left: 33.33%; }
+
+        /* 포커스 박스 애니메이션 */
+        .focus-box {
+            position: absolute;
+            width: 60px; height: 60px;
+            border: 1px solid #F6C343; /* 노란색 포커스 */
+            transform: translate(-50%, -50%) scale(1.2);
+            opacity: 0;
+            pointer-events: none;
+        }
+        @keyframes focusAnim {
+            0% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; border-color: white; }
+            30% { transform: translate(-50%, -50%) scale(1.0); opacity: 1; border-color: #F6C343; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        .focus-box.animate { animation: focusAnim 1s ease-out forwards; }
+
+        /* 줌 컨트롤 (아이폰 스타일) */
+        .zoom-control-container {
+            position: absolute;
+            bottom: 180px; /* 셔터 버튼 위 */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 12px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            z-index: 40;
+        }
+        .zoom-btn {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .zoom-btn.active {
+            background-color: #F6C343; /* 노란색 강조 */
+            color: black;
+            box-shadow: 0 0 10px rgba(246, 195, 67, 0.4);
+        }
+
+        /* 상단 툴바 */
+        .top-toolbar {
+            position: absolute; top: 0; right: 0; width: auto; height: 60px;
+            display: flex; justify-content: flex-end; align-items: center;
+            gap: 8px;
+            padding: 0 16px; z-index: 50;
+            background: transparent;
+        }
+        .tool-btn {
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; 
+            background: transparent;
+            border: none;
+            transition: all 0.2s;
+        }
+        .tool-btn:active { opacity: 0.7; }
+        .tool-active { 
+            color: #F6C343; 
+        }
+
+        /* 셔터 영역 (기존 스타일 유지하되 위치 조정) */
+        .shutter-area {
+            position: absolute; bottom: 0; width: 100%; height: 160px;
+            background-color: black; /* 하단은 완전 검정 */
+            z-index: 50;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        
+        /* 셔터 버튼 */
+        .shutter-btn { transition: transform 0.1s; }
+        .shutter-btn:active { transform: scale(0.95); }
+        .shutter-inner { background: white; transition: all 0.2s; }
+        .shutter-btn:active .shutter-inner { background: #18D9C2; transform: scale(0.85); }
+
+        /* 입력 모드 오버레이 (기존 유지) */
+        .input-overlay {
+            position: absolute; inset: 0; background-color: rgba(11, 15, 18, 0.95);
+            backdrop-filter: blur(10px); z-index: 100;
+            display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .input-overlay.active { opacity: 1; pointer-events: auto; }
+    </style>
+</head>
+<body>
+
+    <div class="device-frame">
+        
+        <div class="top-toolbar">
+            <button class="tool-btn" id="btn-flash" onclick="toggleFlash()">
+                <i class="fa-solid fa-bolt text-[18px]" style="color: white;"></i>
+            </button>
+            <button class="tool-btn" id="btn-ratio" onclick="toggleRatio()">
+                <span class="text-[12px] font-bold">4:3</span>
+            </button>
+            <button class="tool-btn" onclick="toggleGrid()">
+                <i class="fa-solid fa-border-all text-[18px]"></i>
+            </button>
+        </div>
+
+        <div class="viewfinder-container" id="viewfinder" onclick="triggerFocus(event)">
+            <div class="camera-preview" id="camera-preview"></div>
+            
+            <div class="grid-overlay" id="grid-overlay">
+                <div class="grid-h"></div><div class="grid-h"></div>
+                <div class="grid-v"></div><div class="grid-v"></div>
+            </div>
+
+            <div class="focus-box" id="focus-box"></div>
+
+            <div class="absolute bottom-4 w-full text-center pointer-events-none">
+                <span class="bg-black/40 text-white/80 text-[11px] px-3 py-1 rounded-full backdrop-blur-sm">
+                    음식이 잘 보이게 찍어주세요
+                </span>
+            </div>
+        </div>
+
+        <div class="zoom-control-container">
+            <button class="zoom-btn active" onclick="setZoom(1.0, this)">1x</button>
+            <button class="zoom-btn" onclick="setZoom(2.0, this)">2x</button>
+            <button class="zoom-btn" onclick="setZoom(3.0, this)">3x</button>
+        </div>
+
+        <div class="shutter-area">
+            <div class="w-full px-8 flex justify-between items-center relative">
+                
+                <div class="flex flex-col items-center gap-1">
+                    <button onclick="goToHistory()" class="w-12 h-12 rounded-[10px] overflow-hidden border border-white/20 bg-[#333] active:scale-95 transition-transform group">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=100" class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+                    </button>
+                </div>
+
+                <button onclick="takePhoto()" class="shutter-btn w-[72px] h-[72px] rounded-full border-[4px] border-white flex items-center justify-center p-1 absolute left-1/2 -translate-x-1/2">
+                    <div class="shutter-inner w-full h-full rounded-full bg-white"></div>
+                </button>
+
+                <div class="flex gap-3">
+                    <button onclick="openMode('voice')" class="w-10 h-10 rounded-full bg-[#333] flex items-center justify-center text-white hover:bg-[#18D9C2] hover:text-[#0B0F12] transition-colors active:scale-95">
+                        <i class="fa-solid fa-microphone text-[16px]"></i>
+                    </button>
+                    <button onclick="openMode('text')" class="w-10 h-10 rounded-full bg-[#333] flex items-center justify-center text-white hover:bg-[#18D9C2] hover:text-[#0B0F12] transition-colors active:scale-95">
+                        <i class="fa-solid fa-keyboard text-[16px]"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="flash-overlay" class="absolute inset-0 bg-white opacity-0 pointer-events-none z-[200] transition-opacity duration-100"></div>
+
+        <div id="text-mode" class="input-overlay px-6 pt-[80px]">
+            <div class="flex justify-between items-center mb-8">
+                <span class="text-[24px] font-bold text-white">직접 입력</span>
+                <button onclick="closeMode()" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:bg-white/10">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <textarea id="food-text-input" placeholder="예: 현미밥 반 공기" class="w-full h-[160px] bg-white/5 border border-white/10 rounded-[20px] p-5 text-white text-[18px] focus:outline-none focus:border-[#18D9C2]"></textarea>
+            <button onclick="submitInput('text')" class="mt-auto mb-8 w-full h-[56px] bg-[#18D9C2] rounded-[16px] font-bold text-[#0B0F12]">기록하기</button>
+        </div>
+
+        <div id="voice-mode" class="input-overlay items-center justify-center">
+            <button onclick="closeMode()" class="absolute top-[60px] right-6 w-10 h-10 bg-white/5 rounded-full text-white/50"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="text-[24px] font-bold text-white mb-2">말씀해주세요</h2>
+            <div class="w-[80px] h-[80px] rounded-full bg-[#18D9C2]/20 flex items-center justify-center animate-pulse mt-8">
+                <div class="w-[60px] h-[60px] rounded-full bg-[#18D9C2] flex items-center justify-center"><i class="fa-solid fa-microphone text-[#0B0F12] text-[24px]"></i></div>
+            </div>
+            <button onclick="submitInput('voice')" class="mt-12 px-8 py-3 rounded-full bg-white/10 border border-white/10 text-white font-medium hover:bg-white/20 transition-colors">
+                다 말했어요
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Camera Logic ---
+        
+        // 1. Flash Toggle
+        const flashBtn = document.getElementById('btn-flash');
+        const flashIcon = flashBtn.querySelector('i');
+        let flashState = 0; // 0: off, 1: auto, 2: on
+        
+        // 초기 플래시 상태 설정 (비활성화 - 흰색 번개)
+        flashIcon.className = 'fa-solid fa-bolt text-[18px]';
+        flashIcon.style.color = 'white';
+        flashBtn.classList.remove('tool-active');
+
+        function toggleFlash() {
+            flashState = (flashState + 1) % 3;
+            if (flashState === 0) { // Off
+                flashIcon.className = 'fa-solid fa-bolt text-[18px]';
+                flashIcon.style.color = 'white';
+                flashBtn.classList.remove('tool-active');
+            } else if (flashState === 1) { // Auto
+                flashIcon.className = 'fa-solid fa-bolt text-[18px]';
+                flashIcon.style.color = '#F6C343';
+                flashBtn.classList.add('tool-active'); // Yellow
+            } else { // On
+                flashIcon.className = 'fa-solid fa-bolt text-[18px]';
+                flashIcon.style.color = '#F6C343';
+                flashBtn.classList.add('tool-active');
+            }
+        }
+
+        // 2. Grid Toggle
+        const gridOverlay = document.getElementById('grid-overlay');
+        let isGridOn = true; // 기본값: 켜짐
+        // 초기 그리드 활성화
+        gridOverlay.classList.add('active');
+        function toggleGrid() {
+            isGridOn = !isGridOn;
+            if(isGridOn) gridOverlay.classList.add('active');
+            else gridOverlay.classList.remove('active');
+        }
+
+        // 3. Aspect Ratio Toggle
+        const viewfinder = document.getElementById('viewfinder');
+        const ratioBtn = document.getElementById('btn-ratio').querySelector('span');
+        let ratioState = 0; // 0: 4:3, 1: 1:1, 2: Full
+
+        function toggleRatio() {
+            ratioState = (ratioState + 1) % 3;
+            viewfinder.className = 'viewfinder-container'; // reset
+            preview.style.transform = ''; // 줌 리셋
+            
+            // 이미지 가운데 정렬 설정
+            preview.style.backgroundSize = 'cover';
+            preview.style.backgroundPosition = 'center center';
+            
+            if (ratioState === 0) { // 4:3
+                ratioBtn.innerText = '4:3';
+                // default height 520px
+            } else if (ratioState === 1) { // 1:1
+                ratioBtn.innerText = '1:1';
+                viewfinder.classList.add('ratio-1-1');
+            } else { // Full
+                ratioBtn.innerText = 'FULL';
+                viewfinder.classList.add('ratio-full');
+            }
+        }
+
+        // 4. Zoom Control
+        const preview = document.getElementById('camera-preview');
+        function setZoom(level, btn) {
+            // Update buttons
+            document.querySelectorAll('.zoom-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Apply scale
+            preview.style.transform = `scale(${level})`;
+        }
+
+        // 5. Tap to Focus
+        const focusBox = document.getElementById('focus-box');
+        function triggerFocus(e) {
+            // 위치 계산 (클릭한 좌표)
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // 포커스 박스 이동
+            focusBox.style.left = x + 'px';
+            focusBox.style.top = y + 'px';
+            
+            // 애니메이션 재시작
+            focusBox.classList.remove('animate');
+            void focusBox.offsetWidth; // trigger reflow
+            focusBox.classList.add('animate');
+        }
+
+        // 6. Shutter & Navigation
+        function takePhoto() {
+            const flash = document.getElementById('flash-overlay');
+            flash.style.opacity = '0.9';
+            
+            setTimeout(() => {
+                flash.style.opacity = '0';
+                // ScreenB로 이동
+                window.location.href = 'ScreenB.html';
+            }, 100);
+        }
+
+        function goToHistory() {
+            window.location.href = 'ScreenE.html?showHistoryOption=1';
+        }
+
+        // --- Other Modes (Text/Voice) ---
+        function openMode(mode) {
+            document.getElementById(mode + '-mode').classList.add('active');
+            if(mode === 'text') {
+                document.getElementById('food-text-input').focus();
+            }
+        }
+        function closeMode() {
+            document.querySelectorAll('.input-overlay').forEach(el => el.classList.remove('active'));
+        }
+        function submitInput(type) {
+            // ScreenB로 이동
+            window.location.href = 'ScreenB.html';
+        }
+
+        // 플래시 효과 오버레이 추가
+        const flashOverlay = document.createElement('div');
+        flashOverlay.id = 'flash-overlay';
+        flashOverlay.style.cssText = 'position: absolute; inset: 0; background-color: rgba(255, 255, 255, 0); pointer-events: none; z-index: 50; transition: background-color 0.1s ease-out;';
+        document.querySelector('.device-frame').appendChild(flashOverlay);
+
+        // 플래시 애니메이션 스타일 추가
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes autoFlash {
+                0% { background-color: rgba(255, 255, 255, 0); }
+                50% { background-color: rgba(255, 255, 255, 0.95); }
+                100% { background-color: rgba(255, 255, 255, 0); }
+            }
+            .flash-overlay.auto-flash {
+                animation: autoFlash 0.3s ease-out;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 자동 플래시 효과 및 줌 애니메이션 (0.5초 후 화면이 밝아지며 찰칵 효과, 2초 후 완료)
+        let flashTimer = null;
+        let completeTimer = null;
+        let zoomTimer = null;
+        
+        function startFlashAnimation() {
+            // 기존 타이머 클리어
+            if (flashTimer) {
+                clearTimeout(flashTimer);
+            }
+            if (completeTimer) {
+                clearTimeout(completeTimer);
+            }
+            if (zoomTimer) {
+                clearTimeout(zoomTimer);
+            }
+            
+            // 플래시 오버레이 초기화
+            flashOverlay.classList.remove('auto-flash');
+            
+            // 줌 초기 상태 설정 (2배율)
+            if (preview) {
+                preview.style.transition = 'transform 0.5s ease-out';
+                preview.style.transform = 'scale(2.0)';
+            }
+            
+            // 0.5초 후 플래시 효과 시작 (화면이 밝아지며 찰칵 효과)
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    flashOverlay.classList.add('auto-flash');
+                    
+                    // 0.3초 후 플래시 종료
+                    flashTimer = setTimeout(() => {
+                        flashOverlay.classList.remove('auto-flash');
+                    }, 300);
+                });
+            }, 500);
+            
+            // 0.75초 후 줌 애니메이션 시작 (2배율에서 1배율로)
+            zoomTimer = setTimeout(() => {
+                if (preview) {
+                    preview.style.transform = 'scale(1.0)';
+                }
+            }, 750); // 중간 지점 (0.75초)에 시작
+            
+            // 2초 후 완료 메시지 전송
+            completeTimer = setTimeout(() => {
+                if (window.parent && window.parent !== window) {
+                    try {
+                        window.parent.postMessage({
+                            type: 'animation-complete',
+                            screenIndex: 0
+                        }, '*');
+                    } catch (e) {
+                        console.log('Failed to send animation-complete message');
+                    }
+                }
+            }, 2000);
+        }
+        
+        // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'start-animation' && event.data.screenIndex === 0) {
+                startFlashAnimation();
+            }
+        });
+        
+        // 초기 실행은 하지 않음 (postMessage로만 시작)
+    </script>
+
+</body>
+</html>

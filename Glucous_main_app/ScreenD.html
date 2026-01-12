@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>GlucoUS Screen D - Visual Feedback</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .device-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #0B0F12;
+            position: relative;
+            overflow: hidden;
+            border-radius: 40px;
+            box-shadow: 0 0 0 10px #1a1a1a;
+        }
+
+        .photo-bg {
+            position: absolute;
+            inset: 0;
+            background-color: #0B0F12;
+            z-index: 1;
+        }
+
+        /* Glass Panel */
+        .glass-panel {
+            background-color: rgba(18, 24, 29, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 24px;
+        }
+
+        /* Graph Styles */
+        .chart-container { position: relative; width: 100%; height: 120px; }
+        .chart-line-carbs { fill: none; stroke: rgba(255, 255, 255, 0.3); stroke-width: 2; stroke-dasharray: 4 4; }
+        .chart-line-glucose { fill: none; stroke: #18D9C2; stroke-width: 3; filter: drop-shadow(0 0 4px rgba(24, 217, 194, 0.5)); transition: stroke 0.3s ease; }
+        .chart-line-glucose.danger { stroke: #FF5C5C; filter: drop-shadow(0 0 4px rgba(255, 92, 92, 0.5)); }
+        .chart-indicator-line { stroke: #EAF2F6; stroke-width: 1.5; stroke-dasharray: 2 2; opacity: 0.7; transition: transform 0.1s linear; }
+        .chart-dot { fill: #0B0F12; stroke-width: 2; r: 5; transition: transform 0.1s linear, stroke 0.3s ease; }
+
+        /* AR Overlay */
+        .ar-overlay {
+            position: absolute; top: 55%; left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px; z-index: 20; width: 100%; pointer-events: none;
+        }
+
+        /* 측정 가이드 라인 */
+        .guide-lines {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 300px;
+            pointer-events: none;
+            z-index: 15;
+        }
+        
+        .guide-line {
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-top: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+
+        /* Bowl Shape & Fill Animation */
+        .bowl-shape {
+            border: 2px dashed rgba(255, 255, 255, 0.5); /* 테두리는 흰색 반투명 */
+            background-color: rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden; /* 내부 원이 밖으로 나가지 않게 */
+        }
+        
+        /* Fill Circles */
+        .fill-circle {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            transition: width 0.1s linear, height 0.1s linear;
+        }
+        
+        /* 1단계 (1인분까지) - Teal */
+        .fill-base {
+            background-color: rgba(24, 217, 194, 0.4);
+            border: 1px solid rgba(24, 217, 194, 0.8);
+            z-index: 1;
+        }
+        
+        /* 2단계 (1인분 초과) - Red */
+        .fill-excess {
+            background-color: rgba(255, 92, 92, 0.6);
+            border: 1px solid rgba(255, 92, 92, 1);
+            z-index: 2;
+        }
+
+        /* 그릇 크기 고정: 19cm (190mm) - 원형 접시 */
+        .bowl-shape.mode-plate { width: 190px; height: 190px; border-radius: 50%; }
+
+        .hand-img { width: 130px; height: auto; opacity: 1; filter: drop-shadow(0 0 8px rgba(0,0,0,0.5)); transform: rotate(-10deg); z-index: 25; position: relative; }
+
+        /* Bottom Sheet */
+        .bottom-sheet {
+            background-color: #182127; border-radius: 24px 24px 0 0;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.4); animation: slideUp 0.5s ease-out;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        /* Custom Slider */
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; z-index: 20; position: relative; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 28px; width: 28px; border-radius: 50%; background: #FFFFFF; border: 2px solid #18D9C2; cursor: pointer; margin-top: -12px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: transform 0.1s; }
+        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.1); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: rgba(255,255,255,0.1); border-radius: 2px; }
+        .slider-wrapper { position: relative; height: 30px; display: flex; align-items: center; }
+        .slider-track-fill { position: absolute; left: 0; height: 4px; background-color: #18D9C2; border-radius: 2px; pointer-events: none; z-index: 10; }
+
+    </style>
+</head>
+<body>
+
+    <div class="device-frame">
+        <div class="photo-bg"></div>
+
+        <div class="absolute top-[60px] left-4 right-4 z-30">
+            <div class="glass-panel p-5">
+                <div class="flex justify-between items-end mb-4">
+                    <div>
+                        <span class="text-[12px] text-white/50 block mb-0.5">분석 결과</span>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-[18px] text-white font-bold">치킨 샐러드</h2>
+                            <span id="current-badge" class="px-2 py-0.5 rounded-full bg-[#18D9C2]/20 border border-[#18D9C2]/30 text-[#18D9C2] text-[11px] font-bold">1.0 인분</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="flex flex-col items-end">
+                            <span class="text-[11px] text-white/50">예상 혈당</span>
+                            <span id="display-glucose" class="text-[20px] font-bold text-[#18D9C2] leading-none mt-1">+32</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <svg width="100%" height="100%" viewBox="0 0 300 120" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="grad-glucose" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#18D9C2;stop-opacity:1" />
+                                <stop offset="60%" style="stop-color:#F6C343;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#FF5C5C;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <line x1="75" y1="0" x2="75" y2="120" stroke="white" stroke-opacity="0.05" />
+                        <line x1="150" y1="0" x2="150" y2="120" stroke="white" stroke-opacity="0.1" />
+                        <line x1="225" y1="0" x2="225" y2="120" stroke="white" stroke-opacity="0.05" />
+                        <path d="M0 100 C 100 80, 200 60, 300 40" class="chart-line-carbs" />
+                        <path id="glucose-path" d="M0 110 C 100 80, 180 50, 300 10" class="chart-line-glucose" stroke="url(#grad-glucose)" />
+                        <line id="indicator-line" x1="150" y1="0" x2="150" y2="120" class="chart-indicator-line" />
+                        <circle id="dot-carbs" cx="150" cy="70" class="chart-dot" stroke="white" />
+                        <circle id="dot-glucose" cx="150" cy="63" class="chart-dot" stroke="#18D9C2" />
+                    </svg>
+                    <div class="absolute bottom-0 w-full flex justify-between px-1 text-[9px] text-white/30">
+                        <span>0</span>
+                        <span>1.0</span>
+                        <span>2.0</span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between mt-2 px-1">
+                    <span class="text-[11px] text-white/50">탄수화물 <strong id="display-carbs" class="text-white">45g</strong></span>
+                    <span id="risk-text" class="text-[11px] text-[#18D9C2]">안정적인 범위</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-lines">
+            <div class="guide-line" style="top: 0%;"></div>
+            <div class="guide-line" style="top: 25%;"></div>
+            <div class="guide-line" style="top: 50%;"></div>
+            <div class="guide-line" style="top: 75%;"></div>
+            <div class="guide-line" style="top: 100%;"></div>
+        </div>
+
+        <div class="ar-overlay">
+            <div class="relative">
+                <img src="hand_scale_image.svg" class="hand-img" alt="Hand">
+                <span class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-white/40 whitespace-nowrap">내 손 (M)</span>
+            </div>
+
+            <div class="flex flex-col items-center gap-4">
+                <div class="flex flex-col items-center gap-2">
+                    <div id="ar-bowl" class="bowl-shape mode-plate flex items-center justify-center relative">
+                        <div id="circle-base" class="fill-circle fill-base" style="width: 50%; height: 50%;"></div>
+                        <div id="circle-excess" class="fill-circle fill-excess" style="width: 0%; height: 0%;"></div>
+                        
+                        <div class="absolute w-2 h-2 bg-white/50 rounded-full z-10 pointer-events-none"></div>
+                    </div>
+                    <span class="text-[10px] text-white/40 whitespace-nowrap">식사 그릇</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-sheet absolute bottom-0 w-full h-[200px] z-40 p-6 flex flex-col justify-between">
+            <div class="w-[36px] h-[4px] bg-white/10 rounded-full mx-auto shrink-0 mb-2"></div>
+
+            <div class="flex flex-col gap-1">
+                <div class="flex justify-between items-end mb-3 px-1">
+                    <span class="text-[14px] text-white font-medium">섭취량 조절</span>
+                    <span class="text-[12px] text-white/40">슬라이더를 움직여주세요</span>
+                </div>
+
+                <div class="slider-wrapper">
+                    <div id="slider-track" class="slider-track-fill" style="width: 50%"></div>
+                    <input type="range" id="amount-slider" min="0.1" max="2.0" value="1.0" step="0.1">
+                </div>
+                
+                <div class="flex justify-between text-[11px] text-white/30 px-1 mt-1">
+                    <span>한 입</span>
+                    <span>1인분</span>
+                    <span>두 그릇</span>
+                </div>
+            </div>
+
+            <button onclick="finishAnalysis()" class="w-full h-[52px] bg-[#18D9C2] hover:bg-[#12B8A6] rounded-[16px] flex items-center justify-center transition-colors shadow-[0_4px_12px_rgba(24,217,194,0.3)] mt-2 active:scale-95 transform duration-100">
+                <span class="text-[#0B0F12] font-bold text-[16px]">분석 완료</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 기본 데이터
+        const BASE_CARBS = 45; 
+        const BASE_GLUCOSE = 32;
+
+        // Elements
+        const slider = document.getElementById('amount-slider');
+        const trackFill = document.getElementById('slider-track');
+        const displayCarbs = document.getElementById('display-carbs');
+        const displayGlucose = document.getElementById('display-glucose');
+        const currentBadge = document.getElementById('current-badge');
+        const riskText = document.getElementById('risk-text');
+        
+        // Graph Elements
+        const indicatorLine = document.getElementById('indicator-line');
+        const dotCarbs = document.getElementById('dot-carbs');
+        const dotGlucose = document.getElementById('dot-glucose');
+        const glucosePath = document.getElementById('glucose-path');
+
+        // Visual Fill Circles
+        const circleBase = document.getElementById('circle-base');
+        const circleExcess = document.getElementById('circle-excess');
+        const arBowl = document.getElementById('ar-bowl');
+        const handImg = document.querySelector('.hand-img');
+        const handLabel = document.querySelector('.ar-overlay .relative span');
+
+        // 손 크기 설정 (L 사이즈 기준 185mm)
+        const HAND_SIZE_RATIOS = {
+            'XS': 140 / 185,  // 0.757
+            'S': 155 / 185,   // 0.838
+            'M': 170 / 185,   // 0.919
+            'L': 185 / 185,   // 1.0
+            'XL': 195 / 185   // 1.054
+        };
+        const BASE_HAND_SIZE = 130; // 기본 손 이미지 크기 (px)
+
+        // localStorage에서 손 크기 가져오기 (기본값: L)
+        const userData = JSON.parse(localStorage.getItem('glucoUser') || '{}');
+        const handSize = userData.handSize || 'L';
+        const handSizeRatio = HAND_SIZE_RATIOS[handSize] || 1.0;
+        const handImgSize = BASE_HAND_SIZE * handSizeRatio;
+
+        // 손 이미지 크기 설정
+        if (handImg) {
+            handImg.style.width = `${handImgSize}px`;
+        }
+        if (handLabel) {
+            handLabel.textContent = `내 손 (${handSize})`;
+        }
+
+        // 초기화
+        updateDashboard(1.0);
+
+        slider.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            updateDashboard(val);
+        });
+
+        function updateDashboard(servings) {
+            // 1. 수치 계산
+            const currentCarbs = Math.round(BASE_CARBS * servings);
+            const currentGlucose = Math.round(BASE_GLUCOSE * servings);
+
+            displayCarbs.innerText = `${currentCarbs}g`;
+            displayGlucose.innerText = `+${currentGlucose}`;
+            currentBadge.innerText = `${servings.toFixed(1)} 인분`;
+
+            // 2. 위험도 UI 업데이트
+            if (servings < 0.8) {
+                riskText.innerText = "가벼운 식사";
+                riskText.style.color = "#18D9C2"; 
+                displayGlucose.style.color = "#18D9C2";
+                glucosePath.classList.remove('danger');
+                dotGlucose.setAttribute('stroke', '#18D9C2');
+            } else if (servings <= 1.2) {
+                riskText.innerText = "적당한 식사";
+                riskText.style.color = "#F6C343"; 
+                displayGlucose.style.color = "#F6C343";
+                glucosePath.classList.remove('danger');
+                dotGlucose.setAttribute('stroke', '#F6C343');
+            } else {
+                riskText.innerText = "혈당 급상승 주의";
+                riskText.style.color = "#FF5C5C"; 
+                displayGlucose.style.color = "#FF5C5C";
+                glucosePath.classList.add('danger');
+                dotGlucose.setAttribute('stroke', '#FF5C5C');
+            }
+
+            // 3. 슬라이더 & 그래프 연동
+            const percent = ((servings - 0.1) / 1.9) * 100;
+            trackFill.style.width = `${percent}%`;
+
+            const graphX = (servings / 2.0) * 300; 
+            indicatorLine.setAttribute('x1', graphX);
+            indicatorLine.setAttribute('x2', graphX);
+
+            const carbsY = 100 - ((servings / 2.0) * 60);
+            dotCarbs.setAttribute('cx', graphX);
+            dotCarbs.setAttribute('cy', carbsY);
+
+            const glucoseY = 110 - ((servings / 2.0) * 100);
+            dotGlucose.setAttribute('cx', graphX);
+            dotGlucose.setAttribute('cy', glucoseY);
+
+            // 4. [NEW] 중앙 원형 시각 피드백 로직
+            let baseSizePct = 0;
+            let excessSizePct = 0;
+
+            if (servings <= 1.0) {
+                // 1인분 이하: 초록 원만 크기 조절 (0~100%)
+                baseSizePct = servings * 100; 
+                excessSizePct = 0;
+            } else {
+                // 1인분 초과: 초록 원 꽉 참 + 빨간 원 생성
+                baseSizePct = 100;
+                // 1.0 ~ 2.0 사이의 값을 0 ~ 100%로 매핑
+                excessSizePct = (servings - 1.0) * 100;
+            }
+
+            circleBase.style.width = `${baseSizePct}%`;
+            circleBase.style.height = `${baseSizePct}%`;
+            
+            circleExcess.style.width = `${excessSizePct}%`;
+            circleExcess.style.height = `${excessSizePct}%`;
+        }
+
+        window.finishAnalysis = function() {
+            // 부모 창에 애니메이션 완료 메시지 전송
+            if (window.parent && window.parent !== window) {
+                try {
+                    window.parent.postMessage({
+                        type: 'animation-complete',
+                        screenIndex: 3
+                    }, '*');
+                } catch (e) {
+                    console.log('Failed to send animation-complete message');
+                }
+            }
+            // ScreenE로 이동 (iframe 내부 이동이므로 주석 처리)
+            // window.location.href = 'ScreenE.html';
+        }
+
+        // 플래시 효과 오버레이 추가
+        const flashOverlay = document.createElement('div');
+        flashOverlay.id = 'flash-overlay';
+        flashOverlay.style.cssText = 'position: absolute; inset: 0; background-color: rgba(255, 255, 255, 0); pointer-events: none; z-index: 50; transition: background-color 0.1s ease-out;';
+        document.querySelector('.device-frame').appendChild(flashOverlay);
+
+        // 플래시 애니메이션 스타일 추가
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes autoFlash {
+                0% { background-color: rgba(255, 255, 255, 0); }
+                50% { background-color: rgba(255, 255, 255, 0.95); }
+                100% { background-color: rgba(255, 255, 255, 0); }
+            }
+            .flash-overlay.auto-flash {
+                animation: autoFlash 0.3s ease-out;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 애니메이션 시작 함수 (화면이 보일 때부터 시작)
+        const glassPanel = document.getElementById('glass-panel');
+        const sliderContainer = document.getElementById('slider-container');
+        const buttonContainer = document.getElementById('button-container');
+        const bottomSheet = document.querySelector('.bottom-sheet');
+        let flashTimer = null;
+        let animationTimers = [];
+
+        function clearAllTimers() {
+            animationTimers.forEach(timer => {
+                if (timer) clearTimeout(timer);
+            });
+            animationTimers = [];
+        }
+
+        function startAnimations() {
+            // 기존 타이머들 모두 클리어
+            clearAllTimers();
+
+            // 플래시 효과 시작
+            flashOverlay.classList.remove('auto-flash');
+            requestAnimationFrame(() => {
+                flashOverlay.classList.add('auto-flash');
+                flashTimer = setTimeout(() => {
+                    flashOverlay.classList.remove('auto-flash');
+                }, 300);
+            });
+
+            // 모든 애니메이션 상태 초기화
+            if (bottomSheet) {
+                bottomSheet.style.animation = 'none';
+                void bottomSheet.offsetWidth;
+            }
+            if (glassPanel) {
+                glassPanel.classList.remove('visible');
+            }
+            if (sliderContainer) {
+                sliderContainer.style.animation = 'none';
+                sliderContainer.style.opacity = '0';
+                void sliderContainer.offsetWidth;
+            }
+            if (buttonContainer) {
+                buttonContainer.style.animation = 'none';
+                buttonContainer.style.opacity = '0';
+                void buttonContainer.offsetWidth;
+            }
+
+            // 즉시 하단 시트 슬라이드 업
+            requestAnimationFrame(() => {
+                if (bottomSheet) {
+                    bottomSheet.style.animation = 'slideUp 0.5s ease-out';
+                }
+            });
+
+            // Glass Panel 페이드 인 (0.2초 후)
+            animationTimers.push(setTimeout(() => {
+                if (glassPanel) {
+                    glassPanel.classList.add('visible');
+                }
+            }, 200));
+
+            // 슬라이더 나타남 및 오른쪽으로 이동 애니메이션 (0.5초 후)
+            animationTimers.push(setTimeout(() => {
+                if (sliderContainer) {
+                    sliderContainer.style.animation = 'fadeInUp 0.3s ease-out forwards';
+                }
+                // 슬라이더가 오른쪽으로 이동하는 애니메이션
+                const amountSlider = document.getElementById('amount-slider');
+                if (amountSlider) {
+                    // 슬라이더를 0.1에서 1.0으로 이동
+                    amountSlider.value = 0.1;
+                    // 슬라이더 이벤트 트리거하여 UI 업데이트
+                    amountSlider.dispatchEvent(new Event('input'));
+                    
+                    // 0.5초 동안 1.0까지 이동
+                    const startValue = 0.1;
+                    const endValue = 1.8;
+                    const duration = 1300;
+                    const startTime = Date.now();
+                    
+                    function animateSlider() {
+                        const currentTime = Date.now();
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        
+                        // ease-out 함수 적용
+                        const easeOut = 1 - Math.pow(1 - progress, 3);
+                        const currentValue = startValue + (endValue - startValue) * easeOut;
+                        
+                        amountSlider.value = currentValue;
+                        amountSlider.dispatchEvent(new Event('input'));
+                        
+                        if (progress < 1) {
+                            requestAnimationFrame(animateSlider);
+                        } else {
+                            amountSlider.value = endValue;
+                            amountSlider.dispatchEvent(new Event('input'));
+                        }
+                    }
+                    
+                    requestAnimationFrame(animateSlider);
+                }
+            }, 500));
+
+            // 버튼들 나타남 (0.8초 후)
+            animationTimers.push(setTimeout(() => {
+                if (buttonContainer) {
+                    buttonContainer.style.animation = 'fadeInUp 0.3s ease-out forwards';
+                }
+            }, 800));
+            
+            // 3초 후 완료 메시지 전송
+            animationTimers.push(setTimeout(() => {
+                if (window.parent && window.parent !== window) {
+                    try {
+                        window.parent.postMessage({
+                            type: 'animation-complete',
+                            screenIndex: 3
+                        }, '*');
+                    } catch (e) {
+                        console.log('Failed to send animation-complete message');
+                    }
+                }
+            }, 3000));
+        }
+
+        // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'start-animation' && event.data.screenIndex === 3) {
+                startAnimations();
+            }
+        });
+
+        // 초기 실행
+        startAnimations();
+    </script>
+
+</body>
+</html>

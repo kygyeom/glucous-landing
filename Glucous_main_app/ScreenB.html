@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>GlucoUS Screen B - Analyzing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .device-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #0B0F12;
+            position: relative;
+            overflow: hidden;
+            border-radius: 40px;
+            box-shadow: 0 0 0 10px #1a1a1a;
+        }
+
+        /* 배경 이미지 (Screen A에서 찍은 사진 가정) */
+        .photo-bg {
+            position: absolute;
+            inset: 0;
+            background: url('mainfood_9_19.jpeg');
+            background-size: cover;
+            background-position: center;
+            /* 흐림 효과 살짝 주어 분석 중임 강조 (옵션) */
+            filter: brightness(0.7); 
+        }
+
+        /* 스캔 라인 애니메이션 */
+        @keyframes scanMove {
+            0% { top: 15%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 55%; opacity: 0; }
+        }
+
+        .scan-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #18D9C2; /* Primary Color */
+            box-shadow: 0 0 12px 2px rgba(24, 217, 194, 0.6);
+            animation: scanMove 2s linear infinite;
+            z-index: 10;
+        }
+
+        /* 하단 시트 슬라이드 업 애니메이션 */
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        /* 하단 시트 배경 */
+        .bottom-sheet {
+            background-color: #182127; /* SurfaceElevated */
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        /* 커스텀 텍스트 컬러 */
+        .text-secondary { color: rgba(234, 242, 246, 0.72); }
+        .text-tertiary { color: rgba(234, 242, 246, 0.50); }
+        .border-divider { border-color: rgba(255, 255, 255, 0.08); }
+    </style>
+</head>
+<body>
+
+    <div class="device-frame">
+        <div class="photo-bg"></div>
+        
+        <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-[#0B0F12]/90 z-0"></div>
+
+        <div class="scan-line"></div>
+
+        <div class="absolute top-[44px] w-full px-4 flex justify-between items-center z-20 h-[52px]">
+            <div class="absolute left-0 w-full text-center pointer-events-none">
+                <span class="text-[14px] text-white/90 font-medium tracking-wide bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm">
+                    분석 중...
+                </span>
+            </div>
+            
+            <button class="ml-auto w-10 h-10 rounded-full bg-black/20 backdrop-blur-md flex items-center justify-center border border-white/10 relative z-30">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EAF2F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <div class="bottom-sheet absolute bottom-0 w-full h-[45%] z-30 p-6 flex flex-col">
+            
+            <div class="w-[36px] h-[4px] bg-white/10 rounded-full mx-auto mb-6"></div>
+
+            <div class="flex flex-col gap-6 mb-8 pl-2">
+                
+                <div class="flex items-center gap-4">
+                    <div class="w-6 h-6 rounded-full bg-[#18D9C2] flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(24,217,194,0.4)]">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B0F12" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <span class="text-[15px] text-[#EAF2F6] font-medium">음식 종류 식별 완료</span>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="w-6 h-6 shrink-0 animate-spin">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.1)" stroke-width="3"/>
+                            <path d="M12 2C6.47715 2 2 6.47715 2 12" stroke="#18D9C2" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <span class="text-[15px] text-[#EAF2F6] font-medium">100g 영양 데이터 매칭 중</span>
+                </div>
+
+                <div class="flex items-center gap-4 opacity-40">
+                    <div class="w-6 h-6 rounded-full border-2 border-white/20 shrink-0"></div>
+                    <span class="text-[15px] text-white">그릇 및 양 측정 준비</span>
+                </div>
+            </div>
+
+            <div class="w-full h-[72px] bg-white/5 rounded-[16px] p-4 flex items-center gap-4 animate-pulse border border-white/5">
+                <div class="w-10 h-10 rounded-full bg-white/10 shrink-0"></div>
+                <div class="flex flex-col gap-2 w-full">
+                    <div class="w-[60%] h-3 bg-white/10 rounded"></div>
+                    <div class="w-[40%] h-2 bg-white/10 rounded"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // 플래시 효과 오버레이 추가
+        const flashOverlay = document.createElement('div');
+        flashOverlay.id = 'flash-overlay';
+        flashOverlay.style.cssText = 'position: absolute; inset: 0; background-color: rgba(255, 255, 255, 0); pointer-events: none; z-index: 50; transition: background-color 0.1s ease-out;';
+        document.querySelector('.device-frame').appendChild(flashOverlay);
+
+        // 플래시 애니메이션 스타일 추가
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes autoFlash {
+                0% { background-color: rgba(255, 255, 255, 0); }
+                50% { background-color: rgba(255, 255, 255, 0.95); }
+                100% { background-color: rgba(255, 255, 255, 0); }
+            }
+            .flash-overlay.auto-flash {
+                animation: autoFlash 0.3s ease-out;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 하단 시트 애니메이션 시작 함수 (화면이 보일 때 즉시 시작, 3초 후 완료)
+        const bottomSheet = document.querySelector('.bottom-sheet');
+        let flashTimer = null;
+        let animationTimer = null;
+        let completeTimer = null;
+        
+        function startBottomSheetAnimation() {
+            // 기존 타이머 클리어
+            if (flashTimer) {
+                clearTimeout(flashTimer);
+            }
+            if (animationTimer) {
+                clearTimeout(animationTimer);
+            }
+            if (completeTimer) {
+                clearTimeout(completeTimer);
+            }
+            
+            // 플래시 효과 시작
+            flashOverlay.classList.remove('auto-flash');
+            requestAnimationFrame(() => {
+                flashOverlay.classList.add('auto-flash');
+                flashTimer = setTimeout(() => {
+                    flashOverlay.classList.remove('auto-flash');
+                }, 300);
+            });
+            
+            // 애니메이션 초기화
+            if (bottomSheet) {
+                bottomSheet.style.animation = 'none';
+                void bottomSheet.offsetWidth; // 리플로우 강제
+            }
+            
+            // 즉시 하단 시트 슬라이드 업 (requestAnimationFrame으로 다음 프레임에 실행)
+            requestAnimationFrame(() => {
+                if (bottomSheet) {
+                    bottomSheet.style.animation = 'slideUp 0.5s ease-out';
+                }
+            });
+            
+            // 3초 후 완료 메시지 전송
+            completeTimer = setTimeout(() => {
+                if (window.parent && window.parent !== window) {
+                    try {
+                        window.parent.postMessage({
+                            type: 'animation-complete',
+                            screenIndex: 1
+                        }, '*');
+                    } catch (e) {
+                        console.log('Failed to send animation-complete message');
+                    }
+                }
+            }, 3000);
+        }
+        
+        // postMessage 리스너 - 화면이 보일 때마다 애니메이션 재시작
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'start-animation' && event.data.screenIndex === 1) {
+                startBottomSheetAnimation();
+            }
+        });
+        
+        // 초기 실행
+        startBottomSheetAnimation();
+    </script>
+
+</body>
+</html>

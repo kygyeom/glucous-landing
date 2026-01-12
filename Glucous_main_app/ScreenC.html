@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>GlucoUS Screen C - Selection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .device-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #0B0F12;
+            position: relative;
+            overflow: hidden;
+            border-radius: 40px;
+            box-shadow: 0 0 0 10px #1a1a1a;
+        }
+
+        .photo-bg {
+            position: absolute;
+            inset: 0;
+            background: url('mainfood_9_19.jpeg');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.6); 
+        }
+
+        .glass-bar {
+            background-color: rgba(18, 24, 29, 0.55);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* Progress Bar Animation */
+        @keyframes countdown {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+        
+        .progress-bar {
+            width: 100%; 
+            height: 100%;
+            background-color: #18D9C2;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        /* Animation Class for JS control */
+        .animating .progress-bar {
+            animation: countdown 4s linear forwards;
+        }
+
+        .bottom-sheet {
+            background-color: #182127; 
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        /* 카드 스타일 */
+        .food-card {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        /* 1순위 추천 강조 (기본 상태) */
+        .food-card.recommended {
+            background-color: rgba(24, 217, 194, 0.05);
+            border: 1px solid rgba(24, 217, 194, 0.5);
+        }
+
+        /* 선택된 상태 (Darker) */
+        .food-card.selected {
+            background-color: rgba(0, 0, 0, 0.6) !important; /* 배경 어두워짐 */
+            border-color: #18D9C2 !important;
+            transform: scale(0.98);
+        }
+
+        /* 오른쪽 확정 버튼 슬라이드 효과 */
+        .confirm-btn {
+            opacity: 0;
+            transform: translateX(10px);
+            display: none;
+            transition: all 0.3s ease;
+        }
+        
+        .food-card.selected .original-info {
+            display: none;
+        }
+        
+        .food-card.selected .confirm-btn {
+            display: flex;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* 카운트다운 숫자 애니메이션 */
+        @keyframes countdownFade {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+        }
+
+        .countdown-number {
+            font-size: 120px;
+            font-weight: 700;
+            color: #18D9C2;
+            text-shadow: 0 0 30px rgba(24, 217, 194, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="device-frame" onclick="stopAutoSelection()">
+        <div class="photo-bg"></div>
+
+        <div class="absolute top-0 w-full mt-[44px] z-20">
+            <div class="h-[52px] glass-bar px-4 flex items-center gap-3">
+                <button class="w-10 h-10 -ml-2 rounded-full flex items-center justify-center hover:bg-white/10">
+                    <i class="fa-solid fa-chevron-left text-white/70"></i>
+                </button>
+                <span class="text-[16px] text-[#EAF2F6] font-medium">가장 비슷한 음식</span>
+            </div>
+            
+            <div id="progress-container" class="w-full h-[4px] bg-white/10 animating opacity-100 transition-opacity duration-300">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+
+        <div id="countdown-container" class="absolute bottom-[45%] left-1/2 -translate-x-1/2 z-40 pointer-events-none">
+            <div id="countdown-number" class="countdown-number">3</div>
+        </div>
+
+        <div class="bottom-sheet absolute bottom-0 w-full h-[60%] z-30 flex flex-col p-4 pb-8">
+            
+            <div class="w-[36px] h-[4px] bg-white/10 rounded-full mx-auto mb-4 shrink-0"></div>
+
+            <button class="w-full h-[48px] bg-white/5 rounded-[12px] flex items-center px-4 mb-4 border border-white/5 shrink-0 hover:bg-white/10 transition-colors">
+                <i class="fa-solid fa-magnifying-glass text-white/50 mr-3"></i>
+                <span class="text-[14px] text-[rgba(234,242,246,0.5)]">다른 이름으로 검색</span>
+            </button>
+
+            <div class="flex flex-col gap-3 overflow-y-auto pb-20 no-scrollbar">
+                
+                <div class="food-card recommended w-full h-[72px] rounded-[20px] flex items-center px-5 justify-between relative shrink-0 cursor-pointer" onclick="selectCard(this, '치킨 샐러드')">
+                    <div class="flex flex-col">
+                        <span class="text-[16px] text-[#EAF2F6] font-medium">치킨 샐러드</span>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                            <span class="text-[12px] text-[#18D9C2] font-medium">98% 일치</span>
+                            <span class="w-0.5 h-0.5 bg-white/30 rounded-full"></span>
+                            <span class="text-[12px] text-[rgba(234,242,246,0.5)]">채소류</span>
+                        </div>
+                    </div>
+                    
+                    <div class="original-info w-6 h-6 rounded-full bg-[#18D9C2] flex items-center justify-center shadow-[0_0_10px_rgba(24,217,194,0.4)]">
+                        <i class="fa-solid fa-check text-[#0B0F12] text-[12px]"></i>
+                    </div>
+
+                    <div class="confirm-btn items-center gap-2" onclick="event.stopPropagation(); confirmSelection()">
+                        <span class="text-[#18D9C2] text-[14px] font-bold">확정하기</span>
+                        <div class="w-8 h-8 rounded-full bg-[#18D9C2] flex items-center justify-center">
+                            <i class="fa-solid fa-arrow-right text-[#0B0F12]"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="food-card w-full h-[72px] rounded-[20px] flex items-center px-5 justify-between shrink-0 cursor-pointer hover:bg-white/5" onclick="selectCard(this, '스테이크 샐러드')">
+                    <div class="flex flex-col">
+                        <span class="text-[16px] text-[rgba(234,242,246,0.72)]">스테이크 샐러드</span>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                            <span class="text-[12px] text-[rgba(234,242,246,0.5)]">유사</span>
+                            <span class="w-0.5 h-0.5 bg-white/30 rounded-full"></span>
+                            <span class="text-[12px] text-[rgba(234,242,246,0.5)]">채소류</span>
+                        </div>
+                    </div>
+                    
+                    <div class="original-info">
+                         </div>
+
+                    <div class="confirm-btn items-center gap-2" onclick="event.stopPropagation(); confirmSelection()">
+                        <span class="text-[#18D9C2] text-[14px] font-bold">확정하기</span>
+                        <div class="w-8 h-8 rounded-full bg-[#18D9C2] flex items-center justify-center">
+                            <i class="fa-solid fa-arrow-right text-[#0B0F12]"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="food-card w-full h-[72px] rounded-[20px] flex items-center px-5 justify-between shrink-0 cursor-pointer hover:bg-white/5" onclick="selectCard(this, '서브웨이 샐러드')">
+                    <div class="flex flex-col">
+                        <span class="text-[16px] text-[rgba(234,242,246,0.72)]">서브웨이 샐러드</span>
+                        <span class="text-[12px] text-[rgba(234,242,246,0.5)] mt-0.5">채소류</span>
+                    </div>
+
+                    <div class="confirm-btn items-center gap-2" onclick="event.stopPropagation(); confirmSelection()">
+                        <span class="text-[#18D9C2] text-[14px] font-bold">확정하기</span>
+                        <div class="w-8 h-8 rounded-full bg-[#18D9C2] flex items-center justify-center">
+                            <i class="fa-solid fa-arrow-right text-[#0B0F12]"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="toast-msg" class="absolute bottom-[40px] left-1/2 -translate-x-1/2 w-max max-w-[90%] transition-opacity duration-300">
+                <div class="bg-[#182127] border border-white/10 px-4 py-2.5 rounded-full flex items-center gap-2 shadow-lg">
+                    <i class="fa-regular fa-hand-point-up text-[#F6C343]"></i>
+                    <span class="text-[13px] text-[#EAF2F6]">터치하면 자동 선택이 멈춰요</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let autoSelectTimer;
+        let countdownTimer;
+        let isAutoPaused = false;
+        
+        // 1. 자동 선택 타이머 로직
+        function startAutoSelection() {
+            const countEl = document.getElementById('countdown-number');
+            const progress = document.getElementById('progress-container');
+            let count = 3;
+
+            // 카운트다운 표시
+            countEl.classList.add('show');
+            
+            countdownTimer = setInterval(() => {
+                if(isAutoPaused) return;
+                
+                count--;
+                if (count > 0) {
+                    // 숫자 깜빡임 효과
+                    countEl.classList.remove('show');
+                    void countEl.offsetWidth; // Trigger reflow
+                    countEl.textContent = count;
+                    countEl.classList.add('show');
+                } else {
+                    clearInterval(countdownTimer);
+                    countEl.style.opacity = '0';
+                }
+            }, 1000);
+
+            // 3초 후 자동 이동 (아무런 터치가 없었을 경우)
+            // 애니메이션이 0.5초 딜레이 후 시작되므로, 3초 후에 완료되도록 설정
+            // (전체 4초 중 0.5초 딜레이 + 3초 애니메이션 = 3.5초, 여유를 두고 3초로 설정)
+            autoSelectTimer = setTimeout(() => {
+                if (!isAutoPaused) {
+                    // 완료 메시지는 startAnimations에서 4초 후에 보내므로 여기서는 보내지 않음
+                    // ScreenD로 이동 (iframe 내부 이동이므로 주석 처리)
+                    // window.location.href = 'ScreenD.html';
+                }
+            }, 3000);
+        }
+
+        // 2. 자동 선택 중단 (화면 터치 시)
+        function stopAutoSelection() {
+            if (isAutoPaused) return;
+            
+            isAutoPaused = true;
+            
+            // 타이머 클리어
+            clearTimeout(autoSelectTimer);
+            clearInterval(countdownTimer);
+            
+            // UI 업데이트: 프로그레스바 숨김, 카운트다운 숨김, 토스트 변경
+            document.getElementById('progress-container').style.opacity = '0';
+            document.getElementById('countdown-number').style.opacity = '0';
+            
+            const toast = document.getElementById('toast-msg');
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                toast.innerHTML = `
+                    <div class="bg-[#182127] border border-[#18D9C2]/50 px-4 py-2.5 rounded-full flex items-center gap-2 shadow-lg">
+                        <i class="fa-solid fa-check text-[#18D9C2]"></i>
+                        <span class="text-[13px] text-[#EAF2F6]">직접 선택 모드</span>
+                    </div>
+                `;
+                toast.style.opacity = '1';
+            }, 300);
+        }
+
+        // 3. 카드 선택 (탭 했을 때)
+        window.selectCard = function(element, foodName) {
+            // 자동 선택 중단 먼저 실행
+            stopAutoSelection();
+
+            // 기존 선택된 카드들 초기화
+            document.querySelectorAll('.food-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // 현재 카드 선택 처리
+            element.classList.add('selected');
+
+            // 1순위 추천 스타일 제거 (시각적 충돌 방지)
+            if (element.classList.contains('recommended')) {
+                // recommended 클래스는 유지하되, CSS에서 selected가 우선순위 높게 처리됨
+            }
+        };
+
+        // 4. 확정하기 버튼 클릭 (다음 화면 이동)
+        window.confirmSelection = function() {
+            // 부모 창에 애니메이션 완료 메시지 전송
+            if (window.parent && window.parent !== window) {
+                try {
+                    window.parent.postMessage({
+                        type: 'animation-complete',
+                        screenIndex: 2
+                    }, '*');
+                } catch (e) {
+                    console.log('Failed to send animation-complete message');
+                }
+            }
+            // ScreenD로 이동 (iframe 내부 이동이므로 주석 처리)
+            // window.location.href = 'ScreenD.html';
+        };
+
+        // 플래시 효과 오버레이 추가
+        const flashOverlay = document.createElement('div');
+        flashOverlay.id = 'flash-overlay';
+        flashOverlay.style.cssText = 'position: absolute; inset: 0; background-color: rgba(255, 255, 255, 0); pointer-events: none; z-index: 50; transition: background-color 0.1s ease-out;';
+        document.querySelector('.device-frame').appendChild(flashOverlay);
+
+        // 플래시 애니메이션 스타일 추가
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes autoFlash {
+                0% { background-color: rgba(255, 255, 255, 0); }
+                50% { background-color: rgba(255, 255, 255, 0.95); }
+                100% { background-color: rgba(255, 255, 255, 0); }
+            }
+            .flash-overlay.auto-flash {
+                animation: autoFlash 0.3s ease-out;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 카운트다운 및 하단 시트 애니메이션 시작 함수
+        const bottomSheet = document.querySelector('.bottom-sheet');
+        const countdownElement = document.getElementById('countdown-number');
+        const container = document.getElementById('countdown-container');
+        let flashTimer = null;
+        let timers = [];
+
+        function clearTimers() {
+            timers.forEach(timer => clearTimeout(timer));
+            timers = [];
+        }
+
+        function showCountdown(num) {
+            if (countdownElement) {
+                countdownElement.textContent = num;
+                countdownElement.style.animation = 'none';
+                void countdownElement.offsetWidth; // Trigger reflow
+                countdownElement.style.animation = 'countdownFade 1s ease-in-out';
+            }
+        }
+
+        function startAnimations() {
+            clearTimers();
+            
+            // 초기화
+            if (bottomSheet) {
+                bottomSheet.style.animation = 'none';
+                void bottomSheet.offsetWidth; // 리플로우 강제
+            }
+            if (container) {
+                container.style.opacity = '1';
+            }
+            if (countdownElement) {
+                countdownElement.textContent = '';
+            }
+            isAutoPaused = false;
+
+            // 0.5초 딜레이 후 애니메이션 시작
+            // const animationDelay = 500;
+            const animationDelay = 0;
+            
+            // 플래시 효과 시작 (0.5초 딜레이)
+            timers.push(setTimeout(() => {
+                flashOverlay.classList.remove('auto-flash');
+                requestAnimationFrame(() => {
+                    flashOverlay.classList.add('auto-flash');
+                    flashTimer = setTimeout(() => {
+                        flashOverlay.classList.remove('auto-flash');
+                    }, 300);
+                });
+            }, animationDelay));
+
+            // 하단 시트 슬라이드 업 (0.5초 딜레이 후)
+            timers.push(setTimeout(() => {
+                requestAnimationFrame(() => {
+                    if (bottomSheet) {
+                        bottomSheet.style.animation = 'slideUp 0.5s ease-out';
+                    }
+                });
+            }, animationDelay));
+
+            // 카운트다운: 3 → 2 → 1 (각 1초씩, 0.5초 딜레이 후 시작)
+            timers.push(setTimeout(() => showCountdown(3), animationDelay + 0));      // 0.5초 후
+            timers.push(setTimeout(() => showCountdown(2), animationDelay + 1000));     // 1.5초 후
+            timers.push(setTimeout(() => showCountdown(1), animationDelay + 2000));     // 2.5초 후
+            
+            // 카운트다운 숨기기 (0.5초 딜레이 + 3초 = 3.5초 후)
+            timers.push(setTimeout(() => {
+                if (container) {
+                    container.style.opacity = '0';
+                }
+            }, animationDelay + 3000));
+
+            // 자동 선택 시작 (0.5초 딜레이 후)
+            timers.push(setTimeout(() => {
+                startAutoSelection();
+            }, animationDelay));
+
+            // 4초 후 완료 메시지 전송
+            timers.push(setTimeout(() => {
+                if (window.parent && window.parent !== window) {
+                    try {
+                        window.parent.postMessage({
+                            type: 'animation-complete',
+                            screenIndex: 2
+                        }, '*');
+                    } catch (e) {
+                        console.log('Failed to send animation-complete message');
+                    }
+                }
+            }, 4000));
+        }
+
+        // postMessage 리스너
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'start-animation' && event.data.screenIndex === 2) {
+                startAnimations();
+            }
+        });
+
+        // 초기 실행
+        startAnimations();
+
+    </script>
+
+</body>
+</html>

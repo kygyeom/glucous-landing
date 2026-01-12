@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>GlucoUS - User Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .device-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #0B0F12;
+            position: relative;
+            overflow: hidden;
+            border-radius: 40px;
+            box-shadow: 0 0 0 10px #1a1a1a;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Input Style */
+        .input-glass {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #EAF2F6;
+            transition: all 0.3s ease;
+        }
+        .input-glass:focus {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-color: #18D9C2;
+            outline: none;
+        }
+
+        /* Group Style */
+        .section-box {
+            background-color: #182127;
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 16px;
+        }
+
+        /* Select Button (Hand Size / Type) */
+        .select-btn {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+        .select-btn.selected {
+            background-color: rgba(24, 217, 194, 0.15);
+            border-color: #18D9C2;
+            color: #18D9C2;
+        }
+
+        /* Scrollbar Hide */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="device-frame">
+        
+        <div class="pt-[50px] px-4 pb-4 bg-[#0B0F12] z-20 shrink-0 flex items-center justify-between border-b border-white/5">
+            <button onclick="history.back()" class="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-arrow-left text-white/70"></i>
+            </button>
+            <span class="text-[18px] font-bold text-[#EAF2F6]">내 정보 수정</span>
+            <div class="w-10"></div> </div>
+
+        <div class="flex-1 overflow-y-auto px-4 py-6 no-scrollbar">
+            
+            <div class="flex flex-col items-center mb-8">
+                <div class="w-[100px] h-[100px] rounded-full bg-gradient-to-br from-[#18D9C2] to-[#0B0F12] p-[2px] relative group cursor-pointer">
+                    <div class="w-full h-full rounded-full bg-[#182127] flex items-center justify-center overflow-hidden relative">
+                        <i class="fa-solid fa-user text-[40px] text-white/20"></i>
+                        </div>
+                    <div class="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-[#18D9C2] flex items-center justify-center border-[3px] border-[#0B0F12]">
+                        <i class="fa-solid fa-camera text-[#0B0F12] text-[12px]"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <h3 class="text-[14px] text-white/40 font-bold mb-4 uppercase tracking-wider">기본 정보</h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[13px] text-white/70 mb-1.5 block">닉네임</label>
+                        <input type="text" id="input-name" class="input-glass w-full h-[48px] rounded-[12px] px-4 text-[15px]">
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <div class="flex-1">
+                            <label class="text-[13px] text-white/70 mb-1.5 block">나이</label>
+                            <input type="number" id="input-age" class="input-glass w-full h-[48px] rounded-[12px] px-4 text-[15px]">
+                        </div>
+                        <div class="flex-1">
+                            <label class="text-[13px] text-white/70 mb-1.5 block">성별</label>
+                            <select id="input-gender" class="input-glass w-full h-[48px] rounded-[12px] px-4 text-[15px] appearance-none bg-transparent">
+                                <option value="M" class="text-black">남성</option>
+                                <option value="F" class="text-black">여성</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <h3 class="text-[14px] text-white/40 font-bold mb-4 uppercase tracking-wider">신체 및 건강</h3>
+                
+                <div class="space-y-4">
+                    <div class="flex gap-3">
+                        <div class="flex-1">
+                            <label class="text-[13px] text-white/70 mb-1.5 block">키 (cm)</label>
+                            <input type="number" id="input-height" class="input-glass w-full h-[48px] rounded-[12px] px-4 text-[15px]">
+                        </div>
+                        <div class="flex-1">
+                            <label class="text-[13px] text-white/70 mb-1.5 block">몸무게 (kg)</label>
+                            <input type="number" id="input-weight" class="input-glass w-full h-[48px] rounded-[12px] px-4 text-[15px]">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[13px] text-white/70 mb-2 block">당뇨 유형</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button class="select-btn type-opt h-[40px] rounded-[10px] text-[13px] text-white/60" onclick="setType(this, 'type1')">1형</button>
+                            <button class="select-btn type-opt h-[40px] rounded-[10px] text-[13px] text-white/60" onclick="setType(this, 'type2')">2형</button>
+                            <button class="select-btn type-opt h-[40px] rounded-[10px] text-[13px] text-white/60" onclick="setType(this, 'gestational')">임신성</button>
+                            <button class="select-btn type-opt h-[40px] rounded-[10px] text-[13px] text-white/60" onclick="setType(this, 'prediabetes')">관리 중</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-[14px] text-white/40 font-bold uppercase tracking-wider">손 크기 설정</h3>
+                    <span class="text-[11px] text-[#18D9C2] bg-[#18D9C2]/10 px-2 py-0.5 rounded">분석 정확도용</span>
+                </div>
+
+                <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+                    <button class="select-btn hand-opt flex-1 min-w-[60px] h-[50px] rounded-[12px] flex flex-col items-center justify-center gap-0.5" onclick="setHand(this, 'XS', 140)">
+                        <span class="text-[14px] font-bold text-white">XS</span>
+                    </button>
+                    <button class="select-btn hand-opt flex-1 min-w-[60px] h-[50px] rounded-[12px] flex flex-col items-center justify-center gap-0.5" onclick="setHand(this, 'S', 155)">
+                        <span class="text-[14px] font-bold text-white">S</span>
+                    </button>
+                    <button class="select-btn hand-opt flex-1 min-w-[60px] h-[50px] rounded-[12px] flex flex-col items-center justify-center gap-0.5" onclick="setHand(this, 'M', 170)">
+                        <span class="text-[14px] font-bold text-white">M</span>
+                    </button>
+                    <button class="select-btn hand-opt flex-1 min-w-[60px] h-[50px] rounded-[12px] flex flex-col items-center justify-center gap-0.5" onclick="setHand(this, 'L', 185)">
+                        <span class="text-[14px] font-bold text-white">L</span>
+                    </button>
+                    <button class="select-btn hand-opt flex-1 min-w-[60px] h-[50px] rounded-[12px] flex flex-col items-center justify-center gap-0.5" onclick="setHand(this, 'XL', 195)">
+                        <span class="text-[14px] font-bold text-white">XL</span>
+                    </button>
+                </div>
+                <p class="text-[11px] text-white/30 mt-2 text-center" id="hand-desc">현재 설정: M (보통 크기)</p>
+            </div>
+
+            <div class="section-box">
+                <h3 class="text-[14px] text-white/40 font-bold mb-4 uppercase tracking-wider">식이 정보</h3>
+                <div>
+                    <label class="text-[13px] text-white/70 mb-1.5 block">주의해야 할 음식 (콤마로 구분)</label>
+                    <input type="text" id="input-allergy" class="input-glass w-full h-[48px] rounded-[12px] px-4 text-[15px]">
+                </div>
+            </div>
+
+            <div class="h-[20px]"></div>
+
+        </div>
+
+        <div class="bg-[#0B0F12] px-4 pb-[34px] pt-4 border-t border-white/5 relative z-30">
+            <button onclick="saveUserInfo()" class="w-full h-[56px] bg-[#18D9C2] hover:bg-[#12b09d] rounded-[16px] flex items-center justify-center shadow-[0_4px_16px_rgba(24,217,194,0.25)] active:scale-[0.99] transition-all">
+                <span class="text-[#0B0F12] font-bold text-[16px]">변경사항 저장</span>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // 현재 데이터 로드용 객체
+        let currentUser = {
+            name: '', age: '', gender: 'M',
+            height: '', weight: '',
+            diabetesType: '', allergies: '',
+            handSize: 'M', handSizeMm: 170
+        };
+
+        // DOM Elements
+        const elName = document.getElementById('input-name');
+        const elAge = document.getElementById('input-age');
+        const elGender = document.getElementById('input-gender');
+        const elHeight = document.getElementById('input-height');
+        const elWeight = document.getElementById('input-weight');
+        const elAllergy = document.getElementById('input-allergy');
+        const elHandDesc = document.getElementById('hand-desc');
+
+        // 페이지 로드 시 데이터 불러오기
+        window.onload = function() {
+            const savedData = localStorage.getItem('glucoUser');
+            if (savedData) {
+                currentUser = JSON.parse(savedData);
+                populateFields();
+            } else {
+                // 데이터 없으면 기본값 세팅
+                populateFields();
+            }
+        };
+
+        function populateFields() {
+            elName.value = currentUser.name || '';
+            elAge.value = currentUser.age || '';
+            elGender.value = currentUser.gender || 'M';
+            elHeight.value = currentUser.height || '';
+            elWeight.value = currentUser.weight || '';
+            elAllergy.value = currentUser.allergies || '';
+
+            // 당뇨 유형 버튼 세팅
+            updateTypeButtons(currentUser.diabetesType);
+            // 손 크기 버튼 세팅
+            updateHandButtons(currentUser.handSize);
+        }
+
+        // --- Event Handlers ---
+
+        // Diabetes Type
+        window.setType = function(btn, val) {
+            currentUser.diabetesType = val;
+            updateTypeButtons(val);
+        };
+
+        function updateTypeButtons(val) {
+            const buttons = document.querySelectorAll('.type-opt');
+            const typeMap = { 'type1': 0, 'type2': 1, 'gestational': 2, 'prediabetes': 3 };
+            
+            buttons.forEach(b => b.classList.remove('selected'));
+            
+            if (val && typeMap[val] !== undefined) {
+                buttons[typeMap[val]].classList.add('selected');
+            }
+        }
+
+        // Hand Size
+        window.setHand = function(btn, size, mm) {
+            currentUser.handSize = size;
+            currentUser.handSizeMm = mm;
+            updateHandButtons(size);
+        };
+
+        function updateHandButtons(size) {
+            const buttons = document.querySelectorAll('.hand-opt');
+            const sizeMap = { 'XS': 0, 'S': 1, 'M': 2, 'L': 3, 'XL': 4 };
+            
+            buttons.forEach(b => b.classList.remove('selected'));
+            
+            if (size && sizeMap[size] !== undefined) {
+                buttons[sizeMap[size]].classList.add('selected');
+                elHandDesc.textContent = `현재 설정: ${size} (${currentUser.handSizeMm}mm)`;
+            }
+        }
+
+        // Save Function
+        window.saveUserInfo = function() {
+            // Update object from inputs
+            currentUser.name = elName.value;
+            currentUser.age = elAge.value;
+            currentUser.gender = elGender.value;
+            currentUser.height = elHeight.value;
+            currentUser.weight = elWeight.value;
+            currentUser.allergies = elAllergy.value;
+
+            // Save to localStorage
+            localStorage.setItem('glucoUser', JSON.stringify(currentUser));
+
+            // Feedback & Go Back
+            const btn = document.querySelector('button[onclick="saveUserInfo()"]');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fa-solid fa-check text-[#0B0F12]"></i> <span class="text-[#0B0F12] font-bold ml-2">저장 완료</span>';
+            
+            setTimeout(() => {
+                // history.back() for simplicity, or communicate with parent if needed
+                // If embedded in iframe, you might need window.parent logic
+                alert('정보가 수정되었습니다.');
+                history.back(); 
+            }, 500);
+        };
+
+    </script>
+</body>
+</html>

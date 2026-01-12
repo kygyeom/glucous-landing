@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>GlucoUS Screen H - Onboarding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .device-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #0B0F12;
+            position: relative;
+            overflow: hidden;
+            border-radius: 40px;
+            box-shadow: 0 0 0 10px #1a1a1a;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Input Styles */
+        .input-glass {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #EAF2F6;
+            transition: all 0.3s ease;
+        }
+        .input-glass:focus {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-color: #18D9C2;
+            outline: none;
+        }
+
+        /* Selection Buttons */
+        .select-btn {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+        .select-btn.selected {
+            background-color: rgba(24, 217, 194, 0.15);
+            border-color: #18D9C2;
+            color: #18D9C2;
+        }
+
+        /* Step Animation */
+        .step-content {
+            display: none;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .step-content.active {
+            display: flex;
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .step-content.exit {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        /* Progress Bar Transition */
+        .progress-fill {
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="device-frame">
+        
+        <div class="pt-[50px] px-6 pb-4 bg-[#0B0F12] z-20 shrink-0">
+            <button id="prev-btn" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 mb-4 opacity-0 pointer-events-none transition-opacity">
+                <i class="fa-solid fa-arrow-left text-white/60"></i>
+            </button>
+
+            <div class="w-full h-1 bg-white/10 rounded-full mb-6 overflow-hidden">
+                <div id="progress-bar" class="progress-fill h-full bg-[#18D9C2] w-[20%]"></div>
+            </div>
+            
+            <h1 id="header-title" class="text-[28px] font-bold text-[#EAF2F6] leading-[1.3] transition-all">
+                반가워요!<br>어떻게 불러드릴까요?
+            </h1>
+        </div>
+
+        <div class="flex-1 px-6 relative overflow-y-auto no-scrollbar flex flex-col">
+            
+            <div id="step-1" class="step-content active flex-col gap-6 pt-4">
+                <div>
+                    <label class="text-[13px] text-white/50 mb-2 block">닉네임</label>
+                    <input type="text" id="input-name" placeholder="예: 튼튼이" class="input-glass w-full h-[56px] rounded-[16px] px-4 text-[16px]">
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <label class="text-[13px] text-white/50 mb-2 block">나이</label>
+                        <input type="number" id="input-age" placeholder="세" class="input-glass w-full h-[56px] rounded-[16px] px-4 text-[16px]">
+                    </div>
+                    <div class="flex-1">
+                        <label class="text-[13px] text-white/50 mb-2 block">성별</label>
+                        <div class="flex h-[56px] bg-white/5 rounded-[16px] p-1 border border-white/10">
+                            <button class="flex-1 rounded-[12px] text-[14px] text-white/60 transition-colors hover:text-white" onclick="setGender(this, 'M')">남</button>
+                            <button class="flex-1 rounded-[12px] text-[14px] text-white/60 transition-colors hover:text-white" onclick="setGender(this, 'F')">여</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="step-2" class="step-content flex-col gap-6 pt-4">
+                <div>
+                    <label class="text-[13px] text-white/50 mb-2 block">키 (cm)</label>
+                    <input type="number" id="input-height" placeholder="170" class="input-glass w-full h-[56px] rounded-[16px] px-4 text-[16px]">
+                </div>
+                <div>
+                    <label class="text-[13px] text-white/50 mb-2 block">몸무게 (kg)</label>
+                    <input type="number" id="input-weight" placeholder="60" class="input-glass w-full h-[56px] rounded-[16px] px-4 text-[16px]">
+                </div>
+                <p class="text-[13px] text-white/30 text-center mt-2">
+                    BMI 및 기초 대사량 계산에 활용됩니다.
+                </p>
+            </div>
+
+            <div id="step-3" class="step-content flex-col gap-3 pt-4">
+                <button class="select-btn type-opt w-full h-[64px] rounded-[16px] flex items-center px-5 justify-between" onclick="setType(this, 'type1')">
+                    <span class="text-[16px] text-white">1형 당뇨</span>
+                    <i class="fa-solid fa-check text-[#18D9C2] opacity-0 transition-opacity"></i>
+                </button>
+                <button class="select-btn type-opt w-full h-[64px] rounded-[16px] flex items-center px-5 justify-between" onclick="setType(this, 'type2')">
+                    <span class="text-[16px] text-white">2형 당뇨</span>
+                    <i class="fa-solid fa-check text-[#18D9C2] opacity-0 transition-opacity"></i>
+                </button>
+                <button class="select-btn type-opt w-full h-[64px] rounded-[16px] flex items-center px-5 justify-between" onclick="setType(this, 'gestational')">
+                    <span class="text-[16px] text-white">임신성 당뇨</span>
+                    <i class="fa-solid fa-check text-[#18D9C2] opacity-0 transition-opacity"></i>
+                </button>
+                <button class="select-btn type-opt w-full h-[64px] rounded-[16px] flex items-center px-5 justify-between" onclick="setType(this, 'prediabetes')">
+                    <span class="text-[16px] text-white">전단계 / 관리 중</span>
+                    <i class="fa-solid fa-check text-[#18D9C2] opacity-0 transition-opacity"></i>
+                </button>
+                <button class="select-btn type-opt w-full h-[64px] rounded-[16px] flex items-center px-5 justify-between" onclick="setType(this, 'none')">
+                    <span class="text-[16px] text-white">해당 없음</span>
+                    <i class="fa-solid fa-check text-[#18D9C2] opacity-0 transition-opacity"></i>
+                </button>
+            </div>
+
+            <div id="step-4" class="step-content flex-col gap-6 pt-4">
+                <div>
+                    <label class="text-[13px] text-white/50 mb-2 block">주의해야 할 음식</label>
+                    <input type="text" id="input-allergy" placeholder="예: 땅콩, 우유, 새우" class="input-glass w-full h-[56px] rounded-[16px] px-4 text-[16px]">
+                    <p class="text-[12px] text-white/30 mt-2">알레르기가 있거나 피하고 싶은 음식을 입력해주세요. (선택)</p>
+                </div>
+                
+                <div class="flex flex-wrap gap-2">
+                    <button class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[13px] text-white/60 hover:bg-white/10" onclick="addTag('우유')">🥛 우유</button>
+                    <button class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[13px] text-white/60 hover:bg-white/10" onclick="addTag('땅콩')">🥜 땅콩</button>
+                    <button class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[13px] text-white/60 hover:bg-white/10" onclick="addTag('복숭아')">🍑 복숭아</button>
+                    <button class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[13px] text-white/60 hover:bg-white/10" onclick="addTag('갑각류')">🦐 갑각류</button>
+                    <button class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[13px] text-white/60 hover:bg-white/10" onclick="addTag('없음')">🙅‍♂️ 없음</button>
+                </div>
+            </div>
+
+            <div id="step-5" class="step-content flex-col gap-3 pt-2">
+                <button class="select-btn hand-size-opt w-full h-[72px] rounded-[20px] flex items-center px-6 justify-between group" onclick="setHand(this, 'XS', 140)">
+                    <div class="flex flex-col items-start">
+                        <span class="text-[16px] text-[#EAF2F6] font-medium">XS</span>
+                        <span class="text-[13px] text-white/50 mt-0.5">140mm - 손이 작은 편</span>
+                    </div>
+                    <div class="w-5 h-5 rounded-full border border-white/30 group-[.selected]:bg-[#18D9C2] group-[.selected]:border-transparent"></div>
+                </button>
+                <button class="select-btn hand-size-opt w-full h-[72px] rounded-[20px] flex items-center px-6 justify-between group" onclick="setHand(this, 'S', 155)">
+                    <div class="flex flex-col items-start">
+                        <span class="text-[16px] text-[#EAF2F6] font-medium">S</span>
+                        <span class="text-[13px] text-white/50 mt-0.5">155mm - 평균 여성</span>
+                    </div>
+                    <div class="w-5 h-5 rounded-full border border-white/30 group-[.selected]:bg-[#18D9C2] group-[.selected]:border-transparent"></div>
+                </button>
+                <button class="select-btn hand-size-opt w-full h-[72px] rounded-[20px] flex items-center px-6 justify-between group" onclick="setHand(this, 'M', 170)">
+                    <div class="flex flex-col items-start">
+                        <span class="text-[16px] text-[#EAF2F6] font-medium">M</span>
+                        <span class="text-[13px] text-white/50 mt-0.5">170mm - 전체 평균</span>
+                    </div>
+                    <div class="w-5 h-5 rounded-full border border-white/30 group-[.selected]:bg-[#18D9C2] group-[.selected]:border-transparent"></div>
+                </button>
+                <button class="select-btn hand-size-opt w-full h-[72px] rounded-[20px] flex items-center px-6 justify-between group selected" onclick="setHand(this, 'L', 185)">
+                    <div class="flex flex-col items-start">
+                        <span class="text-[16px] text-[#EAF2F6] font-medium">L</span>
+                        <span class="text-[13px] text-white/50 mt-0.5">185mm - 평균 남성</span>
+                    </div>
+                    <div class="w-5 h-5 rounded-full border border-white/30 group-[.selected]:bg-[#18D9C2] group-[.selected]:border-transparent bg-[#18D9C2] border-transparent"></div>
+                </button>
+                <button class="select-btn hand-size-opt w-full h-[72px] rounded-[20px] flex items-center px-6 justify-between group" onclick="setHand(this, 'XL', 195)">
+                    <div class="flex flex-col items-start">
+                        <span class="text-[16px] text-[#EAF2F6] font-medium">XL</span>
+                        <span class="text-[13px] text-white/50 mt-0.5">195mm - 손이 큰 편</span>
+                    </div>
+                    <div class="w-5 h-5 rounded-full border border-white/30 group-[.selected]:bg-[#18D9C2] group-[.selected]:border-transparent"></div>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="p-6 bg-[#0B0F12] relative z-30">
+            <button id="next-btn" class="w-full h-[56px] bg-[#18D9C2] hover:bg-[#12B8A6] rounded-[16px] flex items-center justify-center transition-all shadow-[0_4px_16px_rgba(24,217,194,0.2)] active:scale-95">
+                <span id="btn-text" class="text-[#0B0F12] font-bold text-[16px]">다음</span>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Logic ---
+        let currentStep = 1;
+        const totalSteps = 5;
+
+        // Data Storage
+        let userData = {
+            name: '',
+            age: '',
+            gender: '',
+            height: '',
+            weight: '',
+            diabetesType: '',
+            allergies: '',
+            handSize: 'L',
+            handSizeMm: 185
+        };
+        
+        // localStorage에서 기존 데이터 불러오기
+        const savedData = localStorage.getItem('glucoUser');
+        if (savedData) {
+            try {
+                const parsed = JSON.parse(savedData);
+                userData = { ...userData, ...parsed };
+            } catch (e) {
+                console.error('Failed to parse saved data:', e);
+            }
+        }
+
+        // Titles per step
+        const stepTitles = {
+            1: "반가워요!<br>어떻게 불러드릴까요?",
+            2: "정확한 분석을 위해<br>신체 정보를 알려주세요.",
+            3: "현재 관리 중인<br>상태를 선택해주세요.",
+            4: "피해야 할 음식이<br>있으신가요?",
+            5: "손 크기를<br>선택해주세요."
+        };
+
+        // DOM Elements
+        const headerTitle = document.getElementById('header-title');
+        const progressBar = document.getElementById('progress-bar');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const btnText = document.getElementById('btn-text');
+
+        // Functions
+        function updateUI() {
+            // 1. Progress Bar
+            progressBar.style.width = `${(currentStep / totalSteps) * 100}%`;
+            
+            // 2. Header Title
+            headerTitle.innerHTML = stepTitles[currentStep];
+
+            // 3. Buttons
+            if (currentStep === 1) {
+                prevBtn.style.opacity = '0';
+                prevBtn.style.pointerEvents = 'none';
+            } else {
+                prevBtn.style.opacity = '1';
+                prevBtn.style.pointerEvents = 'auto';
+            }
+
+            if (currentStep === totalSteps) {
+                btnText.textContent = "시작하기";
+            } else {
+                btnText.textContent = "다음";
+            }
+
+            // 4. Content Visibility
+            document.querySelectorAll('.step-content').forEach((el, idx) => {
+                const stepNum = idx + 1;
+                el.classList.remove('active', 'exit');
+                if (stepNum === currentStep) {
+                    el.style.display = 'flex';
+                    setTimeout(() => {
+                        el.classList.add('active');
+                        // 현재 step에 맞는 필드 채우기
+                        populateFieldsForStep(stepNum);
+                    }, 10);
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+        }
+        
+        // 현재 step에 맞는 필드만 채우기
+        function populateFieldsForStep(step) {
+            if (step === 1) {
+                const nameInput = document.getElementById('input-name');
+                const ageInput = document.getElementById('input-age');
+                if (nameInput) nameInput.value = userData.name || '';
+                if (ageInput) ageInput.value = userData.age || '';
+                
+                // 성별 버튼 업데이트
+                if (userData.gender) {
+                    const step1 = document.getElementById('step-1');
+                    if (step1) {
+                        const genderContainer = step1.querySelector('.flex.h-\\[56px\\]');
+                        if (genderContainer) {
+                            const genderBtns = genderContainer.querySelectorAll('button');
+                            genderBtns.forEach(btn => {
+                                if ((btn.textContent.trim() === '남' && userData.gender === 'M') ||
+                                    (btn.textContent.trim() === '여' && userData.gender === 'F')) {
+                                    btn.classList.add('bg-[#182127]', 'text-white', 'shadow-sm');
+                                    btn.classList.remove('text-white/60');
+                                }
+                            });
+                        }
+                    }
+                }
+            } else if (step === 2) {
+                const heightInput = document.getElementById('input-height');
+                const weightInput = document.getElementById('input-weight');
+                if (heightInput) heightInput.value = userData.height || '';
+                if (weightInput) weightInput.value = userData.weight || '';
+            } else if (step === 3) {
+                // 당뇨 유형 버튼 업데이트
+                if (userData.diabetesType) {
+                    const typeMap = { 'type1': 0, 'type2': 1, 'gestational': 2, 'prediabetes': 3, 'none': 4 };
+                    const typeIndex = typeMap[userData.diabetesType];
+                    if (typeIndex !== undefined) {
+                        const typeBtns = document.querySelectorAll('.type-opt');
+                        if (typeBtns[typeIndex]) {
+                            typeBtns[typeIndex].classList.add('selected');
+                            const icon = typeBtns[typeIndex].querySelector('i');
+                            if (icon) icon.style.opacity = '1';
+                        }
+                    }
+                }
+            } else if (step === 4) {
+                const allergyInput = document.getElementById('input-allergy');
+                if (allergyInput) allergyInput.value = userData.allergies || '';
+            } else if (step === 5) {
+                // 손 크기 버튼 업데이트
+                if (userData.handSize) {
+                    const handSizeMap = { 'XS': 0, 'S': 1, 'M': 2, 'L': 3, 'XL': 4 };
+                    const handIndex = handSizeMap[userData.handSize];
+                    if (handIndex !== undefined) {
+                        const handBtns = document.querySelectorAll('.hand-size-opt');
+                        if (handBtns[handIndex]) {
+                            handBtns[handIndex].classList.add('selected');
+                            const circle = handBtns[handIndex].querySelector('div:last-child');
+                            if (circle) circle.classList.add('bg-[#18D9C2]', 'border-transparent');
+                        }
+                    }
+                }
+            }
+        }
+
+        // --- Event Listeners & Input Handlers ---
+
+        // Gender Selection
+        window.setGender = function(btn, val) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('button').forEach(b => {
+                b.classList.remove('bg-[#182127]', 'text-white', 'shadow-sm');
+                b.classList.add('text-white/60');
+            });
+            btn.classList.add('bg-[#182127]', 'text-white', 'shadow-sm');
+            btn.classList.remove('text-white/60');
+            userData.gender = val;
+        };
+
+        // Diabetes Type Selection
+        window.setType = function(btn, val) {
+            document.querySelectorAll('.type-opt').forEach(b => {
+                b.classList.remove('selected');
+                b.querySelector('i').style.opacity = '0';
+            });
+            btn.classList.add('selected');
+            btn.querySelector('i').style.opacity = '1';
+            userData.diabetesType = val;
+        };
+
+        // Allergy Tags
+        window.addTag = function(val) {
+            const input = document.getElementById('input-allergy');
+            if (val === '없음') {
+                input.value = '없음';
+            } else {
+                if(input.value === '없음') input.value = '';
+                input.value += (input.value ? ', ' : '') + val;
+            }
+        };
+
+        // Hand Size Selection
+        window.setHand = function(btn, size, mm) {
+            document.querySelectorAll('.hand-size-opt').forEach(b => {
+                b.classList.remove('selected');
+                b.querySelector('div:last-child').classList.remove('bg-[#18D9C2]', 'border-transparent');
+            });
+            btn.classList.add('selected');
+            btn.querySelector('div:last-child').classList.add('bg-[#18D9C2]', 'border-transparent');
+            userData.handSize = size;
+            userData.handSizeMm = mm;
+        };
+
+        // Navigation
+        nextBtn.addEventListener('click', () => {
+            // Validation Logic (Simple)
+            if (currentStep === 1) {
+                userData.name = document.getElementById('input-name').value;
+                userData.age = document.getElementById('input-age').value;
+                if (!userData.name || !userData.age || !userData.gender) {
+                    alert('모든 정보를 입력해주세요.'); return;
+                }
+            } else if (currentStep === 2) {
+                userData.height = document.getElementById('input-height').value;
+                userData.weight = document.getElementById('input-weight').value;
+                if (!userData.height || !userData.weight) {
+                    alert('키와 몸무게를 입력해주세요.'); return;
+                }
+            } else if (currentStep === 3) {
+                if (!userData.diabetesType) {
+                    alert('유형을 선택해주세요.'); return;
+                }
+            } else if (currentStep === 4) {
+                userData.allergies = document.getElementById('input-allergy').value;
+                // Step 4 완료 후 Screen_hand.html로 이동
+                localStorage.setItem('glucoUser', JSON.stringify(userData));
+                window.location.href = 'Screen_hand.html';
+                return;
+            }
+
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateUI();
+            } else {
+                // Finish
+                console.log('Final User Data:', userData);
+                localStorage.setItem('glucoUser', JSON.stringify(userData));
+                
+                // Loading Animation
+                btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                
+                setTimeout(() => {
+                    // ScreenA로 이동
+                    window.location.href = 'ScreenA.html';
+                }, 1000);
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateUI();
+            }
+        });
+
+        // Initialize
+        // URL 파라미터로 step 확인
+        const urlParams = new URLSearchParams(window.location.search);
+        const stepParam = urlParams.get('step');
+        if (stepParam) {
+            const targetStep = parseInt(stepParam);
+            if (targetStep >= 1 && targetStep <= totalSteps) {
+                currentStep = targetStep;
+            }
+        }
+        
+        updateUI();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>GlucoUS - Validation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .device-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #0B0F12;
+            position: relative;
+            overflow: hidden;
+            border-radius: 40px;
+            box-shadow: 0 0 0 10px #1a1a1a;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glass-box {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Selection Buttons */
+        .select-btn {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+        .select-btn.selected {
+            background-color: rgba(24, 217, 194, 0.15);
+            border-color: #18D9C2;
+            color: #18D9C2;
+        }
+
+        /* Graph Animations */
+        @keyframes growBad { from { height: 0%; } to { height: 88%; } }
+        @keyframes growGood { from { height: 0%; } to { height: 12%; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .bar-bad {
+            height: 88%;
+            animation: growBad 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            background: linear-gradient(180deg, #FF5C5C 0%, rgba(255, 92, 92, 0.2) 100%);
+            width: 100%;
+        }
+        .bar-good {
+            height: 12%;
+            animation: growGood 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s forwards;
+            background: linear-gradient(180deg, #18D9C2 0%, rgba(24, 217, 194, 0.2) 100%);
+            width: 100%;
+        }
+
+        /* Reference List Style */
+        .ref-list li {
+            position: relative;
+            padding-left: 12px;
+            margin-bottom: 4px;
+        }
+        .ref-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #18D9C2;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="device-frame">
+        
+        <div class="pt-[50px] px-6 pb-2 bg-[#0B0F12] z-20 shrink-0">
+            <button onclick="goBack()" class="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors mb-2">
+                <i class="fa-solid fa-arrow-left text-white/70"></i>
+            </button>
+            <h1 class="text-[26px] font-bold text-[#EAF2F6] leading-[1.3]">
+                아직도 감으로 계산하시나요?
+            </h1>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-6 pb-[40px] no-scrollbar">
+            
+            <div class="glass-box p-4 mb-8 mt-4 relative overflow-hidden">
+                <h2 class="text-[13px] text-white/70 font-medium mb-6 text-center">양 추정 오차율 비교 <span class="text-[10px] text-white/30">(선행연구 기반)</span></h2>
+
+                <div class="flex justify-center items-end h-[140px] gap-10 px-2 pb-0 relative z-10">
+                    <div class="flex flex-col items-center w-[60px] h-full">
+                        <span class="text-[14px] font-bold text-[#FF5C5C] mb-2 opacity-0 animate-[fadeIn_0.5s_1.0s_forwards]">±45%</span>
+                        <div class="w-[40px] flex-1 flex items-end">
+                            <div class="w-full rounded-t-[8px] bar-bad relative"></div>
+                        </div>
+                        <div class="mt-3 text-center">
+                            <span class="text-[11px] text-white/40 block">일반 사진 기반</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center w-[60px] h-full">
+                        <span class="text-[14px] font-bold text-[#18D9C2] mb-2 opacity-0 animate-[fadeIn_0.5s_1.5s_forwards]">±10%</span>
+                        <div class="w-[40px] flex-1 flex items-end">
+                            <div class="w-full rounded-t-[8px] bar-good relative">
+                                <div class="absolute inset-0 border-t border-x border-[#18D9C2]/50 rounded-t-[8px]"></div>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-center">
+                            <span class="text-[11px] text-[#18D9C2] font-bold block">GlucoUS</span>
+                        </div>
+                    </div>
+
+                    <div class="absolute inset-0 pointer-events-none w-full h-full">
+                        <div class="border-t border-white/5 absolute top-[20%] w-full"></div>
+                        <div class="border-t border-white/5 absolute top-[60%] w-full"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <div class="flex items-start gap-3 mb-2">
+                    <i class="fa-solid fa-triangle-exclamation text-[#F6C343] mt-1"></i>
+                    <h3 class="text-[16px] font-bold text-white">10g의 차이, 생각보다 큽니다</h3>
+                </div>
+                <p class="text-[14px] text-white/60 leading-relaxed">
+                    탄수화물 양을 정확히 모르면 혈당이 갑자기 오르는 일이 자주 생깁니다. 사진만으로는 음식이 얼마나 깊은 그릇에 담겼는지, 얼마나 꽉 차 있는지 알기 어려워서 실제 양과 다르게 계산하기 쉽습니다. 그래서 많은 분들이 실제보다 약 40% 정도 다르게 탄수화물을 계산한다고 해요.
+                </p>
+            </div>
+
+            <div class="mb-8">
+                <div class="flex items-start gap-3 mb-2">
+                    <i class="fa-solid fa-hand-holding-medical text-[#18D9C2] mt-1"></i>
+                    <h3 class="text-[16px] font-bold text-white">손을 활용한 쉬운 양 측정</h3>
+                </div>
+                <p class="text-[14px] text-white/60 leading-relaxed">
+                    GlucoUS는 여러분의 손 크기를 기준으로 삼아, 음식의 <strong>부피</strong>를 더 정확하게 측정해 드립니다. 또, 음식마다 다른 <strong>밀도</strong>를 적용해서 탄수화물 양을 쉽게 계산할 수 있게 도와줍니다.
+                </p>
+            </div>
+
+            <div id="references-section" class="border-t border-white/10 pt-6 mb-8">
+                <span class="text-[11px] font-bold text-white/40 block mb-2">참고 문헌 (References)</span>
+                <ul class="ref-list text-[9px] text-white/30 leading-relaxed font-light">
+                    <li>Smart, C. E., et al. (2010). Errors in estimation of carbohydrate... <i>Diabetic Medicine</i>.</li>
+                    <li>Pouladzadeh, P., et al. (2014). Measuring Calorie and Nutrition... <i>IEEE</i>.</li>
+                    <li>Gibson, A. A., et al. (2016). Accuracy of hand-based estimates... <i>Nutrition & Dietetics</i>.</li>
+                    <li>Xu, Y., et al. (2021). Volume Estimation... Using a Reference Object. <i>Nutrients</i>.</li>
+                    <li>Grau, I., et al. (2022). Nutrient Estimation... using Density-Based Methods. <i>J. Food Eng</i>.</li>
+                </ul>
+            </div>
+
+            <div id="hand-size-section" class="mb-8" style="display: none;">
+                <h3 class="text-[16px] font-bold text-white mb-4">내 손 크기를 선택해주세요</h3>
+                <div class="flex flex-col gap-3">
+                    <button class="select-btn hand-size-opt w-full h-[72px] rounded-[20px] flex items-center px-6 justify-between group" onclick="setHand(this, 'XS', 140)">
+                        <div class="flex flex-col items-start">
+                            <span class="text-[16px] text-[#EAF2F6] font-medium">XS</span>
+                            <span class="text-[13px] text-white/50 mt-0.5">140mm - 손이 작은 여성</span>
+                        </div>
+                        <div class="w-5 h-5 rounded-full border border-white/30 group-[.selected]:bg-[#18D9C2] group-[.selected]:border-transparent"></div>
+                    </button>
+                    
+                    <button class="select-btn hand-size-opt w-full h-[72px] rounded-[20px] flex items-center px-6 justify-between group" onclick="setHand(this, 'S', 155)">
+                        <div class="flex flex-col items-start">
+                            <span class="text-[16px] text-[#EAF2F6] font-medium">S</span>
+                            <span class="text-[13px] text-white/50 mt-0.5">155mm - 대한민국 여성 평균</span>
+                        </div>
+                        <div class="w-5 h-5 rounded-full border border-white/30 group-[.selected]:bg-[#18D9C2] group-[.selected]:border-transparent"></div>
+                    </button>
+                    
+                    <button class="select-btn hand-size-opt w-full h-[72px] rounded-[20px] flex items-center px-6 justify-between group" onclick="setHand(this, 'M', 170)">
+                        <div class="flex flex-col items-start">
+                            <span class="text-[16px] text-[#EAF2F6] font-medium">M</span>
+                            <span class="text-[13px] text-white/50 mt-0.5">170mm - 평균 손 크기</span>
+                        </div>
+                        <div class="w-5 h-5 rounded-full border border-white/30 group-[.selected]:bg-[#18D9C2] group-[.selected]:border-transparent"></div>
+                    </button>
+                    
+                    <button class="select-btn hand-size-opt w-full h-[72px] rounded-[20px] flex items-center px-6 justify-between group selected" onclick="setHand(this, 'L', 185)">
+                        <div class="flex flex-col items-start">
+                            <span class="text-[16px] text-[#EAF2F6] font-medium">L</span>
+                            <span class="text-[13px] text-white/50 mt-0.5">185mm - 대한민국 남성 평균</span>
+                        </div>
+                        <div class="w-5 h-5 rounded-full border border-white/30 group-[.selected]:bg-[#18D9C2] group-[.selected]:border-transparent bg-[#18D9C2] border-transparent"></div>
+                    </button>
+                    
+                    <button class="select-btn hand-size-opt w-full h-[72px] rounded-[20px] flex items-center px-6 justify-between group" onclick="setHand(this, 'XL', 195)">
+                        <div class="flex flex-col items-start">
+                            <span class="text-[16px] text-[#EAF2F6] font-medium">XL</span>
+                            <span class="text-[13px] text-white/50 mt-0.5">195mm - 손이 큰 남성</span>
+                        </div>
+                        <div class="w-5 h-5 rounded-full border border-white/30 group-[.selected]:bg-[#18D9C2] group-[.selected]:border-transparent"></div>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="p-6 bg-[#0B0F12] relative z-30">
+            <button id="next-btn" onclick="handleNext()" class="w-full h-[56px] bg-[#18D9C2] hover:bg-[#12B8A6] rounded-[16px] flex items-center justify-center transition-all shadow-[0_4px_16px_rgba(24,217,194,0.2)] active:scale-95">
+                <span id="btn-text" class="text-[#0B0F12] font-bold text-[16px]">다음으로</span>
+                <i class="fa-solid fa-arrow-right text-[#0B0F12] ml-2"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        let selectedHandSize = 'L'; // Default
+        let selectedHandSizeMm = 185; // Default
+        let currentStep = 1; // 1: 설명 단계, 2: 손 크기 선택 단계
+
+        // Hand Size Selection
+        window.setHand = function(btn, size, mm) {
+            document.querySelectorAll('.hand-size-opt').forEach(b => {
+                b.classList.remove('selected');
+                b.querySelector('div:last-child').classList.remove('bg-[#18D9C2]', 'border-transparent');
+            });
+            btn.classList.add('selected');
+            btn.querySelector('div:last-child').classList.add('bg-[#18D9C2]', 'border-transparent');
+            selectedHandSize = size;
+            selectedHandSizeMm = mm;
+        };
+
+        function handleNext() {
+            if (currentStep === 1) {
+                // 설명 단계 -> 손 크기 선택 단계
+                document.getElementById('references-section').style.display = 'none';
+                document.getElementById('hand-size-section').style.display = 'block';
+                document.getElementById('btn-text').textContent = '완료';
+                document.querySelector('#next-btn i').classList.remove('fa-arrow-right');
+                document.querySelector('#next-btn i').classList.add('fa-check');
+                currentStep = 2;
+                
+                // 손 크기 섹션으로 스크롤
+                setTimeout(() => {
+                    document.getElementById('hand-size-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            } else {
+                // 손 크기 선택 단계 -> ScreenA.html로 이동
+                const userData = JSON.parse(localStorage.getItem('glucoUser') || '{}');
+                userData.handSize = selectedHandSize;
+                userData.handSizeMm = selectedHandSizeMm;
+                localStorage.setItem('glucoUser', JSON.stringify(userData));
+                
+                window.location.href = 'ScreenA.html';
+            }
+        }
+
+        function goBack() {
+            if (currentStep === 2) {
+                // 손 크기 선택 단계 -> 설명 단계로 돌아가기
+                document.getElementById('references-section').style.display = 'block';
+                document.getElementById('hand-size-section').style.display = 'none';
+                document.getElementById('btn-text').textContent = '다음으로';
+                document.querySelector('#next-btn i').classList.remove('fa-check');
+                document.querySelector('#next-btn i').classList.add('fa-arrow-right');
+                currentStep = 1;
+            } else {
+                // 이전 페이지로 돌아가기
+                if (document.referrer) {
+                    window.history.back();
+                } else {
+                    window.location.href = 'Screen_init_info.html';
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
