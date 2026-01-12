@@ -231,11 +231,12 @@
             submitButton.innerText = "저장 중...";
 
             // FormData를 URLSearchParams로 변환 (Google Apps Script와 호환성)
+            // 시트 헤더와 일치하도록 한글 키 사용: 타임스탬프, 이름, 연락처, 이메일, 결제방식
             const params = new URLSearchParams();
-            params.append('name', formData.get('name') || '');
-            params.append('phone', formData.get('phone') || '');
-            params.append('email', formData.get('email') || '');
-            params.append('payment', payment || '');
+            params.append('이름', formData.get('name') || '');
+            params.append('연락처', formData.get('phone') || '');
+            params.append('이메일', formData.get('email') || '');
+            params.append('결제방식', payment || '');
 
             // 1) 구글 시트로 데이터 전송 (no-cors 모드 사용)
             fetch(GOOGLE_SCRIPT_URL, {
