@@ -216,16 +216,16 @@
                 </div>
                 <div class="relative lg:h-[600px] flex justify-center items-center" id="screen-container">
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/5 rounded-full blur-3xl -z-10 animate-pulse"></div>
-                    <div class="relative w-[300px] h-[649px] bg-[#0B0F12] rounded-[31px] overflow-hidden opacity-0 transition-opacity duration-700" id="phone-frame" style="box-shadow: 0 0 0 7.69px #1a1a1a;">
+                    <div class="relative w-[300px] h-[649px] bg-[#0B0F12] rounded-[31px] overflow-hidden opacity-100 transition-opacity duration-700" id="phone-frame" style="box-shadow: 0 0 0 7.69px #1a1a1a;">
                         <div class="relative w-full h-full overflow-hidden">
                             <!-- Screen 슬라이드 컨테이너 -->
                             <div class="relative w-full h-full">
-                                <iframe id="screen-iframe-0" src="screen/ScreenA.html" class="screen-iframe absolute border-0 opacity-100 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12;"></iframe>
-                                <iframe id="screen-iframe-1" src="screen/ScreenB.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12;"></iframe>
-                                <iframe id="screen-iframe-2" src="screen/ScreenC.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12;"></iframe>
-                                <iframe id="screen-iframe-3" src="screen/ScreenD.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12;"></iframe>
-                                <iframe id="screen-iframe-4" src="screen/ScreenE.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12;"></iframe>
-                                <iframe id="screen-iframe-5" src="screen/ScreenF.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12;"></iframe>
+                                <iframe id="screen-iframe-0" src="Glucous_main_app/ScreenA.html" class="screen-iframe absolute border-0 opacity-100 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12; pointer-events: none;"></iframe>
+                                <iframe id="screen-iframe-1" src="Glucous_main_app/ScreenB.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12; pointer-events: none;"></iframe>
+                                <iframe id="screen-iframe-2" src="Glucous_main_app/ScreenC.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12; pointer-events: none;"></iframe>
+                                <iframe id="screen-iframe-3" src="Glucous_main_app/ScreenD.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12; pointer-events: none;"></iframe>
+                                <iframe id="screen-iframe-4" src="Glucous_main_app/ScreenE.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12; pointer-events: none;"></iframe>
+                                <iframe id="screen-iframe-5" src="Glucous_main_app/Screen_Loading.html" class="screen-iframe absolute border-0 opacity-0 transition-opacity duration-700" style="width: 390px; height: 844px; transform: scale(0.769); transform-origin: top left; left: 0; top: 0; background-color: #0B0F12; pointer-events: none;"></iframe>
                             </div>
                         </div>
                         <!-- 인디케이터 -->
@@ -527,7 +527,7 @@
     </script>
 
     <section id="pricing" class="py-24 bg-gray-900 text-white relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+        <div class="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
@@ -539,9 +539,9 @@
                 <p class="text-gray-400 text-lg">커피 한 잔 값으로 평생의 건강 습관을 만듭니다.</p>
             </div>
 
-            <div class="grid lg:grid-cols-12 gap-12 items-start">
+            <div class="grid lg:grid-cols-12 gap-12 items-stretch">
                 
-                <div class="lg:col-span-5 space-y-8">
+                <div id="left-pricing-section" class="lg:col-span-5 space-y-8">
                     <div class="bg-gray-800/50 rounded-3xl p-8 border border-gray-700/50 backdrop-blur-sm">
                         <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
                             <span class="w-2 h-8 bg-primary rounded-full"></span>
@@ -607,12 +607,11 @@
                         </ul>
                     </div>
                 </div>
-                <div class="lg:col-span-7">
-                    <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-[#0B0F12] border border-gray-800">
-                        <div class="w-full relative">
-                            <img src="image/kit2.jpeg" alt="베타 테스터 키트" loading="lazy" decoding="async" class="w-full h-auto object-cover">
+                <div class="lg:col-span-7 flex">
+                    <div id="right-kit-image-container" class="relative rounded-2xl overflow-hidden shadow-2xl bg-[#0B0F12] border border-gray-500 w-full flex flex-col">
+                        <div class="w-full relative flex-1 flex items-center justify-center" style="max-height: 100%; overflow: hidden;">
+                            <img id="kit-image" src="image/glucous_kit1.png" alt="베타 테스터 키트" loading="lazy" decoding="async" class="w-full h-full object-contain transition-opacity duration-500">
                             <div class="absolute inset-0 bg-black/10"></div>
-                            
                             <div class="absolute top-4 left-4 bg-primary text-gray-900 px-4 py-1.5 rounded-full text-base font-bold shadow-lg">
                                 EARLY BIRD OFFER
                             </div>
@@ -807,84 +806,134 @@
     </footer>
 
     <script>
-        // Screen 슬라이드 자동 전환 (Promise 기반 시퀀스)
+        // Screen 슬라이드 자동 전환 (누적 시간 기반 시퀀스)
         (function() {
-            const screens = ['ScreenA', 'ScreenB', 'ScreenC', 'SCreenD', 'ScreenE', 'ScreenF'];
+            const screens = ['ScreenA', 'ScreenB', 'ScreenC', 'ScreenD', 'ScreenE', 'Screen_Loading'];
             const totalScreens = screens.length;
-            const pendingPromises = {}; // 각 스크린의 Promise 저장
+            const animationStartDelay = 0; // 화면 전환 후 애니메이션 시작 전 딜레이 (ms)
             
-            // 스크린 표시 및 애니메이션 시작 (Promise 반환)
-            function showScreen(index) {
-                return new Promise((resolve) => {
-                    // 모든 iframe 숨기기
-                    for (let i = 0; i < totalScreens; i++) {
-                        const iframe = document.getElementById(`screen-iframe-${i}`);
-                        const indicator = document.querySelector(`.indicator[data-index="${i}"]`);
-                        
-                        if (iframe) {
-                            iframe.style.opacity = i === index ? '1' : '0';
-                            
-                            // 스크린이 보일 때 애니메이션 시작 메시지 전송
-                            if (i === index) {
-                                // 약간의 지연을 두어 iframe이 완전히 보인 후 애니메이션 시작
-                                setTimeout(() => {
-                                    iframe.contentWindow.postMessage({
-                                        type: 'start-animation',
-                                        screenIndex: i
-                                    }, '*');
-                                }, 50);
-                                
-                                // 이 스크린의 완료 Promise 저장
-                                pendingPromises[index] = resolve;
-                            }
-                        }
-                        
-                        if (indicator) {
-                            if (i === index) {
-                                indicator.classList.remove('bg-white/40');
-                                indicator.classList.add('bg-white');
-                            } else {
-                                indicator.classList.remove('bg-white');
-                                indicator.classList.add('bg-white/40');
-                            }
-                        }
-                    }
-                });
+            // 각 스크린의 실행 시간 (ms)
+            const screenDurations = [2000, 3000, 4000, 3000, 3000, 4000];
+            
+            // 누적 시작 시간 계산
+            const cumulativeStartTimes = [0];
+            for (let i = 1; i < totalScreens; i++) {
+                cumulativeStartTimes.push(cumulativeStartTimes[i - 1] + screenDurations[i - 1]);
             }
             
-            // 애니메이션 완료 메시지 리스너
-            window.addEventListener('message', function(event) {
-                if (event.data && event.data.type === 'animation-complete') {
-                    const screenIndex = event.data.screenIndex;
-                    const resolve = pendingPromises[screenIndex];
+            // 전체 시퀀스 시간
+            const totalSequenceDuration = cumulativeStartTimes[totalScreens - 1] + screenDurations[totalScreens - 1];
+            
+            let isRunning = false;
+            let sequenceTimeout = null;
+            
+            // 스크린 표시 및 애니메이션 시작
+            function showScreen(index, startTime) {
+                setTimeout(() => {
+                    const iframe = document.getElementById(`screen-iframe-${index}`);
+                    const indicator = document.querySelector(`.indicator[data-index="${index}"]`);
                     
-                    if (resolve) {
-                        resolve();
-                        delete pendingPromises[screenIndex];
+                    if (iframe) {
+                        // 현재 스크린 표시
+                        iframe.style.opacity = '1';
+                        iframe.style.zIndex = '10';
+                        
+                        // 다른 스크린 숨기기
+                        for (let i = 0; i < totalScreens; i++) {
+                            if (i !== index) {
+                                const otherIframe = document.getElementById(`screen-iframe-${i}`);
+                                if (otherIframe) {
+                                    otherIframe.style.opacity = '0';
+                                    otherIframe.style.zIndex = '1';
+                                }
+                            }
+                        }
+                        
+                        // 화면 전환 후 딜레이를 두고 애니메이션 시작 메시지 전송
+                        setTimeout(() => {
+                            try {
+                                if (iframe.contentWindow) {
+                                    iframe.contentWindow.postMessage({
+                                        type: 'start-animation',
+                                        screenIndex: index
+                                    }, '*');
+                                    console.log(`Started animation for screen ${index}: ${screens[index]} at ${startTime}ms`);
+                                }
+                            } catch (e) {
+                                console.log(`Screen ${index} animation message error:`, e.message);
+                            }
+                        }, animationStartDelay);
                     }
-                }
-            });
+                    
+                    if (indicator) {
+                        // 모든 인디케이터 업데이트
+                        for (let i = 0; i < totalScreens; i++) {
+                            const otherIndicator = document.querySelector(`.indicator[data-index="${i}"]`);
+                            if (otherIndicator) {
+                                if (i === index) {
+                                    otherIndicator.classList.remove('bg-white/40');
+                                    otherIndicator.classList.add('bg-white');
+                                } else {
+                                    otherIndicator.classList.remove('bg-white');
+                                    otherIndicator.classList.add('bg-white/40');
+                                }
+                            }
+                        }
+                    }
+                }, startTime);
+            }
             
             // 스크린 시퀀스 실행 (무한 반복)
-            async function runScreenSequence() {
-                while (true) {
-                    for (let i = 0; i < totalScreens; i++) {
-                        await showScreen(i);
+            function runScreenSequence() {
+                if (!isRunning) return;
+                
+                // 모든 스크린을 누적 시간에 맞춰 시작
+                for (let i = 0; i < totalScreens; i++) {
+                    showScreen(i, cumulativeStartTimes[i]);
+                }
+                
+                // 전체 시퀀스가 끝나면 다시 시작
+                sequenceTimeout = setTimeout(() => {
+                    if (isRunning) {
+                        runScreenSequence();
                     }
+                }, totalSequenceDuration);
+            }
+            
+            // 스크린 시퀀스 시작
+            function startScreenSequence() {
+                if (isRunning) {
+                    console.log('Screen sequence already running');
+                    return;
+                }
+                
+                isRunning = true;
+                console.log('Starting screen sequence with', totalScreens, 'screens');
+                console.log('Screen durations:', screenDurations);
+                console.log('Cumulative start times:', cumulativeStartTimes);
+                console.log('Total sequence duration:', totalSequenceDuration, 'ms');
+                
+                // 시퀀스 시작
+                runScreenSequence();
+            }
+            
+            // 스크린 시퀀스 중지
+            function stopScreenSequence() {
+                isRunning = false;
+                if (sequenceTimeout) {
+                    clearTimeout(sequenceTimeout);
+                    sequenceTimeout = null;
                 }
             }
             
             // window 객체에 저장하여 외부에서 접근 가능하게 함
-            window.runScreenSequence = runScreenSequence;
-            
-            // 초기화 및 시퀀스 시작은 애니메이션 완료 후에 실행
-            // runScreenSequence(); // 주석 처리 - 애니메이션 완료 후 시작
+            window.startScreenSequence = startScreenSequence;
+            window.stopScreenSequence = stopScreenSequence;
         })();
 
-        // 무게 카운터 애니메이션 및 screen 컨테이너 표시
+        // 무게 카운터 애니메이션
         (function() {
             const counterElement = document.getElementById('weightCounter');
-            const phoneFrame = document.getElementById('phone-frame');
             
             if (!counterElement) return;
             
@@ -892,9 +941,6 @@
             const endValue = 46;
             const duration = 2000; // 2초
             const startTime = performance.now();
-            
-            // 두 번째 줄 애니메이션은 0.5초 지연 후 2초 진행 = 총 2.5초
-            const totalAnimationDuration = 2500; // 2.5초
             
             function updateCounter(currentTime) {
                 const elapsed = currentTime - startTime;
@@ -914,19 +960,101 @@
             }
             
             requestAnimationFrame(updateCounter);
+        })();
+
+        // screen 컨테이너 시퀀스 시작 (페이지 로드 시 바로 시작)
+        (function() {
+            // 모든 iframe이 로드될 때까지 기다린 후 시퀀스 시작
+            let loadedCount = 0;
+            const totalIframes = 6;
             
-            // 모든 애니메이션이 끝난 후 screen 컨테이너 표시 및 시퀀스 시작
-            setTimeout(() => {
-                if (phoneFrame) {
-                    phoneFrame.classList.remove('opacity-0');
-                    phoneFrame.classList.add('opacity-100');
+            function checkAllLoaded() {
+                loadedCount++;
+                if (loadedCount >= totalIframes) {
+                    // 모든 스크린이 로드된 후 시퀀스 시작
+                    setTimeout(() => {
+                        if (window.startScreenSequence) {
+                            window.startScreenSequence();
+                        }
+                    }, 100); // 최소 안정화 시간
+                }
+            }
+            
+            // 각 iframe에 로드 이벤트 리스너 추가
+            for (let i = 0; i < totalIframes; i++) {
+                const iframe = document.getElementById(`screen-iframe-${i}`);
+                if (iframe) {
+                    if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+                        checkAllLoaded();
+                    } else {
+                        iframe.addEventListener('load', checkAllLoaded, { once: true });
+                        // 타임아웃 설정 (3초 후 강제 시작)
+                        setTimeout(() => {
+                            checkAllLoaded();
+                        }, 3000);
+                    }
+                } else {
+                    checkAllLoaded(); // iframe이 없으면 카운트만 증가
+                }
+            }
+        })();
+
+        // Kit 이미지 순환 (3초마다)
+        (function() {
+            const kitImages = [
+                'image/glucous_kit1.png',
+                'image/glucous_kit2.png',
+                'image/glucous_kit3.png'
+            ];
+            let currentIndex = 0;
+            const kitImage = document.getElementById('kit-image');
+            
+            if (kitImage) {
+                function rotateKitImage() {
+                    currentIndex = (currentIndex + 1) % kitImages.length;
+                    kitImage.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        kitImage.src = kitImages[currentIndex];
+                        kitImage.style.opacity = '1';
+                    }, 250); // 페이드 효과를 위한 짧은 딜레이
                 }
                 
-                // screen 시퀀스 시작
-                if (window.runScreenSequence) {
-                    window.runScreenSequence();
+                // 3초마다 이미지 변경
+                setInterval(rotateKitImage, 5000);
+            }
+        })();
+
+        // 왼쪽 세션과 오른쪽 이미지 세션 높이 맞추기
+        (function() {
+            function matchHeights() {
+                const leftSection = document.getElementById('left-pricing-section');
+                const rightContainer = document.getElementById('right-kit-image-container');
+                
+                if (leftSection && rightContainer) {
+                    // 왼쪽 세션의 실제 높이 계산 (space-y-8 포함)
+                    const leftHeight = leftSection.offsetHeight;
+                    
+                    // 오른쪽 컨테이너 높이를 왼쪽과 동일하게 설정
+                    rightContainer.style.height = leftHeight + 'px';
                 }
-            }, totalAnimationDuration);
+            }
+            
+            // 페이지 로드 시 실행
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', matchHeights);
+            } else {
+                matchHeights();
+            }
+            
+            // 리사이즈 시에도 높이 재조정
+            window.addEventListener('resize', matchHeights);
+            
+            // 이미지 로드 후에도 높이 재조정 (이미지가 로드되면 높이가 변경될 수 있음)
+            const kitImage = document.getElementById('kit-image');
+            if (kitImage) {
+                kitImage.addEventListener('load', matchHeights);
+            }
         })();
     </script>
 </body>

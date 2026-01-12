@@ -1,6 +1,11 @@
 User-agent: *
 Allow: /
-Disallow: /screen/
+
+# 검색 엔진에는 메인 랜딩 및 하위 정보 페이지만 노출하고,
+# 앱 데모용 screen 페이지와 내부용 HTML은 메인 페이지 안에서만 사용되도록 합니다.
+
+# 앱 데모/내부 페이지는 크롤링은 허용하되(noindex 메타로 제어),
+# 별도 차단 규칙은 두지 않습니다.
 
 # Sitemap
 Sitemap: https://glucous.kr/sitemap.xml

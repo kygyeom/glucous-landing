@@ -3,431 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>베타 테스터 신청 - GlucoUS | AI 기반 혈당 관리 솔루션</title>
-    <meta name="description" content="GlucoUS 베타 테스터에 신청하세요. 4주 무료 구독권, 혈당 관리 키트 무료 배송, 3개월 추가 구독권 등 특별한 혜택을 받아보세요.">
-    <meta name="keywords" content="GlucoUS 베타 테스터, 글루코US 신청, 혈당 관리 앱 베타, 당뇨 앱 테스터, 베타 테스터 혜택">
-    <meta name="author" content="GlucoUS Inc.">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://glucous.kr/apply.html">
-    <meta property="og:title" content="베타 테스터 신청 - GlucoUS">
-    <meta property="og:description" content="GlucoUS 베타 테스터에 신청하세요. 4주 무료 구독권, 혈당 관리 키트 무료 배송 등 특별한 혜택을 받아보세요.">
-    <meta property="og:image" content="https://glucous.kr/image/GlucoUS_logo.png">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://glucous.kr/apply.html">
-    <meta property="twitter:title" content="베타 테스터 신청 - GlucoUS">
-    <meta property="twitter:description" content="GlucoUS 베타 테스터에 신청하세요. 4주 무료 구독권, 혈당 관리 키트 무료 배송 등 특별한 혜택을 받아보세요.">
-    <meta property="twitter:image" content="https://glucous.kr/image/GlucoUS_logo.png">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://glucous.kr/apply.html">
-    
+    <title>베타 테스터 신청 - GlucoUS</title>
+    <meta name="description" content="GlucoUS 베타 테스터에 신청하세요.">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#18D9C2',
-                        primaryDark: '#12b09d',
-                        darkGray: '#1F2937',
-                        softGray: '#F9FAFB',
+                        primary: '#10B981', // GlucoUS Mint
+                        primaryDark: '#059669',
+                        dark: '#0B0F12',
+                        kakao: '#FAE100', // 카카오 노랑
                     },
-                    fontFamily: {
-                        sans: ['Pretendard', 'sans-serif'],
-                    }
+                    fontFamily: { sans: ['Pretendard', 'sans-serif'] }
                 }
             }
         }
     </script>
-    
-    <!-- 구조화된 데이터 (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "베타 테스터 신청 - GlucoUS",
-        "description": "GlucoUS 베타 테스터에 신청하세요. 4주 무료 구독권, 혈당 관리 키트 무료 배송, 3개월 추가 구독권 등 특별한 혜택을 받아보세요.",
-        "url": "https://glucous.kr/apply.html",
-        "isPartOf": {
-            "@type": "WebSite",
-            "name": "GlucoUS",
-            "url": "https://glucous.kr"
-        },
-        "about": {
-            "@type": "SoftwareApplication",
-            "name": "GlucoUS",
-            "applicationCategory": "HealthApplication",
-            "offers": {
-                "@type": "Offer",
-                "price": "5000",
-                "priceCurrency": "KRW"
-            }
-        }
-    }
-    </script>
     <style>
-        .payment-option input[type="radio"]:checked + div {
-            color: inherit;
+        /* 라디오 버튼 선택 시 스타일 */
+        .payment-radio:checked + div {
+            border-color: #10B981;
+            background-color: #ecfdf5;
         }
-        .payment-option:has(input:checked) {
-            border-color: #18D9C2;
-            background-color: rgba(24, 217, 194, 0.05);
+        .payment-radio:checked + div .check-icon {
+            opacity: 1;
+            transform: scale(1);
         }
     </style>
 </head>
-<body class="font-sans text-darkGray antialiased">
+<body class="font-sans text-gray-800 antialiased bg-gray-50">
 
     <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <a href="index.html" class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-lg">G</div>
-                    <span class="font-bold text-xl tracking-tight text-gray-900">GlucoUS</span>
+                    <span class="font-bold text-xl tracking-tight text-dark">GlucoUS</span>
                 </a>
-                <div class="relative group">
-                    <button class="text-gray-400 hover:text-gray-600 transition-colors p-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
-                        <div class="py-2">
-                            <a href="index.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                                메인 페이지
-                            </a>
-                            <a href="sense.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                                Sense app
-                            </a>
-                            <a href="about.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                                About
-                            </a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </nav>
 
-    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-gradient-to-b from-softGray to-white">
-        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h1 class="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4">
-                    베타 테스터 신청
-                </h1>
-                <p class="text-lg text-gray-600">
-                    GlucoUS 베타 테스터로 선정되시면 특별한 혜택을 드립니다
+    <section class="relative pt-32 pb-20 lg:pt-40">
+        <div class="max-w-xl mx-auto px-4">
+            
+            <div class="text-center mb-10">
+                <span class="text-primary font-bold text-sm tracking-wider uppercase mb-2 block">Beta Application</span>
+                <h1 class="text-3xl font-bold text-gray-900 mb-4">베타 테스터 신청</h1>
+                <p class="text-gray-500">
+                    아래 정보를 입력해주시면<br>확인 후 24시간 내에 안내 문자를 드립니다.
                 </p>
             </div>
 
-            <div class="bg-white rounded-3xl shadow-2xl p-8 lg:p-12">
-                <form id="applicationForm" class="space-y-6">
-                    <div>
-                        <label for="name" class="block text-sm font-semibold text-gray-900 mb-2">
-                            이름 <span class="text-red-500">*</span>
-                        </label>
-                        <input 
-                            type="text" 
-                            id="name" 
-                            name="name" 
-                            required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                            placeholder="홍길동"
-                        >
-                    </div>
-
-                    <div>
-                        <label for="email" class="block text-sm font-semibold text-gray-900 mb-2">
-                            이메일 <span class="text-red-500">*</span>
-                        </label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                            placeholder="example@email.com"
-                        >
-                    </div>
-
-                    <div>
-                        <label for="phone" class="block text-sm font-semibold text-gray-900 mb-2">
-                            전화번호 <span class="text-red-500">*</span>
-                        </label>
-                        <input 
-                            type="tel" 
-                            id="phone" 
-                            name="phone" 
-                            required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                            placeholder="010-1234-5678"
-                        >
-                    </div>
-
-                    <div>
-                        <label for="experience" class="block text-sm font-semibold text-gray-900 mb-2">
-                            당뇨 관리 경험
-                        </label>
-                        <select 
-                            id="experience" 
-                            name="experience"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                        >
-                            <option value="">선택해주세요</option>
-                            <option value="new">진단 후 1년 미만</option>
-                            <option value="1-3">1년 이상 3년 미만</option>
-                            <option value="3-5">3년 이상 5년 미만</option>
-                            <option value="5+">5년 이상</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="message" class="block text-sm font-semibold text-gray-900 mb-2">
-                            참여 동기 및 기대사항
-                        </label>
-                        <textarea 
-                            id="message" 
-                            name="message" 
-                            rows="4"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
-                            placeholder="GlucoUS 베타 테스터에 참여하고 싶은 이유와 기대하는 점을 자유롭게 작성해주세요."
-                        ></textarea>
-                    </div>
-
-                    <div class="bg-primary/10 border border-primary/20 rounded-xl p-4">
-                        <h3 class="font-bold text-gray-900 mb-3">베타 테스터 혜택</h3>
-                        <ul class="space-y-2 text-sm text-gray-700">
-                            <li class="flex items-start gap-2">
-                                <span class="text-primary font-bold">✓</span>
-                                <span>4주 무료 구독권 제공</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-primary font-bold">✓</span>
-                                <span>혈당 관리 키트 제공 (유리 플레이트, 전자 저울)</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-primary font-bold">✓</span>
-                                <span>우수 리뷰자 30인 한정 3개월 무료 구독권</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="border-t border-gray-200 pt-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-4">예약금 결제</h3>
-                        <div class="bg-gray-50 rounded-xl p-4 mb-6">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-gray-700 font-semibold">예약금</span>
-                                <span class="text-2xl font-bold text-gray-900">5,000원</span>
-                            </div>
-                            <p class="text-sm text-gray-600">
-                                💰 3월 이후 계좌이체를 통해 100% 현금 환불해드립니다
-                            </p>
+            <div class="bg-white rounded-3xl shadow-xl p-8 border border-gray-100" id="formContainer">
+                <form id="applyForm" class="space-y-6">
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">이름</label>
+                            <input type="text" name="name" required placeholder="예: 홍길동" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
                         </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">연락처</label>
+                            <input type="tel" name="phone" required placeholder="예: 010-1234-5678" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">이메일</label>
+                            <input type="email" name="email" required placeholder="예: example@gmail.com" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                        </div>
+                    </div>
 
-                        <div class="space-y-3 mb-6">
-                            <label class="flex items-start p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-primary transition-all payment-option">
-                                <input type="radio" name="paymentMethod" value="naver" class="mt-1 mr-3 w-5 h-5 text-primary focus:ring-primary" required>
-                                <div class="flex-1">
-                                    <div class="font-semibold text-gray-900 mb-1">네이버 스마트 스토어</div>
-                                    <div class="text-sm text-gray-600">네이버 스마트 스토어를 통해 안전하게 결제하세요</div>
+                    <hr class="border-gray-100 my-6">
+
+                    <div>
+                        <h3 class="font-bold text-lg mb-4 flex items-center justify-between">
+                            예약금 결제
+                            <span class="text-primary text-base">5,000원</span>
+                        </h3>
+                        <p class="text-xs text-gray-400 mb-4 bg-gray-50 p-3 rounded-lg">
+                            💡 예약금은 '노쇼 방지용'이며, 베타 테스트 종료 후 계좌로 100% 환불해 드립니다.
+                        </p>
+
+                        <div class="space-y-3">
+                            <label class="block cursor-pointer group">
+                                <input type="radio" name="payment" value="naver" class="payment-radio hidden" checked>
+                                <div class="border border-gray-200 rounded-xl p-4 flex items-center justify-between transition-all hover:border-gray-300 group-hover:bg-gray-50">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-[#03C75A] rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0">N</div>
+                                        <div>
+                                            <p class="font-bold text-gray-800">네이버 스마트 스토어</p>
+                                            <p class="text-xs text-gray-500">네이버페이 포인트 / 카드 결제</p>
+                                        </div>
+                                    </div>
+                                    <div class="check-icon w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center opacity-0 transform scale-50 transition-all duration-300">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
                                 </div>
                             </label>
 
-                            <label class="flex items-start p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-primary transition-all payment-option">
-                                <input type="radio" name="paymentMethod" value="bank" class="mt-1 mr-3 w-5 h-5 text-primary focus:ring-primary" required>
-                                <div class="flex-1">
-                                    <div class="font-semibold text-gray-900 mb-1">계좌이체</div>
-                                    <div class="text-sm text-gray-600 mb-2">아래 계좌로 입금해주세요</div>
-                                    <div class="bg-white rounded-lg p-3 text-sm">
-                                        <div class="font-mono text-gray-900">
-                                            <div class="mb-1">은행: <span class="font-semibold">신한은행</span></div>
-                                            <div class="mb-1">계좌번호: <span class="font-semibold">110-123-456789</span></div>
-                                            <div>예금주: <span class="font-semibold">(주)GlucoUS</span></div>
+                            <label class="block cursor-pointer group">
+                                <input type="radio" name="payment" value="kakao" class="payment-radio hidden">
+                                <div class="border border-gray-200 rounded-xl p-4 flex items-center justify-between transition-all hover:border-gray-300 group-hover:bg-gray-50">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-[#FAE100] text-[#371D1E] rounded-full flex items-center justify-center font-bold text-xs shrink-0">pay</div>
+                                        <div>
+                                            <p class="font-bold text-gray-800">카카오페이 송금</p>
+                                            <p class="text-xs text-gray-500">QR코드 또는 앱으로 즉시 송금</p>
                                         </div>
+                                    </div>
+                                    <div class="check-icon w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center opacity-0 transform scale-50 transition-all duration-300">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="block cursor-pointer group">
+                                <input type="radio" name="payment" value="bank" class="payment-radio hidden">
+                                <div class="border border-gray-200 rounded-xl p-4 flex items-center justify-between transition-all hover:border-gray-300 group-hover:bg-gray-50">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center shrink-0">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-gray-800">일반 계좌이체</p>
+                                            <p class="text-xs text-gray-500">기업은행 (수수료 없음)</p>
+                                        </div>
+                                    </div>
+                                    <div class="check-icon w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center opacity-0 transform scale-50 transition-all duration-300">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
                                     </div>
                                 </div>
                             </label>
                         </div>
-
-                        <div id="bankTransferInfo" class="hidden bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
-                            <div class="flex items-start gap-3">
-                                <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                <div class="text-sm text-blue-800">
-                                    <p class="font-semibold mb-1">계좌이체 선택 시 안내</p>
-                                    <p>입금 확인 후 신청이 완료됩니다. 입금자명은 신청하신 이름과 동일하게 해주세요.</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
-                    <div class="pt-4">
-                        <button 
-                            type="submit"
-                            id="submitButton"
-                            class="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primaryDark transition-all shadow-lg hover:shadow-primary/30 transform hover:-translate-y-1"
-                        >
-                            신청하기
-                        </button>
-                    </div>
-
-                    <p class="text-center text-xs text-gray-500">
-                        신청하신 정보는 베타 테스터 선정 및 서비스 제공을 위해서만 사용됩니다.
-                    </p>
+                    <button id="submitButton" type="button" onclick="handleSubmit()" class="w-full bg-dark text-white font-bold py-4 rounded-xl text-lg hover:bg-gray-800 transition-transform active:scale-95 shadow-lg">
+                        신청하기
+                    </button>
+                    
                 </form>
-
-                <div id="successMessage" class="hidden text-center py-8">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
-                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">신청이 완료되었습니다!</h3>
-                    <p class="text-gray-600 mb-6">
-                        신청해주셔서 감사합니다. 검토 후 이메일로 연락드리겠습니다.
-                    </p>
-                    <a href="index.html" class="inline-block px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primaryDark transition-all">
-                        홈으로 돌아가기
-                    </a>
-                </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-gray-50 border-t border-gray-200 pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8 mb-12">
-                <div class="col-span-1 md:col-span-2">
-                    <span class="text-2xl font-bold text-gray-900 block mb-4">GlucoUS</span>
-                    <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
-                        데이터 기반의 정밀 영양 분석 미들웨어.<br>당뇨인의 삶에서 막연한 불안함을 걷어내고, 확신과 자유를 선물합니다.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="font-bold text-gray-900 mb-4">Legal</h4>
-                    <ul class="space-y-2 text-sm text-gray-500">
-                        <li><a href="terms.html" class="hover:text-primary">이용약관</a></li>
-                        <li><a href="privacy.html" class="hover:text-primary">개인정보처리방침</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold text-gray-900 mb-4">Contact</h4>
-                    <ul class="space-y-2 text-sm text-gray-500">
-                        <li>support@glucous.kr</li>
-                    </ul>
-                </div>
+    <div id="kakaoModal" class="fixed inset-0 bg-black/50 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl transform scale-95 transition-transform duration-300">
+            <div class="text-center mb-4">
+                <div class="w-12 h-12 bg-[#FAE100] text-[#371D1E] rounded-full flex items-center justify-center mx-auto mb-3 font-bold">pay</div>
+                <h3 class="text-xl font-bold text-gray-900">카카오페이 송금</h3>
+                <p class="text-sm text-gray-500 mt-1">예금주: 김윤겸</p>
             </div>
-            <div class="border-t border-gray-200 pt-8 flex justify-between items-center">
-                <p class="text-xs text-gray-400">© 2025 GlucoUS Inc. All rights reserved.</p>
+
+            <div class="bg-gray-50 p-6 rounded-2xl mb-4 flex justify-center border border-gray-100">
+                <img src="./image/KakaoPay_QR.png" alt="카카오페이 QR코드" class="w-56 h-56 object-contain shadow-sm rounded-lg">
             </div>
+
+            <div class="space-y-3">
+                <button onclick="openKakaoLink()" class="w-full bg-[#FAE100] text-[#371D1E] font-bold py-3 rounded-xl hover:bg-[#FCE220] transition shadow-sm flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3c5.523 0 10 3.582 10 8 0 2.65-1.611 5.01-4.14 6.436l1.048 3.868c.084.31-.225.594-.523.465l-4.48-1.936c-.613.104-1.25.167-1.905.167-5.523 0-10-3.582-10-8s4.477-8 10-8z"/></svg>
+                    송금하기 (앱 실행)
+                </button>
+                <button onclick="finishTransfer('kakao')" class="w-full bg-gray-100 text-gray-700 font-bold py-3 rounded-xl hover:bg-gray-200 transition">
+                    송금 완료했어요
+                </button>
+            </div>
+            <button onclick="closeModal('kakaoModal')" class="w-full text-gray-400 text-sm mt-4 hover:text-gray-600 underline">닫기</button>
         </div>
-    </footer>
+    </div>
+
+    <div id="bankModal" class="fixed inset-0 bg-black/50 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl transform scale-95 transition-transform duration-300">
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">입금 계좌 안내</h3>
+                <p class="text-sm text-gray-500 mt-2">아래 계좌로 <span class="text-primary font-bold">5,000원</span>을 입금해주세요.</p>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-xl mb-6 border border-gray-200">
+                <div class="text-xs text-gray-500 mb-1">기업은행 (IBK)</div>
+                <div class="flex items-center justify-between">
+                    <span class="font-mono text-lg font-bold text-gray-800" id="accountNum">457-081955-01-018</span>
+                    <button onclick="copyAccount()" class="text-xs bg-white border border-gray-300 px-2 py-1.5 rounded font-bold hover:bg-gray-100 transition text-gray-600">
+                        복사
+                    </button>
+                </div>
+                <div class="text-xs text-gray-500 mt-1">예금주: 김윤겸 (GlucoUS)</div>
+            </div>
+
+            <button onclick="finishTransfer('bank')" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-200">
+                입금 완료했어요
+            </button>
+            <button onclick="closeModal('bankModal')" class="w-full text-gray-400 text-sm mt-4 hover:text-gray-600 underline">닫기</button>
+        </div>
+    </div>
 
     <script>
-        // 결제 방법 선택에 따른 안내 표시
-        const paymentOptions = document.querySelectorAll('input[name="paymentMethod"]');
-        const bankTransferInfo = document.getElementById('bankTransferInfo');
-        
-        paymentOptions.forEach(option => {
-            option.addEventListener('change', function() {
-                if (this.value === 'bank') {
-                    bankTransferInfo.classList.remove('hidden');
-                } else {
-                    bankTransferInfo.classList.add('hidden');
-                }
-            });
-        });
+        // 👇 구글 Apps Script 웹 앱 URL (구글 시트 연동)
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLnuq3tHyokqRKFA7EqJoJCV18GwDEUurVz9YtwSx3kZd2LM-5_UAq1AOyMGc0XaoI/exec";
 
-        // 라디오 버튼 선택 시 스타일 변경
-        paymentOptions.forEach(option => {
-            option.addEventListener('change', function() {
-                document.querySelectorAll('.payment-option').forEach(label => {
-                    label.classList.remove('border-primary', 'bg-primary/5');
-                    label.classList.add('border-gray-200');
-                });
-                if (this.checked) {
-                    this.closest('.payment-option').classList.add('border-primary', 'bg-primary/5');
-                    this.closest('.payment-option').classList.remove('border-gray-200');
-                }
-            });
-        });
+        // 👇 설정된 링크 정보
+        const LINKS = {
+            NAVER: "https://smartstore.naver.com/glucous/products/12958673126",
+            KAKAO: "https://qr.kakaopay.com/Ej7zVHtq09c401971"
+        };
 
-        document.getElementById('applicationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // 폼 제출 처리 + 구글 시트 저장
+        function handleSubmit() {
+            const form = document.getElementById('applyForm');
+            const formData = new FormData(form);
+            const submitButton = document.getElementById('submitButton');
+            const originalBtnText = submitButton.innerText;
             
-            // 폼 데이터 수집
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            const paymentMethod = data.paymentMethod;
-            
-            if (!paymentMethod) {
-                alert('결제 방법을 선택해주세요.');
+            // 유효성 검사
+            if (!formData.get('name') || !formData.get('phone') || !formData.get('email')) {
+                alert('신청자 정보를 모두 입력해주세요.');
                 return;
             }
-            
-            // 결제 방법에 따른 처리
-            if (paymentMethod === 'naver') {
-                // 네이버 스마트 스토어 결제 페이지로 이동
-                // 실제 네이버 스마트 스토어 결제 URL로 변경 필요
-                const naverStoreUrl = 'https://smartstore.naver.com/glucous/products/베타테스터신청'; // 실제 URL로 변경 필요
-                
-                // 서버로 신청 정보 전송 (실제 구현 필요)
-                // fetch('/api/apply', { 
-                //     method: 'POST', 
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(data) 
-                // })
-                
-                // 네이버 스마트 스토어로 이동
-                window.open(naverStoreUrl, '_blank');
-                
-                // 성공 메시지 표시
-                document.getElementById('applicationForm').classList.add('hidden');
-                document.getElementById('successMessage').classList.remove('hidden');
-                document.querySelector('#successMessage h3').textContent = '신청이 완료되었습니다!';
-                document.querySelector('#successMessage p').innerHTML = 
-                    '네이버 스마트 스토어에서 결제를 완료해주세요.<br>결제 완료 후 신청이 최종 확정됩니다.';
-                
-            } else if (paymentMethod === 'bank') {
-                // 계좌이체 안내
-                // 서버로 신청 정보 전송 (실제 구현 필요)
-                // fetch('/api/apply', { 
-                //     method: 'POST', 
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(data) 
-                // })
-                
-                // 성공 메시지 표시
-                document.getElementById('applicationForm').classList.add('hidden');
-                document.getElementById('successMessage').classList.remove('hidden');
-                document.querySelector('#successMessage h3').textContent = '신청이 접수되었습니다!';
-                document.querySelector('#successMessage p').innerHTML = 
-                    '계좌이체를 완료해주세요.<br><br>' +
-                    '<div class="bg-gray-50 rounded-lg p-4 text-left mt-4 mb-4">' +
-                    '<div class="font-semibold mb-2">입금 정보</div>' +
-                    '<div class="text-sm space-y-1">' +
-                    '<div>은행: 신한은행</div>' +
-                    '<div>계좌번호: 110-123-456789</div>' +
-                    '<div>예금주: (주)GlucoUS</div>' +
-                    '<div class="font-semibold mt-2">금액: 5,000원</div>' +
-                    '</div></div>' +
-                    '입금 확인 후 신청이 완료됩니다. 입금자명은 신청하신 이름과 동일하게 해주세요.<br>' +
-                    '입금 확인까지 1-2일 소요될 수 있습니다.';
-            }
-            
-            // 페이지 상단으로 스크롤
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    </script>
 
+            const payment = formData.get('payment');
+
+            // 버튼 로딩 상태
+            submitButton.disabled = true;
+            submitButton.innerText = "저장 중...";
+
+            // 1) 구글 시트로 데이터 전송
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                // 2) GA4 이벤트 전송
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'submit_application', { 
+                        'event_category': 'conversion', 
+                        'event_label': payment 
+                    });
+                }
+
+                // 3) 결제 방식별 분기
+                if (payment === 'naver') {
+                    if (confirm('신청 정보가 저장되었습니다.\n네이버 스마트 스토어로 이동합니다.\n구매를 완료해주셔야 신청이 확정됩니다.')) {
+                        window.open(LINKS.NAVER, '_blank');
+                        showSuccessPage('naver');
+                    } else {
+                        // 사용자가 취소한 경우 버튼 상태 복구
+                        submitButton.disabled = false;
+                        submitButton.innerText = originalBtnText;
+                    }
+                } else if (payment === 'kakao') {
+                    // 카카오페이 모달 열기 (실제 송금 완료는 모달에서 처리)
+                    openModal('kakaoModal');
+                    submitButton.disabled = false;
+                    submitButton.innerText = originalBtnText;
+                } else if (payment === 'bank') {
+                    // 계좌이체 모달 열기
+                    openModal('bankModal');
+                    submitButton.disabled = false;
+                    submitButton.innerText = originalBtnText;
+                }
+            })
+            .catch(error => {
+                console.error('Error!', error);
+                alert('일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+                submitButton.disabled = false;
+                submitButton.innerText = originalBtnText;
+            });
+        }
+
+        // --- 모달 기능 ---
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('div').classList.remove('scale-95');
+                modal.querySelector('div').classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('opacity-0');
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function openKakaoLink() {
+            window.open(LINKS.KAKAO, '_blank');
+        }
+
+        function copyAccount() {
+            const accountText = document.getElementById('accountNum').innerText;
+            // 하이픈 제거하고 복사
+            const cleanAccount = accountText.replace(/-/g, '').replace(/ /g, '');
+            
+            navigator.clipboard.writeText(cleanAccount).then(() => {
+                alert('계좌번호가 복사되었습니다!');
+            }).catch(() => {
+                alert('복사에 실패했습니다. 직접 입력해주세요: ' + cleanAccount);
+            });
+        }
+
+        function finishTransfer(type) {
+            const modalId = type === 'kakao' ? 'kakaoModal' : 'bankModal';
+            closeModal(modalId);
+            showSuccessPage(type);
+        }
+
+        // --- 완료 화면 전환 ---
+        function showSuccessPage(type) {
+            const container = document.getElementById('formContainer');
+            let message = "";
+            let subMessage = "확인 후 24시간 이내에 확정 문자를 보내드립니다.";
+            
+            if(type === 'naver') {
+                message = "네이버 스토어 결제 확인 대기 중";
+                subMessage = "스토어에서 결제를 마쳐주셔야 최종 확정됩니다.";
+            } else if (type === 'kakao') {
+                message = "카카오페이 송금 확인 요청 완료";
+            } else {
+                message = "계좌 입금 확인 요청 완료";
+            }
+
+            container.innerHTML = `
+                <div class="text-center py-12 animate-fade-in-up">
+                    <div class="w-20 h-20 bg-green-100 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">${message}</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed">${subMessage}</p>
+                    <a href="index.html" class="block w-full bg-dark text-white font-bold py-4 rounded-xl hover:bg-gray-800 transition">
+                        홈으로 돌아가기
+                    </a>
+                </div>
+            `;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
-
