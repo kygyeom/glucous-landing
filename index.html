@@ -610,7 +610,7 @@
                 <div class="lg:col-span-7 flex">
                     <div id="right-kit-image-container" class="relative rounded-2xl overflow-hidden shadow-2xl bg-[#0B0F12] border border-gray-500 w-full flex flex-col">
                         <div class="w-full relative flex-1 flex items-center justify-center" style="max-height: 100%; overflow: hidden;">
-                            <img id="kit-image" src="image/glucous_kit1.png" alt="베타 테스터 키트" loading="lazy" decoding="async" class="w-full h-full object-contain transition-opacity duration-500">
+                            <img id="kit-image" src="image/kit1.jpeg" alt="베타 테스터 키트" loading="lazy" decoding="async" class="w-full h-full object-cover transition-opacity duration-500">
                             <div class="absolute inset-0 bg-black/10"></div>
                             <div class="absolute top-4 left-4 bg-primary text-gray-900 px-4 py-1.5 rounded-full text-base font-bold shadow-lg">
                                 EARLY BIRD OFFER
@@ -1002,9 +1002,10 @@
         // Kit 이미지 순환 (3초마다)
         (function() {
             const kitImages = [
-                'image/glucous_kit1.png',
-                'image/glucous_kit2.png',
-                'image/glucous_kit3.png'
+                'image/kit1.jpeg',
+                'image/kit2.jpeg',
+                'image/kit3.jpeg',
+                'image/kit4.jpeg'
             ];
             let currentIndex = 0;
             const kitImage = document.getElementById('kit-image');
